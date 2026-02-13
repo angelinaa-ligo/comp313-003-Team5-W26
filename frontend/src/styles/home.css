@@ -1,0 +1,16 @@
+.pet-cards {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+/* Optional: hide scrollbar (cleaner look) */
+.pet-cards::-webkit-scrollbar {
+    height: 8px;
+}
+
+.pet-cards::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}

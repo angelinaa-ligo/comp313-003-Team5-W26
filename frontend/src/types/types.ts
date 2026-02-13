@@ -1,5 +1,6 @@
-// feel free to change the user info as we go o
+// feel free to change the interfaces as we go on
 // this is placeholder
+// just dm ethan when you do so, so i can update the frontend accordingly
 
 export interface UserInfo {
     id: string;
@@ -8,4 +9,15 @@ export interface UserInfo {
     confirmPassword?: string;
     email: string;
     role: 'admin' | 'junior_member' | 'member';
+}
+
+export interface PetInfo {
+    id: string;
+    name: string;
+    type: string;
+    breed: string;
+    age: number;
+    description: string;
+    imageUrl: string;
+    adoptionStatus: 'available' | 'pending' | 'adopted' | 'own';
 }

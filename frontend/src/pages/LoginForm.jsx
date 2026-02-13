@@ -27,6 +27,10 @@ export default function LoginForm() {
         navigate('/home');
     };
 
+    // will be deleted in for later
+    const handleByPass = () => {
+        navigate('/home');
+    }
 
     const handleSignUp = () => {
         navigate('/signup');
@@ -51,6 +55,7 @@ export default function LoginForm() {
 
                 <button onClick={handleSubmit}>Login</button>
                 <button onClick={handleSignUp}>Sign Up Instead</button>
+                <button onClick={handleByPass}>Bypass Login</button>
             </div>
         </div>
     )

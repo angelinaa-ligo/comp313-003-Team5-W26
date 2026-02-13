@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import '../styles/narbar.css';
+
 
 export default function NavBar() {
     const navigate = useNavigate();
