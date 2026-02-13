@@ -11,17 +11,7 @@ export default function HomePage() {
     const [isBusiness, setIsBusiness] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     
-    const handlePetPages = () => {
-        navigate('/pet-pages');
-    }
-    const handleUserPages = () => {
-        navigate('/user-pages');
-    }   
-    const handleLogOut = () => {
-        navigate('/login');
-    }
-
-    // if (isIndividual) {}
+    
     return (
         <div className="home-page-wrapper">
             <div className='navbar'>
@@ -50,6 +40,8 @@ export default function HomePage() {
     // dependling if we need to add other user interfaces
     // we can add them and make different 
     
+    // if (isIndividual) {}
+
     if (isBusiness) {
         return (
             <div className="home-page-wrapper">
