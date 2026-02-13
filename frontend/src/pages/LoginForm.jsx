@@ -21,8 +21,10 @@ export default function LoginForm() {
             alert('Password cannot be empty');
             return;
         }
-         // call backend here
-        navigate('/main');
+
+        // call backend here
+        // verification and authentication of the user
+        navigate('/home');
     };
 
 

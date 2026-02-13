@@ -28,9 +28,10 @@ export default function SignUpForm() {
             alert('Passwords do not match');
             return;
         }
-        // call backend here
 
-        navigate('/main');
+        // call backend here
+        // about verification and adding the user to the database
+        navigate('/home');
     }
 
     const handleLogin = () => {
