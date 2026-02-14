@@ -35,9 +35,11 @@ export default function HomePetCard({ pet }) {
                     <p>No image available</p>
                 </div>
             )}
-
-            <h3>{pet.name}</h3>
+            <h2>{pet.name}</h2>
             <p>{pet.breed}</p>
+            <p>Age: {pet.age}</p>
+            <p>{pet.description}</p>
+
             <button onClick={() => navigate(`/pets/${pet.id}`)}>
                 View Details
             </button>

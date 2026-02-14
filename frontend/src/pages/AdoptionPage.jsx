@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 //import '../styles/components/home.css';
 import NavBar from '../components/NavBar';
 
+// Page still work in processs for frontend
+
 export default function AdoptionPage() {
     const navigate = useNavigate();
     

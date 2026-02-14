@@ -14,7 +14,6 @@ export interface UserInfo {
 export interface PetInfo {
     id: string;
     name: string;
-    type: string;
     breed: string;
     age: number;
     description: string;
