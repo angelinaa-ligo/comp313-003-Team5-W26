@@ -39,3 +39,4 @@ function App() {
 }
 
 export default App
+//<Route path="/clinic" element={<ClinicPage />} />
