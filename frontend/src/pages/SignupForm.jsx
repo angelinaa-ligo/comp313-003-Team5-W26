@@ -38,6 +38,7 @@ export default function SignUpForm() {
         navigate('/login');
     }
 
+
     return (
         <div>
             <div className="signUp-header">
