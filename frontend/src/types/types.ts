@@ -14,9 +14,13 @@ export interface UserInfo {
 export interface PetInfo {
     id: string;
     name: string;
-    breed: string;
+    type: string;
+    breed?: string;
+    gender: 'male' | 'female' | 'unknown';
     age: number;
-    description: string;
+    vaccinated: boolean;
+    description?: string;
+    medicalHistory?: string;
     imageUrl: string;
     adoptionStatus: 'available' | 'pending' | 'adopted' | 'own';
 }

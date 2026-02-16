@@ -11,6 +11,7 @@ import UserPage from './pages/UserPage';
 import HomePage from './pages/HomePage';
 import CreatePetForm from './pages/CreatePetForm';
 import EditPetForm from './pages/EditPetForm';
+import PetDetailPage from './pages/PetDetailPage';
 
 function App() {
   // simple router setup to manage navigation between pages
@@ -26,6 +27,7 @@ function App() {
             <Route path="/campaign" element={<CampaignPage />} />
             <Route path="/clinic" element={<HealthClinicsPage />} />
             <Route path="/pets" element={<PetPages />} />
+            <Route path="/pets/:petId" element={<PetDetailPage />} />
             <Route path="/user" element={<UserPage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/create-pet" element={<CreatePetForm />} />

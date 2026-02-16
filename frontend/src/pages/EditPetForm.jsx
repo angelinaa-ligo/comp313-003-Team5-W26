@@ -142,13 +142,37 @@ export default function EditPetForm() {
                     </div>
 
                     <div className="form-group">
+                        <label htmlFor="gender">Gender:</label>
+                        <select id="gender" name="gender" value={formData.gender} onChange={handleInputChange} required >
+                            <option value="">Select gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="unknown">Unknown</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
                         <label htmlFor="age">Age:</label>
                         <input type="number" id="age" name="age" value={formData.age} onChange={handleInputChange} min="0" max="30" placeholder="Enter age in years" />
                     </div>
 
                     <div className="form-group">
+                        <label htmlFor="vaccinated">Vaccinated:</label>
+                        <select id="vaccinated" name="vaccinated" value={formData.vaccinated} onChange={handleInputChange} required >
+                            <option value="">Select vaccination status</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
                         <label htmlFor="description">Description:</label>
                         <textarea id="description" name="description" value={formData.description} onChange={handleInputChange} placeholder="Tell us about your pet..." rows="4" />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="medicalHistory">Medical History:</label>
+                        <textarea id="medicalHistory" name="medicalHistory" value={formData.medicalHistory} onChange={handleInputChange} placeholder="Any medical history or special needs?" rows="4" />
                     </div>
 
                     <div className="form-group">

@@ -11,7 +11,6 @@ export default function HomePage() {
     const [isBusiness, setIsBusiness] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     
-
     // might need to change the fetch endpoint to get user pet data instead of all pet data
     // otherwise we have temp data in the home page so we can see an example how'd they look like
     
