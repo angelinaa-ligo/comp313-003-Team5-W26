@@ -1,40 +1,60 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/login.css';
 
 export default function LoginForm() {
     const navigate = useNavigate();
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+
     const [email, setEmail] = useState('');
-    const [individual, business, admin] = [false, false, false];
+    const [password, setPassword] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!username) {
-            alert('Username cannot be empty');
-            return;
-        }
 
-        if (!password) {
-            alert('Password cannot be empty');
-            return;
-        }
+        if (!email) return alert('Email cannot be empty');
+        if (!password) return alert('Password cannot be empty');
 
-        // call backend here
-        // verification and authentication of the user
-        navigate('/home');
+        try {
+            const response = await fetch(
+                'http://localhost:5000/api/users/login',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password,
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(data.message || 'Login failed');
+                return;
+            }
+
+            
+            localStorage.setItem('userInfo', JSON.stringify(data));
+
+            alert('Login successful!');
+
+            navigate('/home');
+        } catch (error) {
+            console.error(error);
+            alert('Server error');
+        }
     };
-
-    // will be deleted in for later
-    const handleByPass = () => {
-        navigate('/home');
-    }
 
     const handleSignUp = () => {
         navigate('/signup');
-    }
+    };
+
+    const handleByPass = () => {
+        navigate('/home');
+    };
 
     return (
         <div>
@@ -44,13 +64,21 @@ export default function LoginForm() {
 
             <div className="login-form">
                 <div className="form-group">
-                    <label htmlFor="username">Username</label>
-                    <input id="username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
                 </div>
-                
+
                 <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <label>Password</label>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
                 </div>
 
                 <button onClick={handleSubmit}>Login</button>
@@ -58,5 +86,5 @@ export default function LoginForm() {
                 <button onClick={handleByPass}>Bypass Login</button>
             </div>
         </div>
-    )
+    );
 }

@@ -11,7 +11,7 @@ import UserPage from './pages/UserPage';
 import HomePage from './pages/HomePage';
 import CreatePetForm from './pages/CreatePetForm';
 import EditPetForm from './pages/EditPetForm';
-
+import PrivateRoute from "./components/PrivateRoute";
 function App() {
   // simple router setup to manage navigation between pages
   // add more routes if you need to
@@ -19,20 +19,66 @@ function App() {
     <>
       <div>        
         <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/signup" element={<SignUpForm />} />
-            <Route path="/adoption" element={<AdoptionPage />} />
-            <Route path="/campaign" element={<CampaignPage />} />
-            <Route path="/clinic" element={<HealthClinicsPage />} />
-            <Route path="/pets" element={<PetPages />} />
-            <Route path="/user" element={<UserPage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/create-pet" element={<CreatePetForm />} />
-            <Route path="/edit-pet/:petId" element={<EditPetForm />} />
-            <Route path="/" element={<Navigate to="/login" />} />
-          </Routes>
-        </BrowserRouter>
+  <Routes>
+
+    {/* Públicas */}
+    <Route path="/login" element={<LoginForm />} />
+    <Route path="/signup" element={<SignUpForm />} />
+
+    {/* Privadas */}
+    <Route path="/home" element={
+      <PrivateRoute>
+        <HomePage />
+      </PrivateRoute>
+    } />
+
+    <Route path="/adoption" element={
+      <PrivateRoute>
+        <AdoptionPage />
+      </PrivateRoute>
+    } />
+
+    <Route path="/campaign" element={
+      <PrivateRoute>
+        <CampaignPage />
+      </PrivateRoute>
+    } />
+
+    <Route path="/clinic" element={
+      <PrivateRoute>
+        <HealthClinicsPage />
+      </PrivateRoute>
+    } />
+
+    <Route path="/pets" element={
+      <PrivateRoute>
+        <PetPages />
+      </PrivateRoute>
+    } />
+
+    <Route path="/user" element={
+      <PrivateRoute>
+        <UserPage />
+      </PrivateRoute>
+    } />
+
+    <Route path="/create-pet" element={
+      <PrivateRoute>
+        <CreatePetForm />
+      </PrivateRoute>
+    } />
+
+    <Route path="/edit-pet/:petId" element={
+      <PrivateRoute>
+        <EditPetForm />
+      </PrivateRoute>
+    } />
+
+    {/* Redirecionamento */}
+    <Route path="/" element={<Navigate to="/login" />} />
+
+  </Routes>
+</BrowserRouter>
       </div>
     </>
   );

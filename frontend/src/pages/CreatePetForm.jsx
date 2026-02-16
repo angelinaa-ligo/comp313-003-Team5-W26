@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
-import '../styles/editPetForm.css';
+//import '../styles/editPetForm.css';
 
 // side note about edit & create pet form
 // we can problay use the same form for both creating and editing pet profiles
