@@ -9,11 +9,10 @@ export default function EditPetForm() {
     
     const [formData, setFormData] = useState({
         name: '',
-        type: '',
+        species: '',
         breed: '',
+        sex: '',
         age: '',
-        description: '',
-        mediaFiles: []
     });
     
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,27 +22,38 @@ export default function EditPetForm() {
     useEffect(() => {
         const fetchPetData = async () => {
             try {
-                // TODO: Replace with actual API endpoint
-                const response = await fetch(`/api/pets/${petId}`);
-                if (response.ok) {
-                    const petData = await response.json();
-                    setFormData({
-                        name: petData.name || '',
-                        type: petData.type || '',
-                        breed: petData.breed || '',
-                        age: petData.age || '',
-                        description: petData.description || '',
-                        mediaFiles: petData.mediaFiles || []
-                    });
-                } else {
-                    setError('Failed to load pet data');
+                setError('');
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    setError('You must be logged in to edit a pet profile.');
+                    return;
                 }
+
+                const response = await fetch(`/api/pets/${petId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    setError(`Failed to fetch pet data: ${errorText}`);
+                    return;
+                }
+
+                const petData = await response.json();
+                setFormData({
+                    name: petData.name || '',
+                    species: petData.species || '',
+                    breed: petData.breed || '',
+                    sex: petData.sex || '',
+                    age: petData.age || ''
+                });
             } catch (err) {
-                setError('Error loading pet data');
+                setError('Error fetching pet data');
                 console.error('Error fetching pet data:', err);
             }
         };
-
         if (petId) {
             fetchPetData();
         }
@@ -57,21 +67,6 @@ export default function EditPetForm() {
         }));
     };
 
-    const handleFileChange = (e) => {
-        const files = Array.from(e.target.files);
-        setFormData(prev => ({
-            ...prev,
-            mediaFiles: [...prev.mediaFiles, ...files]
-        }));
-    };
-
-    const removeMediaFile = (index) => {
-        setFormData(prev => ({
-            ...prev,
-            mediaFiles: prev.mediaFiles.filter((_, i) => i !== index)
-        }));
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -82,6 +77,7 @@ export default function EditPetForm() {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(formData)
             });
@@ -125,14 +121,30 @@ export default function EditPetForm() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="type">Type:</label>
-                        <select id="type" name="type" value={formData.type} onChange={handleInputChange} required >
-                            <option value="">Select pet type</option>
+                        <label htmlFor="species">Species:</label>
+                        <select id="species" name="species" value={formData.species} onChange={handleInputChange} required >
+                            <option value="">Select pet species</option>
                             <option value="dog">Dog</option>
                             <option value="cat">Cat</option>
                             <option value="rabbit">Rabbit</option>
                             <option value="bird">Bird</option>
                             <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="sex">Sex:</label>
+                        <select
+                            id="sex"
+                            name="sex"
+                            value={formData.sex}
+                            onChange={handleInputChange}
+                            required
+                        >
+                            <option value="">Select pet sex</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="unknown">Unknown</option>
                         </select>
                     </div>
 
@@ -144,38 +156,6 @@ export default function EditPetForm() {
                     <div className="form-group">
                         <label htmlFor="age">Age:</label>
                         <input type="number" id="age" name="age" value={formData.age} onChange={handleInputChange} min="0" max="30" placeholder="Enter age in years" />
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="description">Description:</label>
-                        <textarea id="description" name="description" value={formData.description} onChange={handleInputChange} placeholder="Tell us about your pet..." rows="4" />
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="mediaFiles">Add Photos:</label>
-                        <input type="file" id="mediaFiles" name="mediaFiles" accept="image/*" multiple onChange={handleFileChange} />
-                        
-                        {formData.mediaFiles.length > 0 && (
-                            <div className="media-preview">
-                                <h4>Current Photos:</h4>
-                                <div className="media-grid">
-                                    {formData.mediaFiles.map((file, index) => (
-                                        <div key={index} className="media-item">
-                                            {typeof file === 'string' ? (
-                                                // Existing media URL
-                                                <img src={file} alt={`Pet photo ${index + 1}`} />
-                                            ) : (
-                                                // New file to upload
-                                                <img src={URL.createObjectURL(file)} alt={`New pet photo ${index + 1}`} />
-                                            )}
-                                            <button type="button" onClick={() => removeMediaFile(index)} className="remove-media-btn" >
-                                                Remove
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
                     </div>
 
                     <div className="form-actions">
