@@ -38,9 +38,14 @@ export default function LoginForm() {
 
             
            localStorage.setItem('token', data.token);
+           localStorage.setItem("role", data.role);
            localStorage.setItem('userInfo', JSON.stringify(data));
            alert('Login successful!');
-           navigate('/home');
+           if (data.role === "organization") {
+            navigate("/organization-home");
+        } else {
+            navigate("/home");
+        }
         } catch (error) {
             console.error(error);
             alert('Server error');
