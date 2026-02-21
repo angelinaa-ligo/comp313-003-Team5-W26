@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import NavBar from '../components/NavBar';
-import '../styles/petPage.css';
-import PetCardFullInfo from '../components/PetCardFullInfo';
+import NavBar from '../../components/NavBar';
+import '../../styles/petPage.css';
+import PetCardFullInfo from '../../components/PetCardFullInfo';
 
 export default function PetPages() {
     const navigate = useNavigate();

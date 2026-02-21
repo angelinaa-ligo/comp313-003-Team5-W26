@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import NavBar from '../../components/NavBar';
 //import '../styles/components/home.css';
-import NavBar from '../components/NavBar';
 
-// Page still work in processs for frontend
-
-export default function AdoptionPage() {
+export default function CampaignPage() {
     const navigate = useNavigate();
     
     return (
-        <div className="adoption-page-wrapper">
+        <div className="campaign-page-wrapper">
             <div className='navbar'>
                 <NavBar />
             </div>

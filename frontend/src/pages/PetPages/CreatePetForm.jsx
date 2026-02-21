@@ -1,12 +1,18 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import NavBar from '../components/NavBar';
-import '../styles/petForm.css';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import NavBar from '../../components/NavBar';
+import '../../styles/petForm.css';
 
-export default function EditPetForm() {
+// side note about edit & create pet form
+// we can problay use the same form for both creating and editing pet profiles
+// just with some conditional rendering based on whether we're in create or edit mode.
+
+// however i'd put them as different files due to it's easier to manage 
+// and easier to look at tbh
+// we could combind them into one file, which may be more efficient, but it may be a bit more complex to read and maintain.
+
+export default function CreatePetForm() {
     const navigate = useNavigate();
-    const { petId } = useParams();
-    
     const [formData, setFormData] = useState({
         name: '',
         species: '',
@@ -18,36 +24,6 @@ export default function EditPetForm() {
     
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
-
-    // Fetch pet data when component mounts
-    useEffect(() => {
-        const fetchPetData = async () => {
-            try {
-                // TODO: Replace with actual API endpoint
-                const response = await fetch(`/api/pets/${petId}`);
-                if (response.ok) {
-                    const petData = await response.json();
-                    setFormData({
-                        name: petData.name || '',
-                        species: petData.species || '',
-                        breed: petData.breed || '',
-                        sex: petData.sex || '',
-                        age: petData.age || '',
-                        description: petData.description || ''
-                    });
-                } else {
-                    setError('Failed to load pet data');
-                }
-            } catch (err) {
-                setError('Error loading pet data');
-                console.error('Error fetching pet data:', err);
-            }
-        };
-
-        if (petId) {
-            fetchPetData();
-        }
-    }, [petId]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -78,8 +54,9 @@ export default function EditPetForm() {
         setError('');
 
         try {
-            const response = await fetch(`/api/pets/${petId}`, {
-                method: 'PUT',
+            // TODO: Replace with actual API endpoint
+            const response = await fetch('/api/pets', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -96,11 +73,11 @@ export default function EditPetForm() {
             if (response.ok) {
                 navigate('/pets');
             } else {
-                setError('Failed to update pet');
+                setError('Failed to create pet');
             }
         } catch (err) {
-            setError('Error updating pet');
-            console.error('Error updating pet:', err);
+            setError('Error creating pet');
+            console.error('Error creating pet:', err);
         } finally {
             setIsSubmitting(false);
         }
@@ -117,7 +94,7 @@ export default function EditPetForm() {
             </div>
             
             <div className="edit-pet-form-container">
-                <h2>Edit Pet Information</h2>
+                <h2>Create a New Pet</h2>
                 
                 {error && (
                     <div className="error-message">
@@ -134,7 +111,7 @@ export default function EditPetForm() {
                     <div className="form-group">
                         <label htmlFor="species">Species:</label>
                         <select id="species" name="species" value={formData.species} onChange={handleInputChange} required >
-                            <option value="">Select pet type</option>
+                            <option value="">Select species</option>
                             <option value="dog">Dog</option>
                             <option value="cat">Cat</option>
                             <option value="rabbit">Rabbit</option>
@@ -165,15 +142,15 @@ export default function EditPetForm() {
 
                     <div className="form-group">
                         <label htmlFor="description">Description:</label>
-                        <textarea id="description" name="description" value={formData.description} onChange={handleInputChange} placeholder="Tell us about your pet..." rows="4" />
+                        <textarea id="description"name="description" value={formData.description} onChange={handleInputChange} placeholder="Tell us about your pet..." rows="4" />
                     </div>
 
                     <div className="form-actions">
-                        <button type="button" onClick={handleCancel} className="cancel-btn" >
+                        <button type="button" onClick={handleCancel} className="cancel-btn">
                             Cancel
                         </button>
                         <button type="submit" disabled={isSubmitting} className="submit-btn" >
-                            {isSubmitting ? 'Updating...' : 'Update Pet'}
+                            {isSubmitting ? 'Creating...' : 'Create Pet'}
                         </button>
                     </div>
                 </form>

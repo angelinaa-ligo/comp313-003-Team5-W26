@@ -1,16 +1,17 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './App.css'
-import LoginForm from './pages/LoginForm';
-import SignUpForm from './pages/SignupForm';
-import AdoptionPage from './pages/AdoptionPage';
-import CampaignPage from './pages/CampaignPage';
-import HealthClinicsPage from './pages/HealthClinicsPage';
-import PetPages from './pages/PetPages';
-import UserPage from './pages/UserPage';
+import LoginForm from './pages/AuthPages/LoginForm';
+import SignUpForm from './pages/AuthPages/SignupForm';
+import AdoptionPage from './pages/UserPages/AdoptionPage';
+import CampaignPage from './pages/UserPages/CampaignPage';
+import HealthClinicsPage from './pages/UserPages/HealthClinicsPage';
+import UserPage from './pages/UserPages/UserPage';
 import HomePage from './pages/HomePage';
-import CreatePetForm from './pages/CreatePetForm';
-import EditPetForm from './pages/EditPetForm';
+import PetPages from './pages/PetPages/PetPages';
+import CreatePetForm from './pages/PetPages/CreatePetForm';
+import EditPetForm from './pages/PetPages/EditPetForm';
+
 
 function App() {
   // simple router setup to manage navigation between pages

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import NavBar from '../components/NavBar';
+import NavBar from '../../components/NavBar';
 import '../styles/petDetailPage.css';
 
 export default function PetDetailPage() {

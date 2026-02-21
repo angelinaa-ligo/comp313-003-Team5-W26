@@ -39,7 +39,7 @@ export default function OrgNavBar() {
             
             <button 
                 className={`nav-item ${isUser ? 'active' : ''}`} 
-                onClick={() => navigate('/user')}>User
+                onClick={() => navigate('/user')}>Organization
             </button>
         </nav>
     )
