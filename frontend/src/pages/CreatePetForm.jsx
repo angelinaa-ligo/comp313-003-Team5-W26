@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
-import '../styles/editPetForm.css';
+import '../styles/petForm.css';
 
 // side note about edit & create pet form
 // we can problay use the same form for both creating and editing pet profiles
@@ -15,11 +15,11 @@ export default function CreatePetForm() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
-        type: '',
+        species: '',
         breed: '',
+        sex: '',
         age: '',
         description: '',
-        mediaFiles: []
     });
     
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -60,7 +60,14 @@ export default function CreatePetForm() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({
+                    name: formData.name,
+                    species: formData.species,
+                    breed: formData.breed,
+                    sex: formData.sex,
+                    age: formData.age,
+                    description: formData.description
+                })
             });
 
             if (response.ok) {
@@ -102,9 +109,9 @@ export default function CreatePetForm() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="type">Type:</label>
-                        <select id="type"name="type" value={formData.type} onChange={handleInputChange} required >
-                            <option value="">Select pet type</option>
+                        <label htmlFor="species">Species:</label>
+                        <select id="species" name="species" value={formData.species} onChange={handleInputChange} required >
+                            <option value="">Select species</option>
                             <option value="dog">Dog</option>
                             <option value="cat">Cat</option>
                             <option value="rabbit">Rabbit</option>
@@ -119,6 +126,16 @@ export default function CreatePetForm() {
                     </div>
 
                     <div className="form-group">
+                        <label htmlFor="sex">Sex:</label>
+                        <select id="sex" name="sex" value={formData.sex} onChange={handleInputChange} required >
+                            <option value="">Select sex</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="unknown">Unknown</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
                         <label htmlFor="age">Age:</label>
                         <input type="number" id="age" name="age" value={formData.age} onChange={handleInputChange} min="0" max="30" placeholder="Enter age in years" />
                     </div>
@@ -126,26 +143,6 @@ export default function CreatePetForm() {
                     <div className="form-group">
                         <label htmlFor="description">Description:</label>
                         <textarea id="description"name="description" value={formData.description} onChange={handleInputChange} placeholder="Tell us about your pet..." rows="4" />
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="mediaFiles">Add Photos:</label>
-                        <input type="file" id="mediaFiles" name="mediaFiles" accept="image/*" multiple onChange={handleFileChange} />
-                        {formData.mediaFiles.length > 0 && (
-                            <div className="media-preview">
-                                <h4>Selected Photos:</h4>
-                                <div className="media-grid">
-                                    {formData.mediaFiles.map((file, index) => (
-                                        <div key={index} className="media-item">
-                                            <img src={URL.createObjectURL(file)} alt={`Pet photo ${index + 1}`} />
-                                            <button type="button" onClick={() => removeMediaFile(index)} className="remove-media-btn" >
-                                                Remove
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
                     </div>
 
                     <div className="form-actions">

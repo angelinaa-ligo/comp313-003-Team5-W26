@@ -4,16 +4,13 @@ import '../styles/login.css';
 
 export default function LoginForm() {
     const navigate = useNavigate();
-    const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [email, setEmail] = useState('');
-    const [individual, business, admin] = [false, false, false];
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!username) {
-            alert('Username cannot be empty');
+        if (!name) {
+            alert('Name cannot be empty');
             return;
         }
 
@@ -24,6 +21,7 @@ export default function LoginForm() {
 
         // call backend here
         // verification and authentication of the user
+        
         navigate('/home');
     };
 
@@ -44,8 +42,8 @@ export default function LoginForm() {
 
             <div className="login-form">
                 <div className="form-group">
-                    <label htmlFor="username">Username</label>
-                    <input id="username" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    <label htmlFor="name">Name</label>
+                    <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
                 </div>
                 
                 <div className="form-group">

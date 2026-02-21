@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import HomePetCard from '../components/HomePetCard';
 import '../styles/home.css';
-//import '../styles/components/home.css';
 
 export default function HomePage() {
     const navigate = useNavigate();

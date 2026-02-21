@@ -56,6 +56,7 @@
     font-size: 1rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     background-color: #fafafa;
+    color: black;
 }
 
 .form-group input:focus,
@@ -65,11 +66,13 @@
     border-color: #4f46e5;
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
     background-color: white;
+    color: black
 }
 
 .form-group textarea {
     resize: vertical;
     min-height: 120px;
+    color: black;
 }
 
 /* Media Upload Section */
