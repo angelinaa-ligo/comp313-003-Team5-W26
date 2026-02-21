@@ -28,7 +28,7 @@ export default function HomePage() {
                     return;
                 }
 
-                const response = await fetch("/api/pets", {
+                const response = await fetch("http://localhost:5000/api/pets", {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

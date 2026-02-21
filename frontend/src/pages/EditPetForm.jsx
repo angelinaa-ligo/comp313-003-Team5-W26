@@ -29,7 +29,7 @@ export default function EditPetForm() {
                     return;
                 }
 
-                const response = await fetch(`/api/pets/${petId}`, {
+                const response = await fetch(`http://localhost:5000/api/pets/${petId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -73,7 +73,7 @@ export default function EditPetForm() {
         setError('');
 
         try {
-            const response = await fetch(`/api/pets/${petId}`, {
+            const response = await fetch(`http://localhost:5000/api/pets/${petId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

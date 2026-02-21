@@ -37,11 +37,10 @@ export default function LoginForm() {
             }
 
             
-            localStorage.setItem('userInfo', JSON.stringify(data));
-
-            alert('Login successful!');
-
-            navigate('/home');
+           localStorage.setItem('token', data.token);
+           localStorage.setItem('userInfo', JSON.stringify(data));
+           alert('Login successful!');
+           navigate('/home');
         } catch (error) {
             console.error(error);
             alert('Server error');

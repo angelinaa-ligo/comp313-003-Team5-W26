@@ -22,7 +22,7 @@ export default function PetPages() {
           return;
         }
 
-        const response = await fetch('/api/pets', {
+        const response = await fetch('http://localhost:5000/api/pets', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -49,27 +49,35 @@ export default function PetPages() {
   }, []);
 
   const handleDelete = async (petId) => {
-    try {
-      const token = localStorage.getItem('token');
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this pet? This action cannot be undone."
+  );
 
-      const response = await fetch(`/api/pets/${petId}`, {
+  if (!confirmed) return;
+
+  try {
+    const token = localStorage.getItem('token');
+
+    const response = await fetch(
+      `http://localhost:5000/api/pets/${petId}`,
+      {
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      if (response.ok) {
-        // remove from state after successful delete
-        setPets(prev => prev.filter(pet => pet._id !== petId));
-      } else {
-        setError('Failed to delete pet');
+          Authorization: `Bearer ${token}`,
+        },
       }
-    } catch (err) {
-      setError('Error deleting pet');
-      console.error(err);
+    );
+
+    if (response.ok) {
+      setPets(prev => prev.filter(pet => pet._id !== petId));
+    } else {
+      setError('Failed to delete pet');
     }
-  };
+  } catch (err) {
+    setError('Error deleting pet');
+    console.error(err);
+  }
+};
 
   // this doesn't support media files yet so i simplified it for now and we can incorporate media in the later iteration probably
   return (
