@@ -8,10 +8,10 @@ import CampaignPage from './pages/UserPages/CampaignPage';
 import HealthClinicsPage from './pages/UserPages/HealthClinicsPage';
 import UserPage from './pages/UserPages/UserPage';
 import HomePage from './pages/HomePage';
-import PetPages from './pages/PetPages/PetPages';
-import CreatePetForm from './pages/PetPages/CreatePetForm';
-import EditPetForm from './pages/PetPages/EditPetForm';
-
+import PetPages from './pages/UserPetPages/PetPages';
+import CreatePetForm from './pages/UserPetPages/CreatePetForm';
+import EditPetForm from './pages/UserPetPages/EditPetForm';
+import PetDetailPage from './pages/UserPetPages/PetDetailPage';
 
 function App() {
   // simple router setup to manage navigation between pages
@@ -31,6 +31,7 @@ function App() {
             <Route path="/home" element={<HomePage />} />
             <Route path="/create-pet" element={<CreatePetForm />} />
             <Route path="/edit-pet/:petId" element={<EditPetForm />} />
+            <Route path="/pets/:petId" element={<PetDetailPage />} />
             <Route path="/" element={<Navigate to="/login" />} />
           </Routes>
         </BrowserRouter>
