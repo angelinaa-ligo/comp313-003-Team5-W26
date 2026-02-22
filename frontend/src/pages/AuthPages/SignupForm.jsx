@@ -10,27 +10,51 @@ export default function SignUpForm() {
     const [role, setRole] = useState('user');
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!name) {
-            alert('Name cannot be empty');
-            return;
-        } else if (!password) {
-            alert('Password cannot be empty');
-            return;
-        } else if (!email) {
-            alert('Email cannot be empty');
+    e.preventDefault();
+
+    if (!username) return alert('Username cannot be empty');
+    if (!email) return alert('Email cannot be empty');
+    if (!password) return alert('Password cannot be empty');
+    if (password !== confirmPassword)
+        return alert('Passwords do not match');
+
+    try {
+        const response = await fetch(
+            'http://localhost:5000/api/users/register',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: username,
+                    email,
+                    password,
+                }),
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.message || 'Signup failed');
             return;
         }
 
-        // call backend here
-        // about verification and adding the user to the database
+        // salvar usuário + token
+        localStorage.setItem('userInfo', JSON.stringify(data));
+
+        alert('Signup successful!');
+
         navigate('/home');
+    } catch (error) {
+        console.error(error);
+        alert('Server error');
     }
-
+    };
     const handleLogin = () => {
-        navigate('/login');
-    }
-
+    navigate('/login');
+};
     return (
         <div>
             <div className="signUp-header">

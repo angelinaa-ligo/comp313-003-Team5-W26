@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/login.css';
 
@@ -14,25 +14,54 @@ export default function LoginForm() {
             return;
         }
 
-        if (!password) {
-            alert('Password cannot be empty');
-            return;
+        if (!email) return alert('Email cannot be empty');
+        if (!password) return alert('Password cannot be empty');
+
+        try {
+            const response = await fetch(
+                'http://localhost:5000/api/users/login',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email,
+                        password,
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(data.message || 'Login failed');
+                return;
+            }
+
+            
+           localStorage.setItem('token', data.token);
+           localStorage.setItem("role", data.role);
+           localStorage.setItem('userInfo', JSON.stringify(data));
+           alert('Login successful!');
+           if (data.role === "organization") {
+            navigate("/organization-home");
+        } else {
+            navigate("/home");
         }
-
-        // call backend here
-        // verification and authentication of the user
-        
-        navigate('/home');
+        } catch (error) {
+            console.error(error);
+            alert('Server error');
+        }
     };
-
-    // will be deleted in for later
-    const handleByPass = () => {
-        navigate('/home');
-    }
 
     const handleSignUp = () => {
         navigate('/signup');
-    }
+    };
+
+    const handleByPass = () => {
+        navigate('/home');
+    };
 
     return (
         <div>
@@ -44,11 +73,21 @@ export default function LoginForm() {
                 <div className="form-group">
                     <label htmlFor="name">Name</label>
                     <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
                 </div>
-                
+
                 <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <label>Password</label>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
                 </div>
 
                 <button onClick={handleSubmit}>Login</button>
@@ -56,5 +95,5 @@ export default function LoginForm() {
                 <button onClick={handleByPass}>Bypass Login</button>
             </div>
         </div>
-    )
+    );
 }

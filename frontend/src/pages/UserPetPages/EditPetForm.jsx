@@ -36,12 +36,32 @@ export default function EditPetForm() {
                 } else {
                     setError('Failed to load pet data');
                 }
+
+                const response = await fetch(`http://localhost:5000/api/pets/${petId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    setError(`Failed to fetch pet data: ${errorText}`);
+                    return;
+                }
+
+                const petData = await response.json();
+                setFormData({
+                    name: petData.name || '',
+                    species: petData.species || '',
+                    breed: petData.breed || '',
+                    sex: petData.sex || '',
+                    age: petData.age || ''
+                });
             } catch (err) {
-                setError('Error loading pet data');
+                setError('Error fetching pet data');
                 console.error('Error fetching pet data:', err);
             }
         };
-
         if (petId) {
             fetchPetData();
         }
@@ -77,10 +97,11 @@ export default function EditPetForm() {
         setError('');
 
         try {
-            const response = await fetch(`/api/pets/${petId}`, {
+            const response = await fetch(`http://localhost:5000/api/pets/${petId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify({
                     name: formData.name,
@@ -138,6 +159,22 @@ export default function EditPetForm() {
                             <option value="rabbit">Rabbit</option>
                             <option value="bird">Bird</option>
                             <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="sex">Sex:</label>
+                        <select
+                            id="sex"
+                            name="sex"
+                            value={formData.sex}
+                            onChange={handleInputChange}
+                            required
+                        >
+                            <option value="">Select pet sex</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="unknown">Unknown</option>
                         </select>
                     </div>
 

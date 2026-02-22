@@ -25,24 +25,47 @@ export default function HomePage() {
         setRole('user')
     }
 
-    // might need to change the fetch endpoint to get user pet data instead of all pet data
-    // otherwise we have temp data in the home page so we can see an example how'd they look like
-    
     useEffect(() => {
         const fetchPetData = async () => {
             try {
-                // TODO: Replace with actual API endpoint
-                const response = await fetch('/api/pets');
-                if (response.ok) {
-                    const petData = await response.json();
-                    // setPetData here - or a form of displaying some user pet data.
-                } else {
-                    console.error('Failed to load pet data');
-                }
-            } catch (err) {
-                console.error('Error fetching pet data:', err);
-            }
+                setLoading(true);
+                setError("");
 
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    setLoading(false);
+                    navigate("/login");
+                    return;
+                }
+
+                const response = await fetch("http://localhost:5000/api/pets", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        setError("Session expired. Please log in again.");
+                        localStorage.removeItem("token");
+                        navigate("/login");
+                        return;
+                    }
+
+                    const text = await response.text();
+                    throw new Error(text || "Failed to fetch pet data");
+                }
+
+                const petData = await response.json();
+                setPets(petData);
+            } catch (err) {
+                console.error("Error fetching pet data:", err);
+                setError(err.message || "An error occurred while fetching pet data.");
+            } finally {
+                setLoading(false);
+            }
         };
 
         fetchPetData();
@@ -125,7 +148,7 @@ export default function HomePage() {
                 <div className="header">
                     <h1>Hello Kind Soul</h1>
                 </div>
-                
+
                 <div className="wrapper-pet-cards">
                     <h2>Your Pets</h2>
                     <div className="pet-cards">

@@ -13,6 +13,7 @@ import '../../styles/petForm.css';
 
 export default function CreatePetForm() {
     const navigate = useNavigate();
+    const {petId} = useParams();
     const [formData, setFormData] = useState({
         name: '',
         species: '',
@@ -20,7 +21,7 @@ export default function CreatePetForm() {
         sex: '',
         age: 0,
     });
-    
+
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
 
@@ -54,11 +55,18 @@ export default function CreatePetForm() {
         setError('');
 
         try {
-            // TODO: Replace with actual API endpoint
-            const response = await fetch('/api/pets', {
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                setError('You must be logged in to create a pet profile.');
+                setIsSubmitting(false);
+                return;
+            }
+            const response = await fetch('http://localhost:5000/api/pets', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     name: formData.name,
@@ -72,11 +80,12 @@ export default function CreatePetForm() {
             if (response.ok) {
                 navigate('/pets');
             } else {
-                setError('Failed to create pet');
+                const errorText = await response.text();
+                setError(`Failed to create pet profile: ${errorText}`);
             }
         } catch (err) {
-            setError('Error creating pet');
-            console.error('Error creating pet:', err);
+            setError(`An error occurred: ${err.message}`);
+            console.error('Error creating pet profile:', err);
         } finally {
             setIsSubmitting(false);
         }
@@ -91,10 +100,10 @@ export default function CreatePetForm() {
             <div className='navbar'>
                 <NavBar />
             </div>
-            
+
             <div className="edit-pet-form-container">
                 <h2>Create a New Pet</h2>
-                
+
                 {error && (
                     <div className="error-message">
                         {error}
@@ -116,6 +125,22 @@ export default function CreatePetForm() {
                             <option value="rabbit">Rabbit</option>
                             <option value="bird">Bird</option>
                             <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="sex">Sex:</label>
+                        <select
+                            id="sex"
+                            name="sex"
+                            value={formData.sex}
+                            onChange={handleInputChange}
+                            required
+                        >
+                            <option value="">Select sex</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="unknown">Unknown</option>
                         </select>
                     </div>
 

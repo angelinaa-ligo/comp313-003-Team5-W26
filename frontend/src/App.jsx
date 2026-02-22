@@ -22,7 +22,7 @@ import OrganizationPage from './pages/OrganizationPages/OrganizationPage';
 
 
 
-
+import PrivateRoute from "./components/PrivateRoute";
 function App() {
   // simple router setup to manage navigation between pages
   // add more routes if you need to
@@ -30,33 +30,66 @@ function App() {
     <>
       <div>        
         <BrowserRouter>
-          <Routes>
-            {/* All Users Pages */}
-            <Route path="/" element={<Navigate to="/login" />} />
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/signup" element={<SignUpForm />} />
-            <Route path="/adoption" element={<AdoptionPage />} />
-            <Route path="/home" element={<HomePage />} />
+  <Routes>
 
-            {/* Users Pages */}
-            <Route path="/campaign" element={<CampaignPage />} />
-            <Route path="/clinic" element={<HealthClinicsPage />} />
-            <Route path="/pets" element={<PetPages />} />
-            <Route path="/user" element={<UserPage />} />
-            <Route path="/create-pet" element={<CreatePetForm />} />
-            <Route path="/edit-pet/:petId" element={<EditPetForm />} />
-            <Route path="/pets/:petId" element={<PetDetailPage />} />
+    {/* Públicas */}
+    <Route path="/login" element={<LoginForm />} />
+    <Route path="/signup" element={<SignUpForm />} />
 
-            {/* Org Pages */}
-            <Route path="/animal" element={<AnimalPages />} />
-            <Route path="create-animal" element={<CreateAnimalForm />} />
-            <Route path="edit-animal/:animalId" element={<EditAnimalForm />} />
-            <Route path="adopt-mangement" element={<AdoptionMangementPage />} />
-            <Route path="org-user" element={<OrganizationPage />} />
+    {/* Privadas */}
+    <Route path="/home" element={
+      <PrivateRoute>
+        <HomePage />
+      </PrivateRoute>
+    } />
 
-            {/* Admin Pages */}
-          </Routes>
-        </BrowserRouter>
+    <Route path="/adoption" element={
+      <PrivateRoute>
+        <AdoptionPage />
+      </PrivateRoute>
+    } />
+
+    <Route path="/campaign" element={
+      <PrivateRoute>
+        <CampaignPage />
+      </PrivateRoute>
+    } />
+
+    <Route path="/clinic" element={
+      <PrivateRoute>
+        <HealthClinicsPage />
+      </PrivateRoute>
+    } />
+
+    <Route path="/pets" element={
+      <PrivateRoute>
+        <PetPages />
+      </PrivateRoute>
+    } />
+
+    <Route path="/user" element={
+      <PrivateRoute>
+        <UserPage />
+      </PrivateRoute>
+    } />
+
+    <Route path="/create-pet" element={
+      <PrivateRoute>
+        <CreatePetForm />
+      </PrivateRoute>
+    } />
+
+    <Route path="/edit-pet/:petId" element={
+      <PrivateRoute>
+        <EditPetForm />
+      </PrivateRoute>
+    } />
+
+    {/* Redirecionamento */}
+    <Route path="/" element={<Navigate to="/login" />} />
+
+  </Routes>
+</BrowserRouter>
       </div>
     </>
   );
