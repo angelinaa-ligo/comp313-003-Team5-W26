@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import NavBar from '../components/NavBar';
+import OrgNavBar from '../../components/OrgNavBar';
 
-export default function UserPage() {
+// this is user page but for org
+// this is not the home page tho
+
+export default function OrganizationPage() {
     const navigate = useNavigate();
 
     return (
         <div className="user-page-wrapper">
             <div className='navbar'>
-                <NavBar />
+                <OrgNavBar />
             </div>
         </div>
     )
-    
 }

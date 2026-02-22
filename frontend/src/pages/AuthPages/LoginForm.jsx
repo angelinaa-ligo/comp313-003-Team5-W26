@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/login.css';
+import '../../styles/login.css';
 
 export default function LoginForm() {
     const navigate = useNavigate();
-
-    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!name) {
+            alert('Name cannot be empty');
+            return;
+        }
 
         if (!email) return alert('Email cannot be empty');
         if (!password) return alert('Password cannot be empty');
@@ -68,6 +71,8 @@ export default function LoginForm() {
 
             <div className="login-form">
                 <div className="form-group">
+                    <label htmlFor="name">Name</label>
+                    <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
                     <label>Email</label>
                     <input
                         type="email"

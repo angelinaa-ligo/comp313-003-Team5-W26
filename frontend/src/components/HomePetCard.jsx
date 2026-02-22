@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/petCard.css';
 
+// This will need to get updated with the updated requirements
+
 export default function HomePetCard({ pet }) {
     const navigate = useNavigate();
     const [imageErrors, setImageErrors] = useState(new Set());

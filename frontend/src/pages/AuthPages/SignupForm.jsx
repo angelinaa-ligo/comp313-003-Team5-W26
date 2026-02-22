@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/signup.css';
+import '../../styles/signup.css';
 
 export default function SignUpForm() {
     const navigate = useNavigate();
-    const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [individual, business, admin] = [false, false, false];
+    const [role, setRole] = useState('user');
 
     const handleSubmit = async (e) => {
     e.preventDefault();
@@ -64,13 +63,26 @@ export default function SignUpForm() {
 
             <div className="signUp-form">
                 <div className="form-group">
-                    <label htmlFor="username">Username</label>
+                    <label htmlFor="name">Name</label>
                     <input
-                        id="username"
+                        id="name"
                         type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                     />
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="role">Role</label>
+                    <select
+                        id="role"
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                    >
+                        <option value="user">User</option>
+                        <option value="organization">Organization</option>
+                        <option value="admin">Admin</option>
+                    </select>
                 </div>
 
                 <div className="form-group">
@@ -93,15 +105,6 @@ export default function SignUpForm() {
                     />
                 </div>
 
-                <div className="form-group">
-                    <label htmlFor="confirmPassword">Confirm Password</label>
-                    <input
-                        id="confirmPassword"
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
-                </div>
 
                 <button onClick={handleSubmit}>Sign Up</button>
                 <button onClick={handleLogin}>Login Instead</button>
