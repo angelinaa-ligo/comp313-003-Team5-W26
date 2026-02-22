@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar';
 import '../../styles/petForm.css';
 
-export default function CreatePetForm() {
+export default function EditAnimalForm() {
     const navigate = useNavigate();
     const { animalId } = useParams();
 
@@ -26,7 +26,6 @@ export default function CreatePetForm() {
             const fetchPetData = async () => {
                 try {
                     // TODO: Replace with actual API endpoint
-                    // 
                     const response = await fetch(`/api/org/animals/${animalId}`);
                     if (response.ok) {
                         const animalData = await response.json();
@@ -52,16 +51,20 @@ export default function CreatePetForm() {
             if (animalId) {
                 fetchPetData();
             }
-        }, [animalId]);
+    }, [animalId]);
     
-        const handleInputChange = (e) => {
-            const { name, value } = e.target;
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
             setFormData(prev => ({
                 ...prev,
                 [name]: value
             }));
-        };
+    };
 
+    const handleCancel = () => {
+        navigate('/animal')
+    }
+        
     return (
         <div className="pet-page-wrapper">
             <div className='navbar'>
@@ -117,7 +120,7 @@ export default function CreatePetForm() {
 
                     <div className="form-group">
                         <label htmlFor="adoptionStatus">Adoption Status:</label>
-                        <select id="adoptionStatus" name="adoptionStatus" value={formData.adoptionStatus} onChange={handleInputChange} required >
+                        <select id="adoptionStatus" name="adoptionStatus" value={formData.adoptionStatus} onChange={handleInputChange} >
                             <option value="">Select Status</option>
                             <option value="available">Available</option>
                             <option value="pending">Pending</option>

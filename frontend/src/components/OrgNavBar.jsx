@@ -10,7 +10,7 @@ export default function OrgNavBar() {
 
     // Determine which nav item should be active based on the current path
     const isHome = path === '/home';
-    const isPets = path === '/pets';
+    const isPets = path === '/aninal';
     const isUser = path === '/user';
     const isAdoption = path === '/adopt-mangement';
     const isCampaign = path === '/campaign';
@@ -24,7 +24,7 @@ export default function OrgNavBar() {
 
             <button 
                 className={`nav-item ${isPets ? 'active' : ''}`} 
-                onClick={() => navigate('/pets')}>Pets Management 
+                onClick={() => navigate('/animal')}>Pets Management 
             </button>
                         
             <button 

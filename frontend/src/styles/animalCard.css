@@ -1,0 +1,162 @@
+/* Animal Card Container */
+.animal-card {
+    background-color: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%;
+    max-width: 400px;
+    text-align: left;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+/* Hover effect */
+.animal-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Header */
+.animal-card-header {
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+}
+
+.animal-name {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Status Badge Styles */
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-available {
+    background-color: #28a745;
+}
+
+.status-pending {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.status-adopted {
+    background-color: #6c757d;
+}
+
+/* Animal Info Section */
+.animal-info {
+    padding: 15px;
+    flex-grow: 1;
+}
+
+.animal-details {
+    margin-bottom: 15px;
+}
+
+.animal-details p {
+    margin: 8px 0;
+    color: #495057;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.animal-details strong {
+    color: #212529;
+    min-width: 80px;
+    display: inline-block;
+}
+
+/* Adoption Info Section */
+.adoption-info {
+    background-color: #e7f3ff;
+    padding: 10px;
+    border-radius: 8px;
+    border-left: 4px solid #007bff;
+}
+
+.adoption-info p {
+    margin: 5px 0;
+    color: #0c5460;
+    font-size: 13px;
+}
+
+/* Actions Section */
+.animal-actions {
+    padding: 15px;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    gap: 10px;
+}
+
+.animal-actions button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-edit {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-edit:hover:not(:disabled) {
+    background-color: #218838;
+    transform: translateY(-1px);
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-delete:hover:not(:disabled) {
+    background-color: #c82333;
+    transform: translateY(-1px);
+}
+
+.animal-actions button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .animal-card {
+        max-width: 100%;
+    }
+    
+    .animal-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .animal-actions {
+        flex-direction: column;
+    }
+}

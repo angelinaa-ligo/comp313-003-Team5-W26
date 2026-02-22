@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar';
 import '../../styles/petForm.css';
 
-export default function CreatePetForm() {
+export default function CreateAnimalForm() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
@@ -63,7 +63,7 @@ export default function CreatePetForm() {
     }
 
     const handleCancel = () => {
-        navigate('/') // REMINDER TO LINK HOME ANIMAL MANAGEMENT PAGE HERE PLEASE
+        navigate('/animal')
     }
 
     return (
@@ -117,6 +117,16 @@ export default function CreatePetForm() {
                     <div className="form-group">
                         <label htmlFor="age">Age:</label>
                         <input type="number" id="age" name="age" value={formData.age} onChange={handleInputChange} min="0" max="30" placeholder="Enter age in years" />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="adoptionStatus">Adoption Status:</label>
+                        <select id="adoptionStatus" name="adoptionStatus" value={formData.adoptionStatus} onChange={handleInputChange} >
+                            <option value="">Select Status</option>
+                            <option value="available">Available</option>
+                            <option value="pending">Pending</option>
+                            <option value="adopted">Adopted</option>
+                        </select> 
                     </div>
 
                 </form>

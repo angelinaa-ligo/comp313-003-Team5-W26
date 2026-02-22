@@ -13,6 +13,9 @@ import CreatePetForm from './pages/UserPetPages/CreatePetForm';
 import EditPetForm from './pages/UserPetPages/EditPetForm';
 import PetDetailPage from './pages/UserPetPages/PetDetailPage';
 import AdoptionMangementPage from './pages/OrganizationPages/AdoptionManagementPage';
+import CreateAnimalForm from './pages/OrganizationAnimalsPages/CreateAnimal';
+import EditAnimalForm from './pages/OrganizationAnimalsPages/EditAnimal';
+import AnimalPages from './pages/OrganizationAnimalsPages/AnimalPage';
 
 function App() {
   // simple router setup to manage navigation between pages
@@ -22,19 +25,29 @@ function App() {
       <div>        
         <BrowserRouter>
           <Routes>
+            {/* All Users Pages */}
+            <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignUpForm />} />
             <Route path="/adoption" element={<AdoptionPage />} />
+            <Route path="/home" element={<HomePage />} />
+
+            {/* Users Pages */}
             <Route path="/campaign" element={<CampaignPage />} />
             <Route path="/clinic" element={<HealthClinicsPage />} />
             <Route path="/pets" element={<PetPages />} />
             <Route path="/user" element={<UserPage />} />
-            <Route path="/home" element={<HomePage />} />
             <Route path="/create-pet" element={<CreatePetForm />} />
             <Route path="/edit-pet/:petId" element={<EditPetForm />} />
             <Route path="/pets/:petId" element={<PetDetailPage />} />
+
+            {/* Org Pages */}
+            <Route path="/animal" element={<AnimalPages />} />
+            <Route path="create-animal" element={<CreateAnimalForm />} />
+            <Route path="edit-animal/:animalId" element={<EditAnimalForm />} />
             <Route path="adopt-mangement" element={<AdoptionMangementPage />} />
-            <Route path="/" element={<Navigate to="/login" />} />
+
+            {/* Admin Pages */}
           </Routes>
         </BrowserRouter>
       </div>
@@ -43,4 +56,3 @@ function App() {
 }
 
 export default App
-//<Route path="/clinic" element={<ClinicPage />} />
