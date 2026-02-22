@@ -1,19 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import NavBar from '../components/NavBar';
-//import '../styles/editPetForm.css';
+import NavBar from '../../components/NavBar';
+//import '../styles/petForm.css';
 
-// side note about edit & create pet form
-// we can problay use the same form for both creating and editing pet profiles
-// just with some conditional rendering based on whether we're in create or edit mode.
-
-// however i'd put them as different files due to it's easier to manage 
-// and easier to look at tbh
-// we could combind them into one file, which may be more efficient, but it may be a bit more complex to read and maintain.
-
-export default function CreatePetForm() {
+export default function EditPetForm() {
     const navigate = useNavigate();
-    const {petId} = useParams();
+    const { petId } = useParams();
+    
     const [formData, setFormData] = useState({
         name: '',
         species: '',
@@ -21,9 +14,50 @@ export default function CreatePetForm() {
         sex: '',
         age: '',
     });
-
+    
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
+
+    // Fetch pet data when component mounts
+    useEffect(() => {
+        const fetchPetData = async () => {
+            try {
+                setError('');
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    setError('You must be logged in to edit a pet profile.');
+                    return;
+                }
+
+                const response = await fetch(`http://localhost:5000/api/pets/${petId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    setError(`Failed to fetch pet data: ${errorText}`);
+                    return;
+                }
+
+                const petData = await response.json();
+                setFormData({
+                    name: petData.name || '',
+                    species: petData.species || '',
+                    breed: petData.breed || '',
+                    sex: petData.sex || '',
+                    age: petData.age || ''
+                });
+            } catch (err) {
+                setError('Error fetching pet data');
+                console.error('Error fetching pet data:', err);
+            }
+        };
+        if (petId) {
+            fetchPetData();
+        }
+    }, [petId]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -39,18 +73,11 @@ export default function CreatePetForm() {
         setError('');
 
         try {
-            const token = localStorage.getItem('token');
-
-            if (!token) {
-                setError('You must be logged in to create a pet profile.');
-                setIsSubmitting(false);
-                return;
-            }
-            const response = await fetch('http://localhost:5000/api/pets', {
-                method: 'POST',
+            const response = await fetch(`http://localhost:5000/api/pets/${petId}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(formData)
             });
@@ -58,12 +85,11 @@ export default function CreatePetForm() {
             if (response.ok) {
                 navigate('/pets');
             } else {
-                const errorText = await response.text();
-                setError(`Failed to create pet profile: ${errorText}`);
+                setError('Failed to update pet');
             }
         } catch (err) {
-            setError(`An error occurred: ${err.message}`);
-            console.error('Error creating pet profile:', err);
+            setError('Error updating pet');
+            console.error('Error updating pet:', err);
         } finally {
             setIsSubmitting(false);
         }
@@ -78,10 +104,10 @@ export default function CreatePetForm() {
             <div className='navbar'>
                 <NavBar />
             </div>
-
+            
             <div className="edit-pet-form-container">
-                <h2>Create a New Pet</h2>
-
+                <h2>Edit Pet Information</h2>
+                
                 {error && (
                     <div className="error-message">
                         {error}
@@ -115,7 +141,7 @@ export default function CreatePetForm() {
                             onChange={handleInputChange}
                             required
                         >
-                            <option value="">Select sex</option>
+                            <option value="">Select pet sex</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                             <option value="unknown">Unknown</option>
@@ -133,11 +159,11 @@ export default function CreatePetForm() {
                     </div>
 
                     <div className="form-actions">
-                        <button type="button" onClick={handleCancel} className="cancel-btn">
+                        <button type="button" onClick={handleCancel} className="cancel-btn" >
                             Cancel
                         </button>
                         <button type="submit" disabled={isSubmitting} className="submit-btn" >
-                            {isSubmitting ? 'Creating...' : 'Create Pet'}
+                            {isSubmitting ? 'Updating...' : 'Update Pet'}
                         </button>
                     </div>
                 </form>

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import NavBar from '../components/NavBar';
+import NavBar from '../../components/NavBar';
 //import HomePetCard from '../components/HomePetCard';  we can add this back in later
-import '../styles/home.css';
-//import '../styles/components/home.css';
+import '../../styles/home.css';
+
 
 export default function HomePage() {
     const navigate = useNavigate();
