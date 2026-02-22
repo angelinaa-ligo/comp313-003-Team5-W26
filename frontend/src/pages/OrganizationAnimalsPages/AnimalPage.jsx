@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import OrgNavBar from '../components/OrgNavBar';
-import AnimalCard from '../components/AnimalCard';
+import OrgNavBar from '../../components/OrgNavBar';
+import AnimalCard from '../../components/AnimalCard';
 import '../../styles/animalPage.css';
 
 export default function AnimalPages() {
@@ -23,18 +23,6 @@ export default function AnimalPages() {
         },
         {
             id: 2,
-            name: 'Whiskers',
-            species: 'cat',
-            breed: 'Siamese',
-            sex: 'female',
-            age: 2,
-            adoptionStatus: 'pending',
-            adoptedBy: 'John Doe',
-            adoptionDate: '2024-01-15',
-            organization: 'Animal Shelter'
-        },
-        {
-            id: 3,
             name: 'Rex',
             species: 'dog',
             breed: 'German Shepherd',
@@ -43,18 +31,6 @@ export default function AnimalPages() {
             adoptionStatus: 'adopted',
             adoptedBy: 'Jane Smith',
             adoptionDate: '2023-12-10',
-            organization: 'Animal Shelter'
-        },
-        {
-            id: 4,
-            name: 'Fluffy',
-            species: 'cat',
-            breed: 'Persian',
-            sex: 'female',
-            age: 1,
-            adoptionStatus: 'available',
-            adoptedBy: null,
-            adoptionDate: null,
             organization: 'Animal Shelter'
         }
     ]);

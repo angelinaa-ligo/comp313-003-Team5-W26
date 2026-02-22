@@ -16,6 +16,12 @@ import AdoptionMangementPage from './pages/OrganizationPages/AdoptionManagementP
 import CreateAnimalForm from './pages/OrganizationAnimalsPages/CreateAnimal';
 import EditAnimalForm from './pages/OrganizationAnimalsPages/EditAnimal';
 import AnimalPages from './pages/OrganizationAnimalsPages/AnimalPage';
+import OrganizationPage from './pages/OrganizationPages/OrganizationPage';
+
+
+
+
+
 
 function App() {
   // simple router setup to manage navigation between pages
@@ -46,6 +52,7 @@ function App() {
             <Route path="create-animal" element={<CreateAnimalForm />} />
             <Route path="edit-animal/:animalId" element={<EditAnimalForm />} />
             <Route path="adopt-mangement" element={<AdoptionMangementPage />} />
+            <Route path="org-user" element={<OrganizationPage />} />
 
             {/* Admin Pages */}
           </Routes>

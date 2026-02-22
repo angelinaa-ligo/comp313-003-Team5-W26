@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/petCard.css';
 
+// This will need to get updated with the updated requirements
+
 export default function HomePetCard({ pet }) {
     const navigate = useNavigate();
     const [imageErrors, setImageErrors] = useState(new Set());
@@ -16,8 +18,6 @@ export default function HomePetCard({ pet }) {
             return updated;
         });
     };
-
-    // Will have to add more details here, but for now just reusing the home pet card and will add more info as needed
 
     return (
         <article className="home-pet-card">

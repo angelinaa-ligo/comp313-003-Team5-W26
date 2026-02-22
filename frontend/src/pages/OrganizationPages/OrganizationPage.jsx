@@ -5,7 +5,7 @@ import OrgNavBar from '../../components/OrgNavBar';
 // this is user page but for org
 // this is not the home page tho
 
-export default function UserPage() {
+export default function OrganizationPage() {
     const navigate = useNavigate();
 
     return (

@@ -10,8 +10,8 @@ export default function OrgNavBar() {
 
     // Determine which nav item should be active based on the current path
     const isHome = path === '/home';
-    const isPets = path === '/aninal';
-    const isUser = path === '/user';
+    const isAnimal = path === '/animal';
+    const isOrg = path === '/org-user';
     const isAdoption = path === '/adopt-mangement';
     const isCampaign = path === '/campaign';
     
@@ -23,23 +23,24 @@ export default function OrgNavBar() {
             </button>
 
             <button 
-                className={`nav-item ${isPets ? 'active' : ''}`} 
-                onClick={() => navigate('/animal')}>Pets Management 
+                className={`nav-item ${isAnimal ? 'active' : ''}`} 
+                onClick={() => navigate('/animal')}>Animal Management 
             </button>
                         
             <button 
                 className={`nav-item ${isAdoption ? 'active' : ''}`} 
-                onClick={() => navigate('/adoption')}>Adoption Mangement
+                onClick={() => navigate('/adopt-mangement')}>Adoption Mangement
             </button>
             
+            {/* Not Impelemented Below */}
             <button
                 className={`nav-item ${isCampaign ? 'active' : ''}`} 
-                onClick={() => navigate('/campaign')}>Campaigns
+                onClick={() => navigate('/campaign')}>Campaigns 
             </button>
 
             <button 
-                className={`nav-item ${isUser ? 'active' : ''}`} 
-                onClick={() => navigate('/user')}>Organization
+                className={`nav-item ${isOrg ? 'active' : ''}`} 
+                onClick={() => navigate('/org-user')}>Organization Profile
             </button>
         </nav>
     )

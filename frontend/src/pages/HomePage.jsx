@@ -50,6 +50,7 @@ export default function HomePage() {
     
     // depending on the role, render different layouts
     
+    // Organization Section
     if (role === 'organization') {
         return (
             <div className="home-page-wrapper">
@@ -85,6 +86,7 @@ export default function HomePage() {
         )
     }
     
+    // Admin Section
     if (role === 'admin') {
         return (
             <div className="home-page-wrapper">
@@ -111,7 +113,8 @@ export default function HomePage() {
         )
     }
 
-    // Default case: user role
+    // User Role && Default Section
+    // The default is temp for now and will get likely upon auth being implemented
     return (
         <div className="home-page-wrapper">
             <div className='navbar'>

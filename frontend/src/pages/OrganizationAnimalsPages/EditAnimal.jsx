@@ -80,6 +80,7 @@ export default function EditAnimalForm() {
                     </div>
                 )}
 
+                {/* Edit Animal Form Section */}
                 <form onSubmit={hadnleSubmit} className="edit-pet-form">
                     <div className="form-group">
                         <label htmlFor="name">Pet Name:</label>

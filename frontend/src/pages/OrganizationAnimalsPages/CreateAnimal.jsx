@@ -13,7 +13,7 @@ export default function CreateAnimalForm() {
         age: 0,
         adoptionStatus: 'available',
         adoptedBy: 'No One',
-        adoptionDate: Date, // idk how to do time now
+        adoptionDate: new Date().toLocaleDateString(),
         organization: "{ GET ORG NAME } ",
     })
 
@@ -81,6 +81,7 @@ export default function CreateAnimalForm() {
                     </div>
                 )}
 
+                {/* New Animal Form Section */}
                 <form onSubmit={handleSubmit} className="edit-pet-form">
                     <div className="form-group">
                         <label htmlFor="name">Pet Name:</label>
