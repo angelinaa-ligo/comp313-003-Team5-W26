@@ -38,7 +38,7 @@ export default function HomePetCard({ pet }) {
             <h2>{pet.name}</h2>
             <p>{pet.breed}</p>
             <p>Age: {pet.age}</p>
-            <p>{pet.description}</p>
+            <p>{pet.description}</p> {/* THIS IS ON A TICKING TIME BOMB OF DELETING */}
 
             <button onClick={() => navigate(`/pets/${pet.id}`)}>
                 View Details

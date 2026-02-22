@@ -48,16 +48,74 @@ export default function HomePage() {
         fetchPetData();
     }, []);
     
+    // depending on the role, render different layouts
+    
+    if (role === 'organization') {
+        return (
+            <div className="home-page-wrapper">
+                <div className='navbar'>
+                    <OrgNavBar />
+                </div>
+
+                <div className='home-content'>
+                    <div className="header">
+                        <h1>Hello Kind Soul</h1>
+                    </div>
+                    
+                    <div className="wrapper-pet-cards">
+                        <h2>Your Pets</h2>
+                        <div className="pet-cards">
+                        </div>
+                    </div>
+
+                    {/*
+                        Little Temp Area until we can auth the user 
+                        so we can determine their role type
+                        so we can instead do if (role) {} to do the html layout
+                        but here's a button that will switch to user view to other views 
+                        
+                        these will not have css and look bad
+                    */}
+
+                    <button onClick={handleSetAdmin}> Admin </button>
+                    <button onClick={handleSetOrg}> Organization </button>
+                    <button onClick={handleSetUser}> User </button>
+                </div>
+            </div>
+        )
+    }
+    
+    if (role === 'admin') {
+        return (
+            <div className="home-page-wrapper">
+                <div className='navbar'>
+                    <AdminNavBar />
+                </div>
+
+                <div className='home-content'>
+                    <div className="header">
+                        <h1>Hello Kind Soul</h1>
+                    </div>
+                    
+                    <div className="wrapper-pet-cards">
+                        <h2>Your Pets</h2>
+                        <div className="pet-cards">
+                        </div>
+                    </div>
+
+                    <button onClick={handleSetAdmin}> Admin </button>
+                    <button onClick={handleSetOrg}> Organization </button>
+                    <button onClick={handleSetUser}> User </button>
+                </div>
+            </div>
+        )
+    }
+
+    // Default case: user role
     return (
         <div className="home-page-wrapper">
             <div className='navbar'>
-                {role === 'organization' ? (
-                    <OrgNavBar />
-                ) : role === 'admin' ? (
-                    <AdminNavBar />
-                ) : (
-                    <NavBar />
-                )}
+                <NavBar />
             </div>
 
             <div className='home-content'>
@@ -70,15 +128,6 @@ export default function HomePage() {
                     <div className="pet-cards">
                     </div>
                 </div>
-
-                {/*
-                    Little Temp Area until we can auth the user 
-                    so we can determine their role type
-                    so we can instead do if (role) {} to do the html layout
-                    but here's a button that will switch to user view to other views 
-                    
-                    these will not have css and look bad
-                */}
 
                 <button onClick={handleSetAdmin}> Admin </button>
                 <button onClick={handleSetOrg}> Organization </button>

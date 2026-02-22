@@ -12,6 +12,7 @@ import PetPages from './pages/UserPetPages/PetPages';
 import CreatePetForm from './pages/UserPetPages/CreatePetForm';
 import EditPetForm from './pages/UserPetPages/EditPetForm';
 import PetDetailPage from './pages/UserPetPages/PetDetailPage';
+import AdoptionMangementPage from './pages/OrganizationPages/AdoptionManagementPage';
 
 function App() {
   // simple router setup to manage navigation between pages
@@ -32,6 +33,7 @@ function App() {
             <Route path="/create-pet" element={<CreatePetForm />} />
             <Route path="/edit-pet/:petId" element={<EditPetForm />} />
             <Route path="/pets/:petId" element={<PetDetailPage />} />
+            <Route path="adopt-mangement" element={<AdoptionMangementPage />} />
             <Route path="/" element={<Navigate to="/login" />} />
           </Routes>
         </BrowserRouter>

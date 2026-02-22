@@ -18,8 +18,7 @@ export default function CreatePetForm() {
         species: '',
         breed: '',
         sex: '',
-        age: '',
-        description: '',
+        age: 0,
     });
     
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,6 +32,7 @@ export default function CreatePetForm() {
         }));
     };
 
+    // Below not used but kept just incase if we add back media files
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
         setFormData(prev => ({
@@ -66,7 +66,6 @@ export default function CreatePetForm() {
                     breed: formData.breed,
                     sex: formData.sex,
                     age: formData.age,
-                    description: formData.description
                 })
             });
 
@@ -111,7 +110,7 @@ export default function CreatePetForm() {
                     <div className="form-group">
                         <label htmlFor="species">Species:</label>
                         <select id="species" name="species" value={formData.species} onChange={handleInputChange} required >
-                            <option value="">Select species</option>
+                            <option value="">Select Species</option>
                             <option value="dog">Dog</option>
                             <option value="cat">Cat</option>
                             <option value="rabbit">Rabbit</option>
@@ -128,7 +127,7 @@ export default function CreatePetForm() {
                     <div className="form-group">
                         <label htmlFor="sex">Sex:</label>
                         <select id="sex" name="sex" value={formData.sex} onChange={handleInputChange} required >
-                            <option value="">Select sex</option>
+                            <option value="">Select Sex</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                             <option value="unknown">Unknown</option>
@@ -139,12 +138,7 @@ export default function CreatePetForm() {
                         <label htmlFor="age">Age:</label>
                         <input type="number" id="age" name="age" value={formData.age} onChange={handleInputChange} min="0" max="30" placeholder="Enter age in years" />
                     </div>
-
-                    <div className="form-group">
-                        <label htmlFor="description">Description:</label>
-                        <textarea id="description"name="description" value={formData.description} onChange={handleInputChange} placeholder="Tell us about your pet..." rows="4" />
-                    </div>
-
+                
                     <div className="form-actions">
                         <button type="button" onClick={handleCancel} className="cancel-btn">
                             Cancel

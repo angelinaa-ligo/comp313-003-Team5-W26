@@ -1,129 +1,83 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar';
 import '../../styles/petForm.css';
 
-export default function EditPetForm() {
+export default function CreatePetForm() {
     const navigate = useNavigate();
-    const { petId } = useParams();
-    
+    const { animalId } = useParams();
+
     const [formData, setFormData] = useState({
         name: '',
-        species: '',
+        species:'',
         breed: '',
         sex: '',
-        age: '',
-    });
-    
+        age: 0,
+        adoptionStatus: '',
+        adoptedBy: '',
+        adoptionDate: '', // idk how to do time now
+        organization: '',
+    })
+
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
 
-    // Fetch pet data when component mounts
-    useEffect(() => {
-        const fetchPetData = async () => {
-            try {
-                // TODO: Replace with actual API endpoint
-                const response = await fetch(`/api/pets/${petId}`);
-                if (response.ok) {
-                    const petData = await response.json();
-                    setFormData({
-                        name: petData.name || '',
-                        species: petData.species || '',
-                        breed: petData.breed || '',
-                        sex: petData.sex || '',
-                        age: petData.age || '',
-                    });
-                } else {
-                    setError('Failed to load pet data');
+     useEffect(() => {
+            const fetchPetData = async () => {
+                try {
+                    // TODO: Replace with actual API endpoint
+                    // 
+                    const response = await fetch(`/api/org/animals/${animalId}`);
+                    if (response.ok) {
+                        const animalData = await response.json();
+                        setFormData({
+                            name: animalData.name || '',
+                            species: animalData.species || '',
+                            breed: animalData.breed || '',
+                            sex: animalData.sex || '',
+                            age: animalData.age || '',
+                            adoptionStatus: animalData.adoptionStatus || '',
+                            adoptedBy: animalData.adoptedBy || '',
+                            adoptionDate: animalData.adoptionDate || ''
+                        });
+                    } else {
+                        setError('Failed to load pet data');
+                    }
+                } catch (err) {
+                    setError('Error loading pet data');
+                    console.error('Error fetching pet data:', err);
                 }
-            } catch (err) {
-                setError('Error loading pet data');
-                console.error('Error fetching pet data:', err);
+            };
+    
+            if (animalId) {
+                fetchPetData();
             }
+        }, [animalId]);
+    
+        const handleInputChange = (e) => {
+            const { name, value } = e.target;
+            setFormData(prev => ({
+                ...prev,
+                [name]: value
+            }));
         };
-
-        if (petId) {
-            fetchPetData();
-        }
-    }, [petId]);
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
-
-    // Below not used but kept just incase if we add back media files
-    const handleFileChange = (e) => {
-        const files = Array.from(e.target.files);
-        setFormData(prev => ({
-            ...prev,
-            mediaFiles: [...prev.mediaFiles, ...files]
-        }));
-    };
-
-    const removeMediaFile = (index) => {
-        setFormData(prev => ({
-            ...prev,
-            mediaFiles: prev.mediaFiles.filter((_, i) => i !== index)
-        }));
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-        setError('');
-
-        try {
-            const response = await fetch(`/api/pets/${petId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: formData.name,
-                    species: formData.species,
-                    breed: formData.breed,
-                    sex: formData.sex,
-                    age: formData.age,
-                })
-            });
-
-            if (response.ok) {
-                navigate('/pets');
-            } else {
-                setError('Failed to update pet');
-            }
-        } catch (err) {
-            setError('Error updating pet');
-            console.error('Error updating pet:', err);
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
-    const handleCancel = () => {
-        navigate('/pets');
-    };
 
     return (
         <div className="pet-page-wrapper">
             <div className='navbar'>
                 <NavBar />
             </div>
-            
+
             <div className="edit-pet-form-container">
-                <h2>Edit Pet Information</h2>
-                
+                <h2>Edit Animal Information</h2>
+
                 {error && (
                     <div className="error-message">
                         {error}
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="edit-pet-form">
+                <form onSubmit={hadnleSubmit} className="edit-pet-form">
                     <div className="form-group">
                         <label htmlFor="name">Pet Name:</label>
                         <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} required placeholder="Enter pet's name" />
@@ -160,8 +114,23 @@ export default function EditPetForm() {
                         <label htmlFor="age">Age:</label>
                         <input type="number" id="age" name="age" value={formData.age} onChange={handleInputChange} min="0" max="30" placeholder="Enter age in years" />
                     </div>
-                  
-                    <div className="form-actions">
+
+                    <div className="form-group">
+                        <label htmlFor="adoptionStatus">Adoption Status:</label>
+                        <select id="adoptionStatus" name="adoptionStatus" value={formData.adoptionStatus} onChange={handleInputChange} required >
+                            <option value="">Select Status</option>
+                            <option value="available">Available</option>
+                            <option value="pending">Pending</option>
+                            <option value="adopted">Adopted</option>
+                        </select> 
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlfor="adoptedBy">Adopted By?</label>
+                        <input type="text" placeholder="Enter name...." />
+                    </div>
+
+                     <div className="form-actions">
                         <button type="button" onClick={handleCancel} className="cancel-btn" >
                             Cancel
                         </button>
@@ -172,5 +141,5 @@ export default function EditPetForm() {
                 </form>
             </div>
         </div>
-    );
+    )
 }

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import OrgNavBar from '../../components/OrgNavBar';
 
 // this is user page but for org
+// this is not the home page tho
 
 export default function UserPage() {
     const navigate = useNavigate();

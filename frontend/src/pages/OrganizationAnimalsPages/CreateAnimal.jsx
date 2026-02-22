@@ -1,51 +1,24 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar';
 import '../../styles/petForm.css';
 
-export default function EditPetForm() {
+export default function CreatePetForm() {
     const navigate = useNavigate();
-    const { petId } = useParams();
-    
     const [formData, setFormData] = useState({
         name: '',
-        species: '',
+        species:'',
         breed: '',
         sex: '',
-        age: '',
-    });
-    
+        age: 0,
+        adoptionStatus: 'available',
+        adoptedBy: 'No One',
+        adoptionDate: Date, // idk how to do time now
+        organization: "{ GET ORG NAME } ",
+    })
+
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
-
-    // Fetch pet data when component mounts
-    useEffect(() => {
-        const fetchPetData = async () => {
-            try {
-                // TODO: Replace with actual API endpoint
-                const response = await fetch(`/api/pets/${petId}`);
-                if (response.ok) {
-                    const petData = await response.json();
-                    setFormData({
-                        name: petData.name || '',
-                        species: petData.species || '',
-                        breed: petData.breed || '',
-                        sex: petData.sex || '',
-                        age: petData.age || '',
-                    });
-                } else {
-                    setError('Failed to load pet data');
-                }
-            } catch (err) {
-                setError('Error loading pet data');
-                console.error('Error fetching pet data:', err);
-            }
-        };
-
-        if (petId) {
-            fetchPetData();
-        }
-    }, [petId]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -55,30 +28,15 @@ export default function EditPetForm() {
         }));
     };
 
-    // Below not used but kept just incase if we add back media files
-    const handleFileChange = (e) => {
-        const files = Array.from(e.target.files);
-        setFormData(prev => ({
-            ...prev,
-            mediaFiles: [...prev.mediaFiles, ...files]
-        }));
-    };
-
-    const removeMediaFile = (index) => {
-        setFormData(prev => ({
-            ...prev,
-            mediaFiles: prev.mediaFiles.filter((_, i) => i !== index)
-        }));
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
         setError('');
 
         try {
-            const response = await fetch(`/api/pets/${petId}`, {
-                method: 'PUT',
+            // TODO: Replace with actual API endpoint
+            const response = await fetch('/api/pets', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -94,30 +52,30 @@ export default function EditPetForm() {
             if (response.ok) {
                 navigate('/pets');
             } else {
-                setError('Failed to update pet');
+                setError('Failed to create pet');
             }
         } catch (err) {
-            setError('Error updating pet');
-            console.error('Error updating pet:', err);
+            setError('Error creating pet');
+            console.error('Error creating pet:', err);
         } finally {
             setIsSubmitting(false);
         }
-    };
+    }
 
     const handleCancel = () => {
-        navigate('/pets');
-    };
+        navigate('/') // REMINDER TO LINK HOME ANIMAL MANAGEMENT PAGE HERE PLEASE
+    }
 
     return (
         <div className="pet-page-wrapper">
             <div className='navbar'>
                 <NavBar />
             </div>
-            
+
             <div className="edit-pet-form-container">
-                <h2>Edit Pet Information</h2>
-                
-                {error && (
+                <h2>Add New Animal</h2>
+
+                 {error && (
                     <div className="error-message">
                         {error}
                     </div>
@@ -160,17 +118,10 @@ export default function EditPetForm() {
                         <label htmlFor="age">Age:</label>
                         <input type="number" id="age" name="age" value={formData.age} onChange={handleInputChange} min="0" max="30" placeholder="Enter age in years" />
                     </div>
-                  
-                    <div className="form-actions">
-                        <button type="button" onClick={handleCancel} className="cancel-btn" >
-                            Cancel
-                        </button>
-                        <button type="submit" disabled={isSubmitting} className="submit-btn" >
-                            {isSubmitting ? 'Updating...' : 'Update Pet'}
-                        </button>
-                    </div>
+
                 </form>
             </div>
+            
         </div>
-    );
+    )
 }

@@ -122,11 +122,6 @@ export default function PetDetailPage() {
                                 <span>{pet.age}</span>
                             </div>
                         </div>
-
-                        <div className="pet-description">
-                            <h3>About {pet.name}</h3>
-                            <p>{pet.description}</p>
-                        </div>
                     </div>
                 </div>
 

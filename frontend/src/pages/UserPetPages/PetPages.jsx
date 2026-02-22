@@ -21,7 +21,7 @@ export default function PetPages() {
             <div className="your-pets-section">
                 <h2>Your Pets</h2>
                 <div className="pet-card">
-                    <PetCardFullInfo pet={{ id: 1, name: "Buddy", breed: "Golden Retriever", age: 3, description: "A friendly and energetic dog.", mediaFiles: [{ url: "https://hips.hearstapps.com/clv.h-cdn.co/assets/16/18/gettyimages-586890581.jpg?crop=0.668xw:1.00xh;0.219xw,0" }] }} />
+                    <PetCardFullInfo pet={{ id: 1, name: "Buddy", breed: "Golden Retriever", age: 3, mediaFiles: [{ url: "https://hips.hearstapps.com/clv.h-cdn.co/assets/16/18/gettyimages-586890581.jpg?crop=0.668xw:1.00xh;0.219xw,0" }] }} />
                 </div>
             </div>
 
