@@ -1,27 +1,16 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './App.css'
-import LoginForm from './pages/AuthPages/LoginForm';
-import SignUpForm from './pages/AuthPages/SignupForm';
-import AdoptionPage from './pages/UserPages/AdoptionPage';
-import CampaignPage from './pages/UserPages/CampaignPage';
-import HealthClinicsPage from './pages/UserPages/HealthClinicsPage';
-import UserPage from './pages/UserPages/UserPage';
+import LoginForm from './pages/LoginForm';
+import SignUpForm from './pages/SignupForm';
+import AdoptionPage from './pages/AdoptionPage';
+import CampaignPage from './pages/CampaignPage';
+import HealthClinicsPage from './pages/HealthClinicsPage';
+import PetPages from './pages/PetPages';
+import UserPage from './pages/UserPage';
 import HomePage from './pages/HomePage';
-import PetPages from './pages/UserPetPages/PetPages';
-import CreatePetForm from './pages/UserPetPages/CreatePetForm';
-import EditPetForm from './pages/UserPetPages/EditPetForm';
-import PetDetailPage from './pages/UserPetPages/PetDetailPage';
-import AdoptionMangementPage from './pages/OrganizationPages/AdoptionManagementPage';
-import CreateAnimalForm from './pages/OrganizationAnimalsPages/CreateAnimal';
-import EditAnimalForm from './pages/OrganizationAnimalsPages/EditAnimal';
-import AnimalPages from './pages/OrganizationAnimalsPages/AnimalPage';
-import OrganizationPage from './pages/OrganizationPages/OrganizationPage';
-
-
-
-
-
+import CreatePetForm from './pages/CreatePetForm';
+import EditPetForm from './pages/EditPetForm';
 import PrivateRoute from "./components/PrivateRoute";
 function App() {
   // simple router setup to manage navigation between pages
@@ -96,3 +85,4 @@ function App() {
 }
 
 export default App
+//<Route path="/clinic" element={<ClinicPage />} />
