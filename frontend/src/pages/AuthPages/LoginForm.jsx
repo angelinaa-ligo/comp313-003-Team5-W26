@@ -1,9 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; // 👈 ADICIONADO useEffect
 import { useNavigate } from 'react-router-dom';
 import '../../styles/login.css';
 
 export default function LoginForm() {
     const navigate = useNavigate();
+
+    // ✅ AUTO LOGIN — ADICIONADO
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        const role = localStorage.getItem("role");
+
+        if (token) {
+            if (role === "organization") {
+                navigate("/organization/dashboard");
+            } else {
+                navigate("/home");
+            }
+        }
+    }, [navigate]);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -36,16 +50,18 @@ export default function LoginForm() {
                 return;
             }
 
-            
-           localStorage.setItem('token', data.token);
-           localStorage.setItem("role", data.role);
-           localStorage.setItem('userInfo', JSON.stringify(data));
-           alert('Login successful!');
-           if (data.role === "organization") {
-            navigate("/organization-home");
-        } else {
-            navigate("/home");
-        }
+            localStorage.setItem('token', data.token);
+            localStorage.setItem("role", data.role);
+            localStorage.setItem('userInfo', JSON.stringify(data));
+
+            alert('Login successful!');
+
+            if (data.role === "organization") {
+                navigate("/organization/dashboard");
+            } else {
+                navigate("/home");
+            }
+
         } catch (error) {
             console.error(error);
             alert('Server error');

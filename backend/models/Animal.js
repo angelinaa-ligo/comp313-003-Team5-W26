@@ -26,7 +26,7 @@ const animalSchema = new mongoose.Schema(
     // Adoption fields
     adoptionStatus: {
       type: String,
-      enum: ["available", "pending", "adopted"],
+      enum: ["available", "pending", "adopted","not_for_adoption",],
       default: "available"
     },
     adoptedBy: {

@@ -12,6 +12,14 @@ import HomePage from './pages/UserPages/HomePage';
 import CreatePetForm from './pages/UserPages/CreatePetForm';
 import EditPetForm from './pages/UserPages/EditPetForm';
 import PrivateRoute from "./components/PrivateRoute";
+import OrganizationDashboard from './pages/OrganizationPages/OrganizationDashboard';
+import OrganizationPets from './pages/OrganizationPages/OrganizationPets';
+import OrganizationEvents from './pages/OrganizationPages/OrganizationEvents';
+import OrganizationProfile from './pages/OrganizationPages/OrganizationProfile';
+import OrganizationSettings from './pages/OrganizationPages/OrganizationSettings';
+import CreateAnimal from "./pages/OrganizationPages/CreateAnimal";
+import OrganizationAdoption from "./pages/OrganizationPages/OrganizationAdoption";
+import EditAnimal from "./pages/OrganizationPages/EditAnimal";
 function App() {
   // simple router setup to manage navigation between pages
   // add more routes if you need to
@@ -31,19 +39,61 @@ function App() {
         <HomePage />
       </PrivateRoute>
     } />
-
+<Route path="/organization/pets/edit/:id" element={<EditAnimal />} />
     <Route path="/adoption" element={
       <PrivateRoute>
         <AdoptionPage />
       </PrivateRoute>
     } />
+<Route path="/organization/dashboard" element={
+  <PrivateRoute>
+    <OrganizationDashboard />
+  </PrivateRoute>
+} />
 
+<Route path="/organization/pets" element={
+  <PrivateRoute>
+    <OrganizationPets />
+  </PrivateRoute>
+} />
+<Route
+  path="/organization/adoption"
+  element={
+    <PrivateRoute>
+      <OrganizationAdoption />
+    </PrivateRoute>
+  }
+/>
+<Route path="/organization/events" element={
+  <PrivateRoute>
+    <OrganizationEvents />
+  </PrivateRoute>
+} />
+
+<Route path="/organization/profile" element={
+  <PrivateRoute>
+    <OrganizationProfile />
+  </PrivateRoute>
+} />
+<Route
+  path="/organization/animals/create"
+  element={<CreateAnimal />}
+/>
+<Route path="/organization/settings" element={
+  <PrivateRoute>
+    <OrganizationSettings />
+  </PrivateRoute>
+} />
     <Route path="/campaign" element={
       <PrivateRoute>
         <CampaignPage />
       </PrivateRoute>
     } />
-
+    <Route path="/organization/dashboard" element={
+  <PrivateRoute>
+    <OrganizationDashboard />
+  </PrivateRoute>
+} />
     <Route path="/clinic" element={
       <PrivateRoute>
         <HealthClinicsPage />
