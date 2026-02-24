@@ -1,43 +1,48 @@
 import express from "express";
 import {
   getOrganizationAnimals,
+  getAdoptionAnimals,
   createAnimal,
   updateAnimal,
-  getAnimalById,  
-    deleteAnimal,    
+  getAnimalById,
+  deleteAnimal,
 } from "../controllers/orgAnimalController.js";
 import { protectOrganization } from "../middleware/protectOrganization.js";
 
 const router = express.Router();
 
-// GET all animals for organization
+/* ========= PUBLIC ========= */
+router.get("/adoption", getAdoptionAnimals);
+
+/* ===== ORGANIZATION ===== */
 router.get(
   "/organization",
   protectOrganization,
   getOrganizationAnimals
 );
-router.delete(
-  "/:id",
+
+router.post(
+  "/",
   protectOrganization,
-  deleteAnimal
+  createAnimal
 );
+
 router.get(
   "/:id",
   protectOrganization,
   getAnimalById
 );
-// UPDATE animal
+
 router.put(
   "/:id",
   protectOrganization,
   updateAnimal
 );
 
-// CREATE animal
-router.post(
-  "/",
+router.delete(
+  "/:id",
   protectOrganization,
-  createAnimal
+  deleteAnimal
 );
 
 export default router;

@@ -1,22 +1,48 @@
 import Animal from "../models/Animal.js";
+import AdoptionRequest from "../models/AdoptionRequest.js";
 
 /**
  * GET all animals for logged organization
  */
+
+
 export const getOrganizationAnimals = async (req, res) => {
   try {
     const orgId = req.organization._id;
 
     const animals = await Animal.find({
       organization: orgId,
+      adoptionStatus: { $ne: "not_for_adoption" },
     });
 
-    return res.status(200).json(animals);
-  } catch (error) {
-    return res.status(500).json({
-      message: "Error fetching animals",
-      error: error.message,
+    const requests = await AdoptionRequest.find({
+      organization: orgId,
+      status: "pending",
+    }).populate("user", "name email");
+
+    // Map animalId -> request data
+    const requestMap = {};
+    requests.forEach((r) => {
+      requestMap[r.animal.toString()] = {
+        requestId: r._id,
+        userName: r.user.name,
+        userEmail: r.user.email,
+      };
     });
+
+    const enrichedAnimals = animals.map((animal) => ({
+      ...animal.toObject(),
+      adoptionRequestId:
+        requestMap[animal._id.toString()]?.requestId || null,
+      adopterName:
+        requestMap[animal._id.toString()]?.userName || null,
+      adopterEmail:
+        requestMap[animal._id.toString()]?.userEmail || null,
+    }));
+
+    res.json(enrichedAnimals);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 export const getAnimalById = async (req, res) => {
@@ -152,6 +178,25 @@ export const updateAnimal = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       message: "Error updating animal",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * GET all animals available for adoption (PUBLIC)
+ * Individual users
+ */
+export const getAdoptionAnimals = async (req, res) => {
+  try {
+    const animals = await Animal.find({
+      adoptionStatus: { $ne: "not_for_adoption" },
+    }).select("name species breed sex age adoptionStatus");
+
+    return res.status(200).json(animals);
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error fetching adoption animals",
       error: error.message,
     });
   }
