@@ -1,24 +1,9 @@
-import { useState, useEffect } from 'react'; // 👈 ADICIONADO useEffect
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/login.css';
 
 export default function LoginForm() {
     const navigate = useNavigate();
-
-    // ✅ AUTO LOGIN — ADICIONADO
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        const role = localStorage.getItem("role");
-
-        if (token) {
-            if (role === "organization") {
-                navigate("/organization/dashboard");
-            } else {
-                navigate("/home");
-            }
-        }
-    }, [navigate]);
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 

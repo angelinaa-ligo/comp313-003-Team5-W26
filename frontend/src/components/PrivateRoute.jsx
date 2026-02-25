@@ -1,9 +1,18 @@
-import { useContext } from "react";
-import { Navigate } from "react-router-dom";
-import AuthContext from "../context/AuthContext";
+import { createContext, useState } from "react";
 
-export default function PrivateRoute({ children }) {
-    const { user } = useContext(AuthContext);
+const AuthContext = createContext();
 
-    return user ? children : <Navigate to="/login" />;
-}
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(() => {
+        const storedUser = localStorage.getItem("userInfo");
+        return storedUser ? JSON.parse(storedUser) : null;
+    });
+
+    return (
+        <AuthContext.Provider value={{ user, setUser }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
+export default AuthContext;
