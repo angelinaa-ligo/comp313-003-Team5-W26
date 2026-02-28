@@ -1,15 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import NavBar from '../../components/NavBar';
-//import '../styles/editPetForm.css';
-
-// side note about edit & create pet form
-// we can problay use the same form for both creating and editing pet profiles
-// just with some conditional rendering based on whether we're in create or edit mode.
-
-// however i'd put them as different files due to it's easier to manage 
-// and easier to look at tbh
-// we could combind them into one file, which may be more efficient, but it may be a bit more complex to read and maintain.
+import '../styles/petForm.css';
 
 export default function CreatePetForm() {
     const navigate = useNavigate();

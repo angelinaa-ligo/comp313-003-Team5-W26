@@ -15,11 +15,14 @@ import PrivateRoute from "./components/PrivateRoute";
 import OrganizationDashboard from './pages/OrganizationPages/OrganizationDashboard';
 import OrganizationPets from './pages/OrganizationPages/OrganizationPets';
 import OrganizationEvents from './pages/OrganizationPages/OrganizationEvents';
+import CreateCampaign from './pages/OrganizationPages/CreateCampaign';
+import EditCampaign from './pages/OrganizationPages/EditCampaign';
 import OrganizationProfile from './pages/OrganizationPages/OrganizationProfile';
 import OrganizationSettings from './pages/OrganizationPages/OrganizationSettings';
 import CreateAnimal from "./pages/OrganizationPages/CreateAnimal";
 import OrganizationAdoption from "./pages/OrganizationPages/OrganizationAdoption";
 import EditAnimal from "./pages/OrganizationPages/EditAnimal";
+
 function App() {
   // simple router setup to manage navigation between pages
   // add more routes if you need to
@@ -67,6 +70,21 @@ function App() {
 <Route path="/organization/events" element={
   <PrivateRoute>
     <OrganizationEvents />
+  </PrivateRoute>
+} />
+
+{/* Ethan Attempting to make new Routing */}
+{/* If this starts breaking things remove this*/}
+
+<Route path="/organization/events/create" element={
+  <PrivateRoute>
+    <CreateCampaign />
+  </PrivateRoute>
+} />
+
+<Route path="/organization/events/edit/:id" element={
+  <PrivateRoute>
+    <EditCampaign />
   </PrivateRoute>
 } />
 
