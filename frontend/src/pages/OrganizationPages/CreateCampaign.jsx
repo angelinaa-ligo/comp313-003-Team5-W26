@@ -23,12 +23,13 @@ export default function CreateCampaign() {
     });
   };
 
+  // Commit changes to backend
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError('');
     
-    // TODO: INSERT BACKEND
+    // TODO: Insert backend to commit form to database
     try {
       navigate('/organization/events');
     } catch(error) {

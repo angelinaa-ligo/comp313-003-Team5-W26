@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OrgNavBar from "../../components/OrgNavBar";
 import CampaignCard from "../../components/CampaignCard"
+import "../../styles/organizationEvents.css";
 
 export default function OrganizationEvents() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function OrganizationEvents() {
     },
     {
       id: 2,
-      title: "Fundraising Gala",
+      title: "Fundraising for Pet Homes",
       description: "Raise funds for medical care",
       isActive: false,
       eventDate: "2025-11-01",
@@ -38,6 +39,10 @@ export default function OrganizationEvents() {
   const handleEdit = (campaign) => {
     navigate(`/organization/campaigns/edit/${campaign.id}`);
   };
+  
+  const handleCreate = () => {
+    navigate('/organization/campaigns/create');
+  }
 
   const handleDelete = async (campaign) => {
     if (!window.confirm("Delete this campaign?")) return;
@@ -68,6 +73,11 @@ export default function OrganizationEvents() {
             <h3>In-Active</h3>
             <div className="stats-number">{stats.inactive}</div>
           </div>
+        </div>
+        <div className='campaign-create-actions'>
+          <button className='campaign-create-btn' onClick={handleCreate} >
+            Create Event
+          </button>
         </div>
       </div>
 

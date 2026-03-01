@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles/campaignCard.css';
 
 export default function CampaignCard({ campaign, onEdit, onDelete }) {
     const getActiveText = (isActive) => {
@@ -16,7 +15,7 @@ export default function CampaignCard({ campaign, onEdit, onDelete }) {
     return (
         <article className='campaign-card'>
             <div className='campaign-card-header'>
-                <h3 className='campign-title'>{campaign.title}</h3>
+                <h3 className='campaign-title'>{campaign.title}</h3>
                 <div className={`status-${campaign.isActive}`}>
                     {getActiveText(campaign.isActive)}
                 </div>
@@ -24,10 +23,10 @@ export default function CampaignCard({ campaign, onEdit, onDelete }) {
 
             <div className="campaign-info">
                 <div className='campaign-detail'>
-                    <p><strong>Description:</strong>{campaign.description}</p>
-                    <p><strong>Event Date:</strong>{campaign.eventDate}</p>
-                    <p><strong>Location:</strong>{campaign.location}</p>
-                    <p><strong>Hosted:</strong>{campaign.organization}</p>
+                    <p><strong>Description:</strong> {campaign.description}</p>
+                    <p><strong>Event Date:</strong> {campaign.eventDate}</p>
+                    <p><strong>Location:</strong> {campaign.location}</p>
+                    <p><strong>Hosted:</strong> {campaign.organization}</p>
                 </div>
                 <div className="campaign-actions">
                     <button type="button" className="campaign-action edit" onClick={() => onEdit && onEdit(campaign)} >

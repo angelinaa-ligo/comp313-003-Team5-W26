@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import NavBar from '../../components/NavBar';
-import '../styles/petForm.css';
+import '../../styles/petForm.css';
 
 export default function CreatePetForm() {
     const navigate = useNavigate();

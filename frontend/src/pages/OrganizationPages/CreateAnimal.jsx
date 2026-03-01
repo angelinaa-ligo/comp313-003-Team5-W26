@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OrgNavBar from "../../components/OrgNavBar";
+import "../../styles/animalForm.css";
 
 export default function CreateAnimal() {
   const navigate = useNavigate();
