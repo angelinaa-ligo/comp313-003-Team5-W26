@@ -7,16 +7,6 @@ export default function EditCampaign() {
   const navigate = useNavigate();
   const { id } = useParams();
   
-  // Mock data 
-  const [campaign, setCampaign] = useState({
-    id: 1,
-    title: "Community Vaccination Drive",
-    description: "Free vaccination for pets in the community",
-    eventDate: "2026-03-15",
-    location: "Community Park",
-    company: "",
-  });
-  
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -27,19 +17,39 @@ export default function EditCampaign() {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  
+
   // Load campaign from Backend
   useEffect(() => {
-    // TODO: Fetch campaign data from backend using the id
-    setFormData({
-      title: campaign.title,
-      description: campaign.description,
-      eventDate: campaign.eventDate,
-      location: campaign.location,
-      company: campaign.company || "",
-    });
-  }, [id, campaign]);
-  
+    const fetchCampaign = async () => {
+      try {
+        const token = localStorage.getItem("token"); 
+        const res = await fetch(`http://localhost:5000/api/campaigns/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.message || "Failed to fetch campaign");
+        }
+
+        const data = await res.json();
+        setFormData({
+          title: data.title,
+          description: data.description,
+          eventDate: data.eventDate.slice(0, 10), // format yyyy-mm-dd
+          location: data.location
+        });
+      } catch (err) {
+        console.error(err);
+        setError(err.message);
+      }
+    };
+
+    fetchCampaign();
+  }, [id]);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -51,18 +61,34 @@ export default function EditCampaign() {
     e.preventDefault();
     setIsSubmitting(true);
     setError('');
-    
-    // TODO: Insert backend call for form
+
     try {
+      const token = localStorage.getItem("token"); // or "orgToken"
+      const res = await fetch(`http://localhost:5000/api/campaigns/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Failed to update campaign");
+      }
+
       navigate('/organization/events');
-    } catch(error) {
-      console.log(error);
-      setError('Failed to update campaign. Please try again.');
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
   const handleCancel = () => {
-    navigate('/organization/events')
+    navigate('/organization/events');
   }
   
   return (

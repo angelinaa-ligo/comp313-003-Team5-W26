@@ -25,18 +25,34 @@ export default function CreateCampaign() {
 
   // Commit changes to backend
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setError('');
-    
-    // TODO: Insert backend to commit form to database
-    try {
-      navigate('/organization/events');
-    } catch(error) {
-      console.log(error);
-      alert("Server Error?")
+  e.preventDefault();
+  setIsSubmitting(true);
+  setError("");
+  const token = localStorage.getItem("token");
+
+  try {
+    const response = await fetch("http://localhost:5000/api/campaigns", {
+      method: "POST",
+      headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message || "Failed to create campaign");
     }
+
+    navigate("/organization/events");
+  } catch (error) {
+    console.error(error);
+    setError(error.message || "Server Error");
+  } finally {
+    setIsSubmitting(false);
   }
+};
 
   const handleCancel = () => {
     navigate('/organization/events')

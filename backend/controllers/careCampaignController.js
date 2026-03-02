@@ -14,12 +14,23 @@ export const createCampaign = async (req, res) => {
   }
 };
 
+// GET /api/campaigns/:id
+export const getCampaignById = async (req, res) => {
+  try {
+    const campaign = await CareCampaign.findById(req.params.id).populate("organization", "name");
+    if (!campaign) return res.status(404).json({ message: "Campaign not found" });
+    res.json(campaign);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // ORG → list own events
 export const getOrganizationCampaigns = async (req, res) => {
   try {
     const campaigns = await CareCampaign.find({
       organization: req.organization._id,
-    });
+    }).populate("organization", "name"); 
 
     res.json(campaigns);
   } catch (error) {

@@ -20,6 +20,8 @@ import OrganizationSettings from './pages/OrganizationPages/OrganizationSettings
 import CreateAnimal from "./pages/OrganizationPages/CreateAnimal";
 import OrganizationAdoption from "./pages/OrganizationPages/OrganizationAdoption";
 import EditAnimal from "./pages/OrganizationPages/EditAnimal";
+import CreateCampaign from "./pages/OrganizationPages/CreateCampaign";
+import EditCampaign from './pages/OrganizationPages/EditCampaign';
 
 function App() {
   // simple router setup to manage navigation between pages
@@ -70,6 +72,23 @@ function App() {
     <OrganizationEvents />
   </PrivateRoute>
 } />
+
+<Route
+  path="/organization/campaigns/create"
+  element={
+    <PrivateRoute>
+      <CreateCampaign />
+    </PrivateRoute>
+  }
+/>
+<Route 
+  path="/organization/campaigns/edit/:id" 
+  element={
+    <PrivateRoute>
+      <EditCampaign />
+    </PrivateRoute>
+  } 
+/>
 
 <Route path="/organization/profile" element={
   <PrivateRoute>

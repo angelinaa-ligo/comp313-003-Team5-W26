@@ -26,7 +26,7 @@ export default function CampaignCard({ campaign, onEdit, onDelete }) {
                     <p><strong>Description:</strong> {campaign.description}</p>
                     <p><strong>Event Date:</strong> {campaign.eventDate}</p>
                     <p><strong>Location:</strong> {campaign.location}</p>
-                    <p><strong>Hosted:</strong> {campaign.organization}</p>
+                    <p><strong>Hosted:</strong> {campaign.organizationName}</p>
                 </div>
                 <div className="campaign-actions">
                     <button type="button" className="campaign-action edit" onClick={() => onEdit && onEdit(campaign)} >
