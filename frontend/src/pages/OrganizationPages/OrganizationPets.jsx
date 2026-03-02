@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OrgNavBar from "../../components/OrgNavBar";
+import "../../styles/organizationPets.css";
 
 export default function OrganizationPets() {
   const navigate = useNavigate();

@@ -20,6 +20,7 @@ import OrganizationSettings from './pages/OrganizationPages/OrganizationSettings
 import CreateAnimal from "./pages/OrganizationPages/CreateAnimal";
 import OrganizationAdoption from "./pages/OrganizationPages/OrganizationAdoption";
 import EditAnimal from "./pages/OrganizationPages/EditAnimal";
+
 function App() {
   // simple router setup to manage navigation between pages
   // add more routes if you need to

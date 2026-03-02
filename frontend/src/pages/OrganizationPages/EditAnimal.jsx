@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import OrgNavBar from "../../components/OrgNavBar";
+import "../../styles/animalForm.css";
 
 export default function EditAnimal() {
   const { id } = useParams();
