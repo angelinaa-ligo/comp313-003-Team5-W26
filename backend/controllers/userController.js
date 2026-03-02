@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import Admin from "../models/Admin.js";
 import Organization from "../models/Organization.js";
 
 const generateToken = (id, role) => {
@@ -50,14 +51,19 @@ export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // 1. tenta User
+    // user
     let account = await User.findOne({ email });
     let role = "user";
 
-    // 2. se não achou, tenta Organization
+    //Organization
     if (!account) {
       account = await Organization.findOne({ email });
       role = "organization";
+    }
+     //  Admin
+    if (!account) {
+      account = await Admin.findOne({ email });
+      if (account) role = "admin";
     }
 
     if (!account) {

@@ -41,11 +41,13 @@ export default function LoginForm() {
 
             alert('Login successful!');
 
-            if (data.role === "organization") {
-                navigate("/organization/dashboard");
-            } else {
-                navigate("/home");
-            }
+           if (data.role === "admin") {
+            navigate("/admin/dashboard");
+        } else if (data.role === "organization") {
+            navigate("/organization/dashboard");
+        } else {
+      navigate("/home");    
+        }
 
         } catch (error) {
             console.error(error);
