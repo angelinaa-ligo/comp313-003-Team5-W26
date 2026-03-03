@@ -117,39 +117,34 @@ export default function OrganizationEvents() {
       <div className="campaign-section">
         <h3>Active Campaigns ({activeCampaigns.length})</h3>
         <div className="campaign-cards">
-         {activeCampaigns.length > 0 ? (
-  activeCampaigns.map((campaign) => (
-    <div key={campaign._id} className="campaign-card">
-      <CampaignCard
-  campaign={{
-    ...campaign,
-    organizationName: campaign.organization?.name || "Unknown"
-  }}
-  onEdit={handleEdit}
-  onDelete={handleDelete}
-/>
-    </div>
-  ))
-) : (
-  <p className="no-campaigns">No active campaigns found</p>
-)}
-        </div>
-      </div>
-
-      <div className="campaign-section">
-        <h3>Inactive Campaigns ({inactiveCampaigns.length})</h3>
-        <div className="campaign-cards">
-          {inactiveCampaigns.length > 0 ? (
-            inactiveCampaigns.map((campaign) => (
-              <div key={campaign._id} className="campaign-card">
-                <CampaignCard campaign={campaign} onEdit={handleEdit} onDelete={handleDelete} />
-              </div>
-            ))
-          ) : (
-            <p className="no-campaigns">No inactive campaigns found</p>
+         {activeCampaigns.length > 0 ? ( 
+          activeCampaigns.map((campaign) => ( 
+            <div key={campaign._id} className="campaign-card">
+              <CampaignCard campaign={{ ...campaign, organizationName: campaign.organization?.name || "Unknown" }}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              />
+            </div>
+          ))
+        ) : (
+          <p className="no-campaigns">No active campaigns found</p>
           )}
-        </div>
       </div>
-    </div>
-  );
+        </div>
+          <div className="campaign-section">
+            <h3>Inactive Campaigns ({inactiveCampaigns.length})</h3>
+            <div className="campaign-cards">
+              {inactiveCampaigns.length > 0 ? (
+                inactiveCampaigns.map((campaign) => (
+                  <div key={campaign._id} className="campaign-card">
+                    <CampaignCard campaign={campaign} onEdit={handleEdit} onDelete={handleDelete} />
+                  </div>
+                ))
+              ) : (
+                <p className="no-campaigns">No inactive campaigns found</p>
+              )}
+            </div>
+          </div>
+        </div>
+      );
 }
