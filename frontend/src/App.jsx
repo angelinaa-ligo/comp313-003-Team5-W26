@@ -23,6 +23,8 @@ import EditAnimal from "./pages/OrganizationPages/EditAnimal";
 import CreateCampaign from "./pages/OrganizationPages/CreateCampaign";
 import EditCampaign from './pages/OrganizationPages/EditCampaign';
 import AdminDashboard from "./pages/AdminPages/AdminDashboard";
+import ManageAccounts from "./pages/AdminPages/ManageAccounts";
+import ModerateAdoptions from "./pages/AdminPages/ModerateAdoptions";
 
 function App() {
   // simple router setup to manage navigation between pages
@@ -124,6 +126,23 @@ function App() {
     </PrivateRoute>
   }
 />
+<Route
+  path="/admin/manage-accounts"
+  element={
+    <PrivateRoute role="admin">
+      <ManageAccounts />
+    </PrivateRoute>
+  }
+/>
+<Route
+  path="/admin/moderate-adoptions"
+  element={
+    <PrivateRoute role="admin">
+      <ModerateAdoptions />
+    </PrivateRoute>
+  }
+/>
+
     <Route path="/clinic" element={
       <PrivateRoute>
         <HealthClinicsPage />
