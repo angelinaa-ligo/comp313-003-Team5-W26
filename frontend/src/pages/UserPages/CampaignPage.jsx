@@ -8,9 +8,26 @@ export default function CampaignPage() {
     const [campaigns, setCampaigns] = useState([]);
     const activeCampaigns = campaigns.filter((c) => c.isActive === true);
 
-    useEffect(() => {
-        // TODO: Backend to load all the campaign cards from all companies
-    }, []);
+   useEffect(() => {
+  const fetchCampaigns = async () => {
+    try {
+      const res = await fetch(
+        "http://localhost:5000/api/campaigns/public"
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch campaigns");
+      }
+
+      const data = await res.json();
+      setCampaigns(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  fetchCampaigns();
+}, []);
 
     return (
         <div className="campaign-page-wrapper">

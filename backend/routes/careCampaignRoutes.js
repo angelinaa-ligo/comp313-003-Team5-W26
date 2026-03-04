@@ -10,6 +10,8 @@ import {
 import { protectOrganization } from "../middleware/protectOrganization.js";
 
 const router = express.Router();
+// PUBLIC route
+router.get("/campaigns/public", getPublicCampaigns);
 
 // ORG routes (protected)
 router.post("/campaigns", protectOrganization, createCampaign);
@@ -18,7 +20,5 @@ router.put("/campaigns/:id", protectOrganization, updateCampaign);
 router.delete("/campaigns/:id", protectOrganization, deleteCampaign);
 router.get("/campaigns/:id", protectOrganization, getCampaignById);
 
-// PUBLIC route
-router.get("/campaigns/public", getPublicCampaigns);
 
 export default router;
