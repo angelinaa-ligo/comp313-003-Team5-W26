@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import Admin from "../models/Admin.js";
 import Organization from "../models/Organization.js";
 
+
 const generateToken = (id, role) => {
   return jwt.sign({ id, role }, process.env.JWT_SECRET, {
     expiresIn: "30d"
@@ -12,8 +13,7 @@ const generateToken = (id, role) => {
 
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-
+    const { name, email, password, securityAnswer } = req.body;
     
     const userExists = await User.findOne({ email });
 
@@ -23,11 +23,13 @@ export const registerUser = async (req, res) => {
 
     
     const user = await User.create({
-      name,
-      email,
-      password,
-      role:"user"
-    });
+  name,
+  email,
+  password,
+  securityQuestion: "What is the name of your pet?",
+  securityAnswer: securityAnswer.toLowerCase(),
+  role: "user"
+});
 
     if (user) {
       res.status(201).json({
@@ -58,6 +60,36 @@ export const resetPassword = async (req, res) => {
     const newPassword = Math.random().toString(36).slice(-8);
 
     user.password = newPassword; 
+    await user.save();
+
+    res.json({
+      message: "Password reset successfully",
+      newPassword
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const forgotPassword = async (req, res) => {
+  try {
+
+    const { email, securityAnswer } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.securityAnswer !== securityAnswer.toLowerCase()) {
+      return res.status(401).json({ message: "Incorrect security answer" });
+    }
+
+    const newPassword = Math.random().toString(36).slice(-8);
+
+    user.password = newPassword;
     await user.save();
 
     res.json({
@@ -109,4 +141,7 @@ export const loginUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+
+
+  
 };

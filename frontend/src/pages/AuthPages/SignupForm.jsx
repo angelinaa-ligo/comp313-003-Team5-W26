@@ -1,72 +1,86 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/signup.css';
 
 export default function SignUpForm() {
+
     const navigate = useNavigate();
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [individual, business, admin] = [false, false, false];
+    const [securityAnswer, setSecurityAnswer] = useState('');
 
     const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    if (!username) return alert('Username cannot be empty');
-    if (!email) return alert('Email cannot be empty');
-    if (!password) return alert('Password cannot be empty');
-    if (password !== confirmPassword)
-        return alert('Passwords do not match');
+        e.preventDefault();
 
-    try {
-        const response = await fetch(
-            'http://localhost:5000/api/users/register',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: username,
-                    email,
-                    password,
-                }),
+        if (!username) return alert('Username cannot be empty');
+        if (!email) return alert('Email cannot be empty');
+        if (!password) return alert('Password cannot be empty');
+
+        if (password !== confirmPassword)
+            return alert('Passwords do not match');
+
+        try {
+
+            const response = await fetch(
+                'http://localhost:5000/api/users/register',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: username,
+                        email,
+                        password,
+                        securityQuestion: "What is the name of your pet?",
+                        securityAnswer
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(data.message || 'Signup failed');
+                return;
             }
-        );
 
-        const data = await response.json();
+            localStorage.setItem('userInfo', JSON.stringify(data));
 
-        if (!response.ok) {
-            alert(data.message || 'Signup failed');
-            return;
+            alert('Signup successful!');
+
+            navigate('/home');
+
+        } catch (error) {
+
+            console.error(error);
+            alert('Server error');
+
         }
 
-        // salvar usuário + token
-        localStorage.setItem('userInfo', JSON.stringify(data));
-
-        alert('Signup successful!');
-
-        navigate('/home');
-    } catch (error) {
-        console.error(error);
-        alert('Server error');
-    }
     };
+
     const handleLogin = () => {
-    navigate('/login');
-};
+        navigate('/login');
+    };
+
     return (
+
         <div>
+
             <div className="signUp-header">
                 <h1>Sign Up</h1>
             </div>
 
             <div className="signUp-form">
+
                 <div className="form-group">
-                    <label htmlFor="username">Username</label>
+                    <label>Username</label>
                     <input
-                        id="username"
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
@@ -74,9 +88,8 @@ export default function SignUpForm() {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="email">Email</label>
+                    <label>Email</label>
                     <input
-                        id="email"
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -84,9 +97,8 @@ export default function SignUpForm() {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="password">Password</label>
+                    <label>Password</label>
                     <input
-                        id="password"
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -94,18 +106,35 @@ export default function SignUpForm() {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="confirmPassword">Confirm Password</label>
+                    <label>Confirm Password</label>
                     <input
-                        id="confirmPassword"
                         type="password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                 </div>
 
+                <div className="form-group">
+                    <label>Security Question</label>
+                    <p>What is the name of your pet?</p>
+                </div>
+
+                <div className="form-group">
+                    <label>Answer</label>
+                    <input
+                        type="text"
+                        value={securityAnswer}
+                        onChange={(e) => setSecurityAnswer(e.target.value)}
+                    />
+                </div>
+
                 <button onClick={handleSubmit}>Sign Up</button>
+
                 <button onClick={handleLogin}>Login Instead</button>
+
             </div>
+
         </div>
-    )
+
+    );
 }
