@@ -13,7 +13,7 @@ const generateToken = (id, role) => {
 
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, securityAnswer } = req.body;
+    const { name, email, password, securityAnswer, role  } = req.body;
     
     const userExists = await User.findOne({ email });
 
@@ -23,21 +23,21 @@ export const registerUser = async (req, res) => {
 
     
     const user = await User.create({
-  name,
-  email,
-  password,
-  securityQuestion: "What is the name of your pet?",
-  securityAnswer: securityAnswer.toLowerCase(),
-  role: "user"
-});
+              name,
+              email,
+              password,
+              securityQuestion: "What is the name of your pet?",
+              securityAnswer: securityAnswer.toLowerCase(),
+              role: role === "organization" ? "pending" : "user"
+            });
 
     if (user) {
       res.status(201).json({
         _id: user._id,
         name: user.name,
         email: user.email,
-        role: "user",
-        token: generateToken(user._id, "user")
+        role: user.role,
+token: generateToken(user._id, user.role)
       });
     } else {
       res.status(400).json({ message: "Invalid user data" });
@@ -105,25 +105,36 @@ export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // user
     let account = await User.findOne({ email });
-    let role = "user";
+    let role;
 
-    //Organization
+    if (account) {
+      role = account.role;
+    }
+
     if (!account) {
       account = await Organization.findOne({ email });
-      role = "organization";
+      if (account) role = "organization";
     }
-     //  Admin
+
     if (!account) {
       account = await Admin.findOne({ email });
       if (account) role = "admin";
     }
-
+    
     if (!account) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
-
+     if (account.role === "pending") {
+      return res.status(403).json({
+        message: "Your organization request is waiting for admin approval."
+      });
+    }
+    if (account.status === "Deactivated") {
+  return res.status(403).json({
+    message: "Your account has been suspended. Please contact support."
+  });
+}
     const isMatch = await account.matchPassword(password);
 
     if (!isMatch) {
@@ -141,7 +152,4 @@ export const loginUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-
-
-  
 };

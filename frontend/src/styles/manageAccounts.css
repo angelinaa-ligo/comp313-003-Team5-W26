@@ -109,8 +109,49 @@
 .approve-btn:hover {
   background-color: #15803d;
 }
-
+.status-active {
+  color: #16a34a;
+  font-weight: 600;
+}
+.status-pending {
+  color: #c7d906;         
+  background-color: transparent; 
+  font-weight: 600;
+  display: inline-block;   
+}
+.status-deactivated {
+  color: #dc2626;
+  font-weight: 600;
+}
 .disabled-text {
   color: #94a3b8;
   font-style: italic;
+}
+.accounts-table td {
+  color: #1e293b;
+}.delete-btn {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 6px;
+}
+
+.delete-btn:hover {
+  background-color: #dc2626;
+}
+
+.role-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.role-btn:hover {
+  background-color: #1d4ed8;
 }

@@ -5,7 +5,7 @@ import '../../styles/signup.css';
 export default function SignUpForm() {
 
     const navigate = useNavigate();
-
+    const [accountType, setAccountType] = useState("user");
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -36,6 +36,7 @@ export default function SignUpForm() {
                         name: username,
                         email,
                         password,
+                        role: accountType,
                         securityQuestion: "What is the name of your pet?",
                         securityAnswer
                     }),
@@ -48,7 +49,14 @@ export default function SignUpForm() {
                 alert(data.message || 'Signup failed');
                 return;
             }
+            if (data.role === "pending") {
 
+            alert("Organization account created. Waiting for admin approval.");
+
+            navigate('/login');
+            return;
+
+            }
             localStorage.setItem('userInfo', JSON.stringify(data));
 
             alert('Signup successful!');
@@ -113,7 +121,31 @@ export default function SignUpForm() {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                 </div>
+                <div className="form-group">
+  <label>Account Type</label>
 
+  <div className="account-type-options">
+    <label>
+      <input
+        type="radio"
+        value="user"
+        checked={accountType === "user"}
+        onChange={(e) => setAccountType(e.target.value)}
+      />
+      User
+    </label>
+
+    <label style={{ marginLeft: "15px" }}>
+      <input
+        type="radio"
+        value="organization"
+        checked={accountType === "organization"}
+        onChange={(e) => setAccountType(e.target.value)}
+      />
+      Organization
+    </label>
+  </div>
+</div>
                 <div className="form-group">
                     <label>Security Question</label>
                     <p>What is the name of your pet?</p>
