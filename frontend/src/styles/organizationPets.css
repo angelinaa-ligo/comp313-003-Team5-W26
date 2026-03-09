@@ -1,0 +1,156 @@
+/* Organization Pets Page Styles */
+
+.dashboard-container {
+  min-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.dashboard-container h1 {
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Create Pet Button */
+.dashboard-container button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+  display: inline-block;
+}
+
+.dashboard-container button:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+/* Animal Cards Grid */
+.dashboard-container > div {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+/* Individual Animal Card */
+.animal-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+}
+
+.animal-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: #dee2e6;
+}
+
+.animal-card h3 {
+  color: #34495e;
+  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.animal-card p {
+  color: #6c757d;
+  margin: 0 0 1.5rem 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Action Buttons */
+.animal-card button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-right: 8px;
+}
+
+.animal-card button:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px);
+}
+
+/* Delete Button Styling */
+.animal-card button[style*="red"] {
+  background-color: #dc3545;
+  margin-left: 0;
+}
+
+.animal-card button[style*="red"]:hover {
+  background-color: #c82333;
+}
+
+/* No Animals Message */
+.dashboard-container p {
+  text-align: center;
+  color: #6c757d;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+  
+  .dashboard-container h1 {
+    font-size: 2rem;
+  }
+  
+  .dashboard-container > div {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .animal-card {
+    padding: 1rem;
+  }
+  
+  .animal-card h3 {
+    font-size: 1.25rem;
+  }
+  
+  .animal-card p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Loading Animation */
+.animal-card {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

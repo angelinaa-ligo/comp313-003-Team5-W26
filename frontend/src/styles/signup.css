@@ -1,0 +1,92 @@
+/* Page container */
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #4e73df, #1cc88a);
+}
+
+/* Header */
+.signUp-header {
+    text-align: center;
+    margin-top: 60px;
+    color: white;
+}
+
+.signUp-header h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+/* Form container */
+.signUp-form {
+    background-color: white;
+    width: 400px;
+    margin: 30px auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Form groups */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border: 1px solid #4e73df;
+    box-shadow: 0 0 5px rgba(78, 115, 223, 0.4);
+}
+
+/* Buttons */
+.signUp-form button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.1s ease;
+}
+
+/* Primary button */
+.signUp-form button:first-of-type {
+    background-color: #4e73df;
+    color: white;
+}
+
+.signUp-form button:first-of-type:hover {
+    background-color: #2e59d9;
+}
+
+/* Secondary button */
+.signUp-form button:last-of-type {
+    background-color: #858796;
+    color: white;
+}
+
+.signUp-form button:last-of-type:hover {
+    background-color: #6c757d;
+}
+
+/* Button click effect */
+.signUp-form button:active {
+    transform: scale(0.98);
+}

@@ -1,0 +1,72 @@
+/* Card container */
+.home-pet-card {
+    background-color: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 260px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hover effect */
+.home-pet-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Image */
+.home-pet-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Placeholder if no image */
+.home-pet-placeholder {
+    width: 100%;
+    height: 200px;
+    background-color: #f2f2f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 14px;
+}
+
+/* Pet name */
+.home-pet-card h3 {
+    margin: 15px 0 5px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+/* Breed text */
+.home-pet-card p {
+    margin: 0 0 15px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+/* Button */
+.home-pet-card button {
+    margin: 0 15px 15px 15px;
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4e73df;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.1s ease;
+}
+
+.home-pet-card button:hover {
+    background-color: #2e59d9;
+}
+
+.home-pet-card button:active {
+    transform: scale(0.97);
+}

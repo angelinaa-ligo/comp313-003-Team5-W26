@@ -1,0 +1,55 @@
+.dashboard-container {
+  padding: 30px;
+}
+
+/* LIST CONTAINER */
+.adoption-list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* HEADER + ROW STYLE */
+.adoption-row {
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr 1fr 1fr 2fr;
+  align-items: center;
+
+  background: rgb(80, 78, 78);
+  padding: 15px 20px;
+  border-radius: 10px;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  font-size: 15px;
+}
+
+/* HEADER ROW */
+.adoption-header {
+  font-weight: bold;
+  background: #616162;
+}
+
+/* STATUS COLORS */
+.status {
+  padding: 5px 10px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  width: fit-content;
+}
+
+.status.available {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status.adopted {
+  background: #fee2e2;
+  color: #991b1b;
+}

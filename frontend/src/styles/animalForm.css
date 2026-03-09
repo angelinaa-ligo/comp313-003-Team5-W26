@@ -1,0 +1,195 @@
+/* Animal Form Styles (Create & Edit Animal) */
+
+.dashboard-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid #dee2e6;
+}
+
+.dashboard-container h1 {
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* Animal Form */
+.animal-form {
+  display: grid;
+  gap: 1.5rem;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e9ecef;
+}
+
+/* Form Inputs */
+.animal-form input,
+.animal-form select {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e1e5e9;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #fafafa;
+  font-family: inherit;
+  box-sizing: border-box;
+  color: black;
+}
+
+.animal-form input:focus,
+.animal-form select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
+  background-color: white;
+  transform: translateY(-1px);
+}
+
+.animal-form input::placeholder {
+  color: #9aa0a6;
+  font-style: italic;
+}
+
+/* Status Section */
+.animal-form div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.animal-form label {
+  font-weight: 700;
+  color: #495057;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+/* Submit Button */
+.animal-form button {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.25);
+  margin-top: 1rem;
+}
+
+.animal-form button:hover {
+  background: linear-gradient(135deg, #0056b3, #004085);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.35);
+}
+
+.animal-form button:active {
+  transform: translateY(0) scale(1);
+}
+
+/* Loading State */
+.dashboard-container p {
+  text-align: center;
+  color: #6c757d;
+  font-size: 1.1rem;
+  margin: 3rem 0;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .dashboard-container h1 {
+    font-size: 1.8rem;
+  }
+  
+  .animal-form {
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+  
+  .animal-form input,
+  .animal-form select {
+    padding: 0.875rem;
+    font-size: 1rem;
+  }
+  
+  .animal-form button {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Animation for form elements */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animal-form input,
+.animal-form select,
+.animal-form button {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+/* Focus ring enhancement */
+.animal-form input:focus,
+.animal-form select:focus {
+  border-width: 3px;
+}
+
+/* Success/Error state styling */
+.animal-form input:valid {
+  border-color: #28a745;
+}
+
+.animal-form input:invalid:not(:placeholder-shown) {
+  border-color: #dc3545;
+}
+
+/* Select arrow styling */
+.animal-form select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1.5em;
+  padding-right: 3rem;
+}
+
+/* Hover effects for inputs */
+.animal-form input:hover,
+.animal-form select:hover {
+  border-color: #b8c3cc;
+  background-color: #f8f9fa;
+}
+
+/* Form section spacing */
+.animal-form > div:last-child {
+  margin-top: 1rem;
+}
