@@ -1,29 +1,32 @@
 import express from "express";
-import {
-  deactivateUser,
-  deleteUser,
-  changeUserRole
-} from "../controllers/adminController.js";
-const router = express.Router();
-import { reactivateUser } from "../controllers/adminController.js";
 import * as adminController from "../controllers/adminController.js";
-import { approveOrganization } from "../controllers/adminController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import isAdmin from "../middleware/isAdmin.js";
 
+const router = express.Router();
 
 // ===============================
-// USER MANAGEMENT
+// USER / ORGANIZATION MANAGEMENT
 // ===============================
 
-// Get all users
-router.get("/users", protect, isAdmin, adminController.getAllUsers);
-router.put("/users/:id/reactivate", protect, isAdmin, reactivateUser);
-router.put("/users/:id/deactivate", protect, isAdmin, deactivateUser);
-router.put("/users/:id/approve-organization", protect, isAdmin, approveOrganization);
-router.delete("/users/:id", protect, isAdmin, deleteUser);
+// Get all accounts
+router.get("/users", protect, isAdmin, adminController.getAllAccounts);
 
-router.put("/users/:id/role", protect, isAdmin, changeUserRole);
+// Approve organization
+router.put("/users/:id/approve-organization", protect, isAdmin, adminController.approveOrganization);
+
+// Deactivate / Reactivate accounts
+router.put("/users/:id/deactivate", protect, isAdmin, adminController.deactivateAccount);
+router.put("/users/:id/reactivate", protect, isAdmin, adminController.reactivateAccount);
+
+// Promote user to admin
+router.put("/users/:id/promote", protect, isAdmin, adminController.promoteUserToAdmin);
+
+// Demote admin to user
+router.put("/users/:id/demote", protect, isAdmin, adminController.demoteAdminToUser);
+
+// Delete account
+router.delete("/users/:id", protect, isAdmin, adminController.deleteAccount);
 
 // ===============================
 // ADOPTION MODERATION
@@ -32,12 +35,11 @@ router.put("/users/:id/role", protect, isAdmin, changeUserRole);
 // Get pending adoption listings
 router.get("/adoptions/pending", protect, isAdmin, adminController.getPendingListings);
 
-// Approve listing
+// Approve adoption listing
 router.put("/adoptions/:id/approve", protect, isAdmin, adminController.approveListing);
 
-// Hide listing
+// Hide adoption listing
 router.put("/adoptions/:id/hide", protect, isAdmin, adminController.hideListing);
-
 
 // ===============================
 // CAMPAIGNS
@@ -51,6 +53,5 @@ router.put("/campaigns/:id", protect, isAdmin, adminController.updateCampaign);
 
 // Delete campaign
 router.delete("/campaigns/:id", protect, isAdmin, adminController.deleteCampaign);
-
 
 export default router;

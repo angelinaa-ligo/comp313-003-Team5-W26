@@ -136,7 +136,7 @@ const handleReactivate = async (id) => {
 
   try {
 
-    const res = await fetch(`http://localhost:5000/api/admin/users/${id}/role`, {
+    const res = await fetch(`http://localhost:5000/api/admin/users/${id}/promote`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -269,7 +269,6 @@ const handleReactivate = async (id) => {
       >
         <option value="user">User</option>
         <option value="admin">Admin</option>
-        <option value="organization">Organization</option>
       </select>
     ) : (
       <button

@@ -1,87 +1,184 @@
 import User from "../models/User.js";
+import Organization from "../models/Organization.js";
 import Pet from "../models/Pet.js";
 import Campaign from "../models/CareCampaign.js";
-
+import Admin from "../models/Admin.js"
 
 // ===============================
-// USER MANAGEMENT
+// USER & ORGANIZATION MANAGEMENT
 // ===============================
 
-// Get all users
-export const getAllUsers = async (req, res) => {
+// Get all accounts (users + organizations)
+export const getAllAccounts = async (req, res) => {
   try {
     const users = await User.find().select("-password");
+    const orgs = await Organization.find().select("-password");
+    const accounts = [...users, ...orgs];
 
-    res.status(200).json(users);
+    res.status(200).json(accounts);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching users", error });
+    res.status(500).json({ message: "Error fetching accounts", error });
   }
 };
 
 
-// Change user role
-export const changeUserRole = async (req, res) => {
+
+// ===============================
+// Change user to admin
+// ===============================
+
+
+
+export const promoteUserToAdmin = async (req, res) => {
   try {
-if (req.user.id === req.params.id) {
-  return res.status(400).json({
-    message: "You cannot change your own role."
-  });
-}
-    const { role } = req.body;
+    const { id } = req.params;
 
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { role: role },
-      { new: true }
-    );
-
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found"
-      });
+    // Prevent self-promotion
+    if (req.user._id.toString() === id) {
+      return res.status(400).json({ message: "You cannot promote yourself." });
     }
 
-    res.json({
-      message: "Role updated",
-      role: user.role
-    });
-
-  } catch (error) {
-
-    console.log("Change role error:", error);
-
-    res.status(500).json({
-      message: error.message
-    });
-
-  }
-};
-
-// Deactivate user
-export const deactivateUser = async (req, res) => {
-  try {
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { status: "Deactivated" },
-      { new: true }
-    );
+    // Find user in Users collection
+    const user = await User.findById(id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.json({
-      message: "User deactivated",
-      user
+    if (user.role === "admin") {
+      return res.status(400).json({ message: "User is already an admin." });
+    }
+
+    // Update role in Users collection
+    user.role = "admin";
+    await user.save();
+
+    // Create admin record in Admins collection
+    const newAdmin = await Admin.create({
+      email: user.email,
+      password: user.password, // already hashed
+      role: "admin",
     });
 
+    res.json({
+      message: "User promoted to admin successfully",
+      userRole: user.role,
+      adminId: newAdmin._id,
+    });
+
+  } catch (error) {
+    console.error("Promote user error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+export const demoteAdminToUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Prevent self-demotion
+    if (req.user._id.toString() === id) {
+      return res.status(400).json({ message: "You cannot demote yourself." });
+    }
+
+    // Find the user in Users collection
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.role !== "admin") {
+      return res.status(400).json({ message: "This user is not an admin." });
+    }
+
+    // Remove from Admins collection
+    const admin = await Admin.findOneAndDelete({ email: user.email });
+    if (!admin) {
+      return res.status(404).json({ message: "Admin record not found." });
+    }
+
+    // Update User role
+    user.role = "user";
+    await user.save();
+
+    res.json({
+      message: "Admin demoted to user successfully",
+      userRole: user.role,
+    });
+
+  } catch (error) {
+    console.error("Demote admin error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+// Deactivate account (user or org)
+export const deactivateAccount = async (req, res) => {
+  try {
+    let account = await User.findById(req.params.id) || await Organization.findById(req.params.id);
+    if (!account) return res.status(404).json({ message: "Account not found" });
+
+    account.status = "Deactivated";
+    await account.save();
+
+    res.json({ message: "Account deactivated", account });
   } catch (error) {
     console.log("Deactivate error:", error);
     res.status(500).json({ message: error.message });
   }
 };
 
+// Reactivate account (user or org)
+export const reactivateAccount = async (req, res) => {
+  try {
+    let account = await User.findById(req.params.id) || await Organization.findById(req.params.id);
+    if (!account) return res.status(404).json({ message: "Account not found" });
 
+    account.status = "Active";
+    await account.save();
+
+    res.json({ message: "Account reactivated", account });
+  } catch (error) {
+    console.log("Reactivate error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Approve organization
+export const approveOrganization = async (req, res) => {
+  try {
+    const org = await Organization.findById(req.params.id);
+    if (!org) return res.status(404).json({ message: "Organization not found" });
+    if (org.role !== "pending") return res.status(400).json({ message: "This account is not pending approval" });
+
+    org.role = "organization";
+    await org.save();
+
+    res.json({ message: "Organization approved successfully", org });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Delete account (user or org)
+export const deleteAccount = async (req, res) => {
+  try {
+    let account = await User.findById(req.params.id);
+    let type = "user";
+    if (!account) {
+      account = await Organization.findById(req.params.id);
+      type = "organization";
+    }
+    if (!account) return res.status(404).json({ message: "Account not found" });
+
+    await account.deleteOne();
+    res.json({ message: `${type.charAt(0).toUpperCase() + type.slice(1)} deleted successfully` });
+  } catch (error) {
+    console.log("Delete account error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
 
 // ===============================
 // ADOPTION MODERATION
@@ -90,115 +187,34 @@ export const deactivateUser = async (req, res) => {
 // Get pending adoption listings
 export const getPendingListings = async (req, res) => {
   try {
-
     const pets = await Pet.find({ status: "pending" });
-
     res.status(200).json(pets);
-
   } catch (error) {
     res.status(500).json({ message: "Error fetching listings", error });
-  }
-};
-export const reactivateUser = async (req, res) => {
-  try {
-
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { status: "Active" },
-      { new: true }
-    );
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.json({
-      message: "User reactivated",
-      user
-    });
-
-  } catch (error) {
-
-    console.log("Reactivate error:", error);
-
-    res.status(500).json({
-      message: error.message
-    });
-
-  }
-};
-
-export const approveOrganization = async (req, res) => {
-  try {
-
-    const user = await User.findById(req.params.id);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    if (user.role !== "pending") {
-      return res.status(400).json({
-        message: "This account is not pending organization approval"
-      });
-    }
-
-    user.role = "organization";
-    await user.save();
-
-    res.json({
-      message: "Organization approved successfully"
-    });
-
-  } catch (error) {
-    res.status(500).json({ message: error.message });
   }
 };
 
 // Approve adoption listing
 export const approveListing = async (req, res) => {
   try {
-
-    const pet = await Pet.findByIdAndUpdate(
-      req.params.id,
-      { status: "active" },
-      { new: true }
-    );
-
-    if (!pet) {
-      return res.status(404).json({ message: "Listing not found" });
-    }
-
+    const pet = await Pet.findByIdAndUpdate(req.params.id, { status: "active" }, { new: true });
+    if (!pet) return res.status(404).json({ message: "Listing not found" });
     res.status(200).json({ message: "Listing approved", pet });
-
   } catch (error) {
     res.status(500).json({ message: "Error approving listing", error });
   }
 };
 
-
 // Hide adoption listing
 export const hideListing = async (req, res) => {
   try {
-
-    const pet = await Pet.findByIdAndUpdate(
-      req.params.id,
-      { status: "hidden" },
-      { new: true }
-    );
-
-    if (!pet) {
-      return res.status(404).json({ message: "Listing not found" });
-    }
-
+    const pet = await Pet.findByIdAndUpdate(req.params.id, { status: "hidden" }, { new: true });
+    if (!pet) return res.status(404).json({ message: "Listing not found" });
     res.status(200).json({ message: "Listing hidden", pet });
-
   } catch (error) {
     res.status(500).json({ message: "Error hiding listing", error });
   }
 };
-
-
 
 // ===============================
 // CAMPAIGN MANAGEMENT
@@ -207,84 +223,31 @@ export const hideListing = async (req, res) => {
 // Create campaign
 export const createCampaign = async (req, res) => {
   try {
-
     const campaign = new Campaign(req.body);
-
     await campaign.save();
-
     res.status(201).json(campaign);
-
   } catch (error) {
     res.status(500).json({ message: "Error creating campaign", error });
   }
 };
 
-
 // Update campaign
 export const updateCampaign = async (req, res) => {
   try {
-
-    const campaign = await Campaign.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-
-    if (!campaign) {
-      return res.status(404).json({ message: "Campaign not found" });
-    }
-
+    const campaign = await Campaign.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!campaign) return res.status(404).json({ message: "Campaign not found" });
     res.status(200).json(campaign);
-
   } catch (error) {
     res.status(500).json({ message: "Error updating campaign", error });
   }
 };
 
-export const deleteUser = async (req, res) => {
-
-  try {
-
-    if (req.user._id.toString() === req.params.id) {
-      return res.status(400).json({
-        message: "You cannot delete your own admin account."
-      });
-    }
-
-    const user = await User.findById(req.params.id);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    await user.deleteOne();
-
-    res.json({ message: "User deleted successfully" });
-
-  } catch (error) {
-
-    console.log("Delete user error:", error);
-
-    res.status(500).json({
-      message: error.message
-    });
-
-  }
-
-};
-
 // Delete campaign
 export const deleteCampaign = async (req, res) => {
   try {
-
     const campaign = await Campaign.findByIdAndDelete(req.params.id);
-
-    if (!campaign) {
-      return res.status(404).json({ message: "Campaign not found" });
-    }
-
+    if (!campaign) return res.status(404).json({ message: "Campaign not found" });
     res.status(200).json({ message: "Campaign deleted" });
-
   } catch (error) {
     res.status(500).json({ message: "Error deleting campaign", error });
   }
