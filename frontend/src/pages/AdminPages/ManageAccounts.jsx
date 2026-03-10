@@ -136,26 +136,29 @@ const handleReactivate = async (id) => {
 
   try {
 
-    const res = await fetch(`http://localhost:5000/api/admin/users/${id}/promote`, {
+    let endpoint = "";
+
+    if (newRole === "admin") {
+      endpoint = `http://localhost:5000/api/admin/users/${id}/promote`;
+    } else if (newRole === "user") {
+      endpoint = `http://localhost:5000/api/admin/users/${id}/demote`;
+    }
+
+    const res = await fetch(endpoint, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        role: newRole
-      })
+      }
     });
 
     const data = await res.json();
 
-    
     if (!res.ok) {
       alert(data.message);
       return;
     }
 
-    // atualizar tabela
     setAccounts(accounts.map(acc =>
       acc._id === id ? { ...acc, role: newRole } : acc
     ));
@@ -167,9 +170,7 @@ const handleReactivate = async (id) => {
   } catch (err) {
     console.log(err);
   }
-
 };
-
 
   const filteredAccounts = accounts.filter(
     (acc) =>

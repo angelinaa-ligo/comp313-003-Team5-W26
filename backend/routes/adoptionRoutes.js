@@ -4,7 +4,7 @@ import {
   getOrganizationRequests,
   updateAdoptionRequestStatus,
 } from "../controllers/adoptionController.js";
-
+import { getAdminAdoptionHistory } from "../controllers/adoptionController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import { protectOrganization } from "../middleware/protectOrganization.js";
 
@@ -17,4 +17,6 @@ router.post("/", protect, createAdoptionRequest);
 router.get("/organization", protectOrganization, getOrganizationRequests);
 router.put("/:id", protectOrganization, updateAdoptionRequestStatus);
 
+
+router.get("/admin/history", getAdminAdoptionHistory);
 export default router;

@@ -20,37 +20,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-/* ===============================
-   CREATE ADMIN IF NOT EXISTS
-================================ */
-const createAdmin = async () => {
-  try {
 
-    const adminExists = await User.findOne({ email: "aadmin@admin.com" });
 
-    if (!adminExists) {
-
-      await User.create({
-        name: "Admin",
-        email: "aadmin@admin.com",
-        password:"123456",
-        securityQuestion: "admin",
-        securityAnswer: "admin",
-        role: "admin"
-      });
-
-      console.log("Default admin created");
-
-    } else {
-      console.log("Admin already exists");
-    }
-
-  } catch (error) {
-    console.log("Admin creation error:", error);
-  }
-};
-
-createAdmin();
 
 /* ===============================
    ROUTES

@@ -11,11 +11,19 @@ import Admin from "../models/Admin.js"
 // Get all accounts (users + organizations)
 export const getAllAccounts = async (req, res) => {
   try {
+
     const users = await User.find().select("-password");
+    const admins = await Admin.find().select("-password");
     const orgs = await Organization.find().select("-password");
-    const accounts = [...users, ...orgs];
+
+    const accounts = [
+      ...users,
+      ...admins,
+      ...orgs
+    ];
 
     res.status(200).json(accounts);
+
   } catch (error) {
     res.status(500).json({ message: "Error fetching accounts", error });
   }
@@ -33,41 +41,38 @@ export const promoteUserToAdmin = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Prevent self-promotion
     if (req.user._id.toString() === id) {
       return res.status(400).json({ message: "You cannot promote yourself." });
     }
 
-    // Find user in Users collection
     const user = await User.findById(id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if (user.role === "admin") {
-      return res.status(400).json({ message: "User is already an admin." });
-    }
-
-    // Update role in Users collection
-    user.role = "admin";
-    await user.save();
-
-    // Create admin record in Admins collection
+    // Create admin
     const newAdmin = await Admin.create({
+      _id: user._id, 
+      name: user.name,
       email: user.email,
-      password: user.password, // already hashed
-      role: "admin",
+      password: user.password,
+      securityQuestion: user.securityQuestion,
+      securityAnswer: user.securityAnswer,
+      status: user.status,
+      role: "admin"
     });
+
+    // Remove from Users
+    await User.findByIdAndDelete(id);
 
     res.json({
       message: "User promoted to admin successfully",
-      userRole: user.role,
-      adminId: newAdmin._id,
+      admin: newAdmin
     });
 
   } catch (error) {
-    console.error("Promote user error:", error);
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -78,38 +83,36 @@ export const demoteAdminToUser = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Prevent self-demotion
     if (req.user._id.toString() === id) {
       return res.status(400).json({ message: "You cannot demote yourself." });
     }
 
-    // Find the user in Users collection
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    const admin = await Admin.findById(id);
 
-    if (user.role !== "admin") {
-      return res.status(400).json({ message: "This user is not an admin." });
-    }
-
-    // Remove from Admins collection
-    const admin = await Admin.findOneAndDelete({ email: user.email });
     if (!admin) {
-      return res.status(404).json({ message: "Admin record not found." });
+      return res.status(404).json({ message: "Admin not found" });
     }
 
-    // Update User role
-    user.role = "user";
-    await user.save();
+    const newUser = await User.create({
+      _id: admin._id, 
+      name: admin.name,
+      email: admin.email,
+      password: admin.password,
+      securityQuestion: admin.securityQuestion,
+      securityAnswer: admin.securityAnswer,
+      status: admin.status,
+      role: "user"
+    });
+
+    await Admin.findByIdAndDelete(id);
 
     res.json({
       message: "Admin demoted to user successfully",
-      userRole: user.role,
+      user: newUser
     });
 
   } catch (error) {
-    console.error("Demote admin error:", error);
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 };

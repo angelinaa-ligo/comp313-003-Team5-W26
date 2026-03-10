@@ -136,8 +136,9 @@ export const forgotPassword = async (req, res) => {
     const { email, securityAnswer } = req.body;
 
     const account =
-      (await User.findOne({ email })) ||
-      (await Organization.findOne({ email }));
+  (await User.findOne({ email })) ||
+  (await Organization.findOne({ email })) ||
+  (await Admin.findOne({ email }));
 
     if (!account) {
       return res.status(404).json({ message: "Account not found" });
