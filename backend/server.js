@@ -7,6 +7,7 @@ import petRoutes from "./routes/petRoutes.js";
 import animalRoutes from "./routes/orgAnimal.js";
 import adoptionRoutes from "./routes/adoptionRoutes.js";
 import careCampaignRoutes from "./routes/careCampaignRoutes.js";
+import adminCampaignRoutes from "./routes/adminCampaignRoutes.js";
 dotenv.config();
 connectDB();
 
@@ -24,6 +25,7 @@ app.use("/api/pets", petRoutes);
 app.use("/api/animals", animalRoutes);
 app.use("/api/adoptions", adoptionRoutes);
 app.use("/api", careCampaignRoutes);
+app.use("/api", adminCampaignRoutes);
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
   console.log(`Server running on port ${PORT}`)

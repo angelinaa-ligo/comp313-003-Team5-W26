@@ -25,6 +25,7 @@ import EditCampaign from './pages/OrganizationPages/EditCampaign';
 import AdminDashboard from "./pages/AdminPages/AdminDashboard";
 import ManageAccounts from "./pages/AdminPages/ManageAccounts";
 import ModerateAdoptions from "./pages/AdminPages/ModerateAdoptions";
+import AdminCampaignPage from "./pages/AdminPages/AdminCampaignPage";
 
 function App() {
   // simple router setup to manage navigation between pages
@@ -139,6 +140,15 @@ function App() {
   element={
     <PrivateRoute role="admin">
       <ModerateAdoptions />
+    </PrivateRoute>
+  }
+/>
+
+<Route
+  path="/admin/campaigns"
+  element={
+    <PrivateRoute role="admin">
+      <AdminCampaignPage />
     </PrivateRoute>
   }
 />
