@@ -1,18 +1,18 @@
-import { createContext, useState } from "react";
+import { Navigate } from "react-router-dom";
+export default function PrivateRoute({ children, role }) {
 
-const AuthContext = createContext();
+    const token = localStorage.getItem("token");
+    const userRole = localStorage.getItem("role");
 
-export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(() => {
-        const storedUser = localStorage.getItem("userInfo");
-        return storedUser ? JSON.parse(storedUser) : null;
-    });
+    
+    if (!token) {
+        return <Navigate to="/login" replace />;
+    }
 
-    return (
-        <AuthContext.Provider value={{ user, setUser }}>
-            {children}
-        </AuthContext.Provider>
-    );
-};
+    
+    if (role && userRole !== role) {
+        return <Navigate to="/home" replace />;
+    }
 
-export default AuthContext;
+    return children;
+}

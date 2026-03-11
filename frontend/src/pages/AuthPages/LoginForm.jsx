@@ -1,10 +1,29 @@
-import { useState } from 'react';
+import { useState,useEffect  } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/login.css';
 
 export default function LoginForm() {
     const navigate = useNavigate();
+    useEffect(() => {
 
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+
+    if (token) {
+
+        if (role === "admin") {
+            navigate("/admin/dashboard");
+        }
+
+        else if (role === "organization") {
+            navigate("/organization/dashboard");
+        }
+
+        else {
+            navigate("/home");
+        }
+
+    }    }, []);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showReset, setShowReset] = useState(false);

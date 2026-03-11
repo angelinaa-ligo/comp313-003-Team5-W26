@@ -12,7 +12,19 @@
   margin-bottom: 25px;
   color: #64748b;
 }
+.approved {
+  color: green;
+  font-weight: bold;
+}
 
+.rejected {
+  color: red;
+  font-weight: bold;
+}
+
+.pending {
+  color: orange;
+}
 /* Table */
 .adoptions-table {
   width: 100%;

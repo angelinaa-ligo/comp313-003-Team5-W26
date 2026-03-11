@@ -1,95 +1,117 @@
+import { useEffect, useState } from "react";
 import AdminNavBar from "../../components/AdminNavBar";
 import "../../styles/ModerateAdoptions.css";
 
 export default function ModerateAdoptions() {
+
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+
+    const fetchAdoptions = async () => {
+
+      try {
+
+        const token = localStorage.getItem("token");
+
+        const response = await fetch(
+          "http://localhost:5000/api/adoptions/admin/history",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        setRequests(data);
+
+      } catch (error) {
+        console.error("Error fetching adoption history:", error);
+      }
+
+      setLoading(false);
+    };
+
+    fetchAdoptions();
+
+  }, []);
+
   return (
     <>
       <AdminNavBar />
 
       <div className="moderate-adoptions-container">
+
         <h1>Moderate Pet Adoptions</h1>
 
         <p className="page-info">
           Review adoption activity. View user accounts and flag users to notify the organization if needed.
         </p>
 
-        <table className="adoptions-table">
-          <thead>
-            <tr>
-              <th>Pet Name</th>
-              <th>User</th>
-              <th>Email</th>
-              <th>Organization</th>
-              <th>Status</th>
-              <th>User Account</th>
-              <th>Flag</th>
-            </tr>
-          </thead>
+        {loading ? (
 
-          <tbody>
-            <tr>
-              <td>Luna</td>
-              <td>Maria Silva</td>
-              <td>maria@email.com</td>
-              <td>Happy Paws Rescue</td>
-              <td className="pending">Pending</td>
-              <td>
-                <button className="view-btn">
-                  View Account
-                </button>
-              </td>
-              <td>
-                <button className="flag-btn" title="Flag user">
-                  🚩
-                </button>
-              </td>
-            </tr>
+          <p>Loading adoption history...</p>
 
-            <tr>
-              <td>Max</td>
-              <td>John Doe</td>
-              <td>john@email.com</td>
-              <td>Safe Tails Shelter</td>
-              <td className="approved">Adopted</td>
-              <td>
-                <button className="view-btn">
-                  View Account
-                </button>
-              </td>
-              <td>
-                <button className="flag-btn" title="Flag user">
-                  🚩
-                </button>
-              </td>
-            </tr>
+        ) : requests.length === 0 ? (
 
-            <tr>
-              <td>Bella</td>
-              <td>Ana Costa</td>
-              <td>ana@email.com</td>
-              <td>Pet Care Center</td>
-              <td className="pending">Pending</td>
-              <td>
-                <button className="view-btn">
-                  View Account
-                </button>
-              </td>
-              <td>
-                <button className="flag-btn" title="Flag user">
-                  🚩
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+          <p>No finalized adoption requests found.</p>
 
-        <div className="legend">
-          <p>
-            <span className="flag-icon">🚩</span>
-            Clicking the flag notifies the organization about a potentially suspicious user.
-          </p>
-        </div>
+        ) : (
+
+          <table className="adoptions-table">
+
+            <thead>
+              <tr>
+                <th>Pet Name</th>
+                <th>User</th>
+                <th>Email</th>
+                <th>Organization</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              {requests.map((request) => (
+
+                <tr key={request._id}>
+
+                  <td>{request.animal?.name}</td>
+
+                  <td>{request.user?.name}</td>
+
+                  <td>{request.user?.email}</td>
+
+                  <td>{request.organization?.name}</td>
+
+                  <td className={request.status}>
+                    {request.status}
+                  </td>
+                <td>
+  {new Date(request.createdAt).toLocaleDateString()}
+</td>
+                 
+
+                  
+
+                </tr>
+
+              ))}
+
+            </tbody>
+
+          </table>
+
+        )}
+
+        
+
       </div>
     </>
   );
 }
+
