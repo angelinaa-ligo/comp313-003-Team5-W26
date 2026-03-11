@@ -41,17 +41,6 @@ router.put("/adoptions/:id/approve", protect, isAdmin, adminController.approveLi
 // Hide adoption listing
 router.put("/adoptions/:id/hide", protect, isAdmin, adminController.hideListing);
 
-// ===============================
-// CAMPAIGNS
-// ===============================
 
-// Create campaign
-router.post("/campaigns", protect, isAdmin, adminController.createCampaign);
-
-// Update campaign
-router.put("/campaigns/:id", protect, isAdmin, adminController.updateCampaign);
-
-// Delete campaign
-router.delete("/campaigns/:id", protect, isAdmin, adminController.deleteCampaign);
 
 export default router;

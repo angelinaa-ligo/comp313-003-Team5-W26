@@ -21,6 +21,11 @@ const careCampaignSchema = new mongoose.Schema(
     organization: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Organization",
+      required: false,
+    },
+    createdByRole: {
+      type: String,
+      enum: ["organization", "admin"],
       required: true,
     },
     isActive: {

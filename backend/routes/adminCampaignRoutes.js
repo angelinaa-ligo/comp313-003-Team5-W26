@@ -1,19 +1,26 @@
 import express from "express";
 import {
-    createCampaign,
-    getAllCampaigns,
-    getCampaignById,
-    updateCampaign,
-    deleteCampaign
+  createCampaign,
+  getAllCampaigns,
+  getCampaignById,
+  updateCampaign,
+  deleteCampaign,
 } from "../controllers/adminCampaignController.js";
-import { protectAdmin } from "../middleware/protectAdmin.js";
+
+import { protect } from "../middleware/authMiddleware.js";
+import isAdmin from "../middleware/isAdmin.js";
 
 const router = express.Router();
 
-router.get("/admin/campaigns", protectAdmin, getAllCampaigns);
-router.post("/admin/campaigns", protectAdmin, createCampaign);
-router.get("/admin/campaigns/:id", protectAdmin, getCampaignById);
-router.put("/admin/campaigns/:id", protectAdmin, updateCampaign);
-router.delete("/admin/campaigns/:id", protectAdmin, deleteCampaign);
+router.use(protect, isAdmin);
+
+router.route("/admin/care-campaigns")
+  .post(createCampaign)
+  .get(getAllCampaigns);
+
+router.route("/admin/care-campaigns/:id")
+  .get(getCampaignById)
+  .put(updateCampaign)
+  .delete(deleteCampaign);
 
 export default router;
