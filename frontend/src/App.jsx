@@ -145,7 +145,7 @@ function App() {
 />
 
 <Route
-  path="/admin/campaigns"
+  path="/admin/care-campaigns"
   element={
     <PrivateRoute role="admin">
       <AdminCampaignPage />

@@ -219,39 +219,6 @@ export const hideListing = async (req, res) => {
   }
 };
 
-// ===============================
-// CAMPAIGN MANAGEMENT
-// ===============================
 
-// Create campaign
-export const createCampaign = async (req, res) => {
-  try {
-    const campaign = new Campaign(req.body);
-    await campaign.save();
-    res.status(201).json(campaign);
-  } catch (error) {
-    res.status(500).json({ message: "Error creating campaign", error });
-  }
-};
 
-// Update campaign
-export const updateCampaign = async (req, res) => {
-  try {
-    const campaign = await Campaign.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!campaign) return res.status(404).json({ message: "Campaign not found" });
-    res.status(200).json(campaign);
-  } catch (error) {
-    res.status(500).json({ message: "Error updating campaign", error });
-  }
-};
 
-// Delete campaign
-export const deleteCampaign = async (req, res) => {
-  try {
-    const campaign = await Campaign.findByIdAndDelete(req.params.id);
-    if (!campaign) return res.status(404).json({ message: "Campaign not found" });
-    res.status(200).json({ message: "Campaign deleted" });
-  } catch (error) {
-    res.status(500).json({ message: "Error deleting campaign", error });
-  }
-};

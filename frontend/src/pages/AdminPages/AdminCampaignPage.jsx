@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AdminCampaignCard from '../../components/AdminCampaignCard';
+import AdminNavBar from "../../components/AdminNavBar";
 
 export default function AdminCampaignPage() {
     const [campaigns, setCampaigns] = useState([]);
@@ -11,7 +12,7 @@ export default function AdminCampaignPage() {
     const token = localStorage.getItem('token');
 
     const fetchCampaigns = async () => {
-        const res = await fetch('http://localhost:5000/api/admin/campaigns', {
+        const res = await fetch('http://localhost:5000/api/admin/care-campaigns', {
             headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();
@@ -39,8 +40,8 @@ export default function AdminCampaignPage() {
 
         const method = editingId ? 'PUT' : 'POST';
         const url = editingId
-            ? `http://localhost:5000/api/admin/campaigns/${editingId}`
-            : 'http://localhost:5000/api/admin/campaigns';
+        ? `http://localhost:5000/api/admin/care-campaigns/${editingId}`
+        : 'http://localhost:5000/api/admin/care-campaigns';
 
         const res = await fetch(url, {
             method,
@@ -68,59 +69,94 @@ export default function AdminCampaignPage() {
         });
     };
 
-    const handleDelete = async (campaign) => {
-        await fetch(`http://localhost:5000/api/admin/campaigns/${campaign._id}`, {
-            method: 'DELETE',
-            headers: { Authorization: `Bearer ${token}` }
-        });
-        fetchCampaigns();
-    };
+   const handleDelete = async (campaign) => {
+  const confirmed = window.confirm(`Are you sure you want to delete the campaign "${campaign.title}"?`);
+  if (!confirmed) return;
+
+  try {
+    const res = await fetch(`http://localhost:5000/api/admin/care-campaigns/${campaign._id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (res.ok) {
+      fetchCampaigns(); 
+    } else {
+      const data = await res.json();
+      setError(data.message);
+    }
+  } catch (err) {
+    setError('Failed to delete campaign.');
+  }
+};
 
     return (
-        <div className='campaigns-page'>
-            <h2>Admin - Care Campaigns</h2>
+  <>
+    <AdminNavBar />
 
-            {error && <p className='error-message'>{error}</p>}
+    <div className="campaigns-page">
+      <h2>Admin - Care Campaigns</h2>
 
-            <div className='campaign-form'>
-                <h3>{editingId ? 'Edit Campaign' : 'Create Campaign'}</h3>
-                <input
-                    placeholder='Title'
-                    value={form.title}
-                    onChange={e => setForm({ ...form, title: e.target.value })}
-                />
-                {fieldErrors.title && <p className='field-error'>{fieldErrors.title}</p>}
+      {error && <p className="error-message">{error}</p>}
 
-                <textarea
-                    placeholder='Description'
-                    value={form.description}
-                    onChange={e => setForm({ ...form, description: e.target.value })}
-                />
-                {fieldErrors.description && <p className='field-error'>{fieldErrors.description}</p>}
+      <div className="campaign-form">
+        <h3>{editingId ? "Edit Campaign" : "Create Campaign"}</h3>
 
-                <input
-                    type='date'
-                    value={form.eventDate}
-                    onChange={e => setForm({ ...form, eventDate: e.target.value })}
-                />
-                {fieldErrors.eventDate && <p className='field-error'>{fieldErrors.eventDate}</p>}
+        <input
+          placeholder="Title"
+          value={form.title}
+          onChange={e => setForm({ ...form, title: e.target.value })}
+        />
+        {fieldErrors.title && <p className="field-error">{fieldErrors.title}</p>}
 
-                <input
-                    placeholder='Location'
-                    value={form.location}
-                    onChange={e => setForm({ ...form, location: e.target.value })}
-                />
-                {fieldErrors.location && <p className='field-error'>{fieldErrors.location}</p>}
+        <textarea
+          placeholder="Description"
+          value={form.description}
+          onChange={e => setForm({ ...form, description: e.target.value })}
+        />
+        {fieldErrors.description && <p className="field-error">{fieldErrors.description}</p>}
 
-                <button onClick={handleSubmit}>{editingId ? 'Update Campaign' : 'Create Campaign'}</button>
-                {editingId && <button onClick={() => { setEditingId(null); setForm({ title: '', description: '', eventDate: '', location: '' }); }}>Cancel</button>}
-            </div>
+        <input
+          type="date"
+          value={form.eventDate}
+          onChange={e => setForm({ ...form, eventDate: e.target.value })}
+        />
+        {fieldErrors.eventDate && <p className="field-error">{fieldErrors.eventDate}</p>}
 
-            <div className='campaigns-list'>
-                {campaigns.map(c => (
-                    <AdminCampaignCard key={c._id} campaign={c} onEdit={handleEdit} onDelete={handleDelete} />
-                ))}
-            </div>
-        </div>
-    );
+        <input
+          placeholder="Location"
+          value={form.location}
+          onChange={e => setForm({ ...form, location: e.target.value })}
+        />
+        {fieldErrors.location && <p className="field-error">{fieldErrors.location}</p>}
+
+        <button onClick={handleSubmit}>
+          {editingId ? "Update Campaign" : "Create Campaign"}
+        </button>
+
+        {editingId && (
+          <button
+            onClick={() => {
+              setEditingId(null);
+              setForm({ title: "", description: "", eventDate: "", location: "" });
+            }}
+          >
+            Cancel
+          </button>
+        )}
+      </div>
+
+      <div className="campaigns-list">
+        {campaigns.map(c => (
+          <AdminCampaignCard
+            key={c._id}
+            campaign={c}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
+    </div>
+  </>
+);
 }

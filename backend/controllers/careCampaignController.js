@@ -6,6 +6,7 @@ export const createCampaign = async (req, res) => {
     const campaign = await CareCampaign.create({
       ...req.body,
       organization: req.organization._id,
+      createdByRole: "organization",
     });
 
     res.status(201).json(campaign);
@@ -57,15 +58,28 @@ export const updateCampaign = async (req, res) => {
   try {
     const campaign = await CareCampaign.findById(req.params.id);
 
-    if (!campaign)
+    if (!campaign) {
       return res.status(404).json({ message: "Event not found" });
+    }
 
-    if (campaign.organization.toString() !== req.organization._id.toString())
+    if (campaign.createdByRole !== "organization") {
+      return res
+        .status(403)
+        .json({ message: "This campaign cannot be edited by organization" });
+    }
+
+    if (
+      !campaign.organization ||
+      campaign.organization.toString() !== req.organization._id.toString()
+    ) {
       return res.status(403).json({ message: "Not authorized" });
+    }
 
     Object.assign(campaign, req.body);
-    await campaign.save();
 
+    campaign.createdByRole = "organization";
+
+    await campaign.save();
     res.json(campaign);
   } catch (error) {
     res.status(500).json({ message: error.message });
