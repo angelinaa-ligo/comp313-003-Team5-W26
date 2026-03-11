@@ -10,7 +10,7 @@ export default function OrgNavBar() {
     localStorage.removeItem("role");
     localStorage.removeItem("userInfo");
 
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
   return (

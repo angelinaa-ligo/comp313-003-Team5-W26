@@ -8,7 +8,7 @@ export default function AdminNavBar() {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     localStorage.removeItem("userInfo");
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
   return (

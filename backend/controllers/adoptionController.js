@@ -38,7 +38,22 @@ export const createAdoptionRequest = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+export const getAdminAdoptionHistory = async (req, res) => {
+  try {
 
+    const requests = await AdoptionRequest.find({
+      status: { $in: ["approved", "rejected"] }
+    })
+      .populate("user", "name email")
+      .populate("organization", "name")
+      .populate("animal", "name");
+
+    res.json(requests);
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 /**
  * ORGANIZATION → get requests
  */

@@ -17,9 +17,9 @@ export default function NavBar() {
     const isCampaign = path === '/campaign';
 
     const handleLogout = () => {
-        logout();
-        navigate("/login");
-    };
+    logout();
+    navigate("/login", { replace: true });
+};
 
     return (
         <nav className="nav-bar">
