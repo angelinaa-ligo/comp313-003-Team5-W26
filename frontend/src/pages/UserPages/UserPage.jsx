@@ -12,6 +12,7 @@ export default function UserPage() {
 
   // Sample Form Data
   const [formData, setFormData] = useState({
+    username: "john",
     email: "john.doe@example.com",
     password: "",
     confirmPassword: ""
@@ -23,8 +24,13 @@ export default function UserPage() {
   })
 
   // Validating form information
+  // Also these give the error messages values
   const validateFormInfo = () => {
     const newErrors = {};
+
+    if (!formData.username.trim()) {
+      newErrors.username = "Username is required"
+    } 
 
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
@@ -82,7 +88,7 @@ export default function UserPage() {
       }));
     }
     
-    // Clear error when user starts typing
+    // Clear erros when typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -91,7 +97,6 @@ export default function UserPage() {
     }
   };
 
-  // Clear message
   const clearMessage = () => {
     setMessage("");
   };
@@ -122,7 +127,14 @@ export default function UserPage() {
               <p>Update your account information here</p>
             </div>
 
+            {/* Form Section */}
             <form onSubmit={handleSubmit} className="settings-form">
+              <div className="form-group">
+                <label htmlFor="username">Username</label>
+                <input type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} placeholder="Enter your username" />
+                {errors.username && <span className="error-text">{errors.username}</span>}
+              </div>
+
               <div className="form-group">
                 <label htmlFor="email">Email Address</label>
                 <input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="Enter your email address" />
@@ -143,14 +155,7 @@ export default function UserPage() {
 
               <div className="form-group">
                 <label htmlFor="securityQuestion">Security Question</label>
-                <input
-                  type="text"
-                  id="securityQuestion"
-                  name="securityQuestion"
-                  value="What is the name of your first pet?"
-                  readOnly
-                  className="security-question-display"
-                />
+                <input type="text" id="securityQuestion" name="securityQuestion" value="What is the name of your first pet?" readOnly className="security-question-display" />
               </div>
 
               <div className="form-group">
