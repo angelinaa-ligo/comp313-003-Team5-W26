@@ -98,35 +98,7 @@ export default function HomePage() {
                         ))}
                     </div>
                 </div>
-
             </div>
         </div>
     )
 }
-
-/*
-// dependling if we need to add other user interfaces
-// we can add them and make different 
- 
-// if (isIndividual) {}
-
-if (isBusiness) {
-    return (
-        <div className="home-page-wrapper">
-            <div className='navbar'>
-                <NavBar />
-            </div>
-        </div>
-    )
-}
- 
-if (isAdmin) {
-    return (
-        <div className="home-page-wrapper">
-            <div className='navbar'>
-                <NavBar />
-            </div>
-        </div>
-    )
-}
-*/

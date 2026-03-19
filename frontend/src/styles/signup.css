@@ -40,6 +40,10 @@ body {
     color: #333;
 }
 
+.form-group p {
+    color: #333;
+}
+
 .form-group input {
     padding: 10px;
     border-radius: 6px;
