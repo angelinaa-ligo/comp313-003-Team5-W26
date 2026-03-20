@@ -55,23 +55,87 @@ export default function UserPage() {
   }
 
   useEffect(() => {
-    // TODO: Backend, fetch user information
-    
-  }, []);
+  const fetchUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // TODO: Handle Update User Information
+      const res = await fetch("/api/users/profile", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    if (!validateFormInfo()) {
+      const data = await res.json();
+
+      // Pre-fill the form with real data from the database
+      setFormData(prev => ({
+        ...prev,
+        username: data.name,
+        email: data.email,
+      }));
+
+      // Also store the real security question and answer
+      setSecurityData(prev => ({
+        ...prev,
+        userAnswerPreviousSecurity: data.securityAnswer, // ← real answer from DB
+      }));
+
+    } catch (error) {
+      console.error("Failed to fetch user info:", error);
+    }
+  };
+
+  fetchUser();
+}, []);
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!validateFormInfo()) {
+    return;
+  }
+
+  setIsLoading(true);
+
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch("/api/users/profile", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        name: formData.username,
+        email: formData.email,
+        password: formData.password || undefined, // don't send empty string
+        securityAnswer: securityData.currentSecurityAnswer,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      // Backend sent back an error (e.g. wrong security answer)
+      setErrors({ general: data.message });
+      setIsSuccess(false);
+      setMessage(data.message);
       return;
     }
-    
-    // Success message
+
     setIsSuccess(true);
     setMessage("User information updated successfully!");
     setErrors({});
-  };
+
+  } catch (error) {
+    console.error("Update failed:", error);
+    setMessage("Something went wrong. Please try again.");
+    setIsSuccess(false);
+  } finally {
+    setIsLoading(false); // always runs, success or fail
+  }
+};
 
   // Handle input changes
   const handleInputChange = (e) => {

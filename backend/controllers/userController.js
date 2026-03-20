@@ -190,3 +190,43 @@ export const resetPassword = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+/* =========================
+   UPDATE PROFILE
+========================= */
+export const updateProfile = async (req, res) => {
+  try {
+    const account =
+      (await User.findById(req.user._id)) ||
+      (await Organization.findById(req.user._id));
+
+    if (!account) {
+      return res.status(404).json({ message: "Account not found" });
+    }
+
+    // Verify security answer before allowing any changes
+    const { securityAnswer, name, email, password } = req.body;
+
+    if (!securityAnswer || securityAnswer.toLowerCase() !== account.securityAnswer) {
+      return res.status(401).json({ message: "Your security answer does not match" });
+    }
+
+    // Only update fields that were actually sent
+    if (name) account.name = name;
+    if (email) account.email = email;
+    if (password) account.password = password; // the pre-save hook hashes this automatically
+
+    await account.save();
+
+    res.json({
+      _id: account._id,
+      name: account.name,
+      email: account.email,
+      role: account.role,
+    });
+
+  } catch (error) {
+    console.error("UPDATE PROFILE ERROR:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
