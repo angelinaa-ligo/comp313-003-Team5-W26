@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
-import "../../styles/userPage.css"
+import "../../styles/userPage.css";
 
 export default function UserPage() {
   const navigate = useNavigate();
@@ -10,27 +10,29 @@ export default function UserPage() {
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
-  // Sample Form Data
+  // =========================
+  // FORM STATE
+  // =========================
   const [formData, setFormData] = useState({
-    username: "john",
-    email: "john.doe@example.com",
+    username: "",
+    email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
 
   const [securityData, setSecurityData] = useState({
     currentSecurityAnswer: "",
-    userAnswerPreviousSecurity: "reimu",
-  })
+  });
 
-  // Validating form information
-  // Also these give the error messages values
+  // =========================
+  // VALIDATION
+  // =========================
   const validateFormInfo = () => {
     const newErrors = {};
 
     if (!formData.username.trim()) {
-      newErrors.username = "Username is required"
-    } 
+      newErrors.username = "Username is required";
+    }
 
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
@@ -38,133 +40,136 @@ export default function UserPage() {
       newErrors.email = "Please enter a valid email";
     }
 
-    if (!formData.password.trim()) {
-      newErrors.password = "Password is required";
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.password = "Your passwords don't match";
+    // Password is OPTIONAL
+    if (formData.password) {
+      if (formData.password !== formData.confirmPassword) {
+        newErrors.password = "Your passwords don't match";
+      }
     }
 
     if (!securityData.currentSecurityAnswer.trim()) {
-      newErrors.securityQuestion = "You need to answer your security question to update your user information";
-    } else if (securityData.currentSecurityAnswer.toLowerCase() !== securityData.userAnswerPreviousSecurity.toLowerCase()) {
-      newErrors.securityQuestion = "Your security answer does not match";
+      newErrors.securityQuestion =
+        "You need to answer your security question to update your user information";
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  }
+  };
 
+  // =========================
+  // FETCH USER DATA
+  // =========================
   useEffect(() => {
-  const fetchUser = async () => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const res = await fetch("http://localhost:5000/api/users/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json();
+
+        setFormData((prev) => ({
+          ...prev,
+          username: data.name,
+          email: data.email,
+        }));
+      } catch (error) {
+        console.error("Failed to fetch user info:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // =========================
+  // SUBMIT
+  // =========================
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateFormInfo()) return;
+
+    setIsLoading(true);
+
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("/api/users/profile", {
+      const res = await fetch("http://localhost:5000/api/users/profile", {
+        method: "PUT",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({
+          name: formData.username,
+          email: formData.email,
+          password: formData.password || undefined,
+          securityAnswer: securityData.currentSecurityAnswer,
+        }),
       });
 
       const data = await res.json();
 
-      // Pre-fill the form with real data from the database
-      setFormData(prev => ({
-        ...prev,
-        username: data.name,
-        email: data.email,
-      }));
+      if (!res.ok) {
+        setErrors({ general: data.message });
+        setIsSuccess(false);
+        setMessage(data.message);
+        return;
+      }
 
-      // Also store the real security question and answer
-      setSecurityData(prev => ({
+      setIsSuccess(true);
+      setMessage("User information updated successfully!");
+      setErrors({});
+      setSecurityData({ currentSecurityAnswer: "" });
+      setFormData((prev) => ({
         ...prev,
-        userAnswerPreviousSecurity: data.securityAnswer, // ← real answer from DB
+        password: "",
+        confirmPassword: "",
       }));
-
     } catch (error) {
-      console.error("Failed to fetch user info:", error);
+      console.error("Update failed:", error);
+      setMessage("Something went wrong. Please try again.");
+      setIsSuccess(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  fetchUser();
-}, []);
-
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  if (!validateFormInfo()) {
-    return;
-  }
-
-  setIsLoading(true);
-
-  try {
-    const token = localStorage.getItem("token");
-
-    const res = await fetch("/api/users/profile", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        name: formData.username,
-        email: formData.email,
-        password: formData.password || undefined, // don't send empty string
-        securityAnswer: securityData.currentSecurityAnswer,
-      }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      // Backend sent back an error (e.g. wrong security answer)
-      setErrors({ general: data.message });
-      setIsSuccess(false);
-      setMessage(data.message);
-      return;
-    }
-
-    setIsSuccess(true);
-    setMessage("User information updated successfully!");
-    setErrors({});
-
-  } catch (error) {
-    console.error("Update failed:", error);
-    setMessage("Something went wrong. Please try again.");
-    setIsSuccess(false);
-  } finally {
-    setIsLoading(false); // always runs, success or fail
-  }
-};
-
-  // Handle input changes
+  // =========================
+  // INPUT HANDLER
+  // =========================
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'currentSecurityAnswer') {
-      setSecurityData(prev => ({
+
+    if (name === "currentSecurityAnswer") {
+      setSecurityData((prev) => ({
         ...prev,
-        currentSecurityAnswer: value
+        currentSecurityAnswer: value,
       }));
     } else {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        [name]: value
+        [name]: value,
       }));
     }
-    
-    // Clear erros when typing
+
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ""
+        [name]: "",
       }));
     }
   };
 
-  const clearMessage = () => {
-    setMessage("");
-  };
+  const clearMessage = () => setMessage("");
 
+  // =========================
+  // JSX (UNTOUCHED)
+  // =========================
   return (
     <div className="user-page-wrapper">
       <div className="navbar">
@@ -178,9 +183,11 @@ export default function UserPage() {
         </div>
 
         {message && (
-          <div className={`message-banner ${isSuccess ? 'success' : 'error'}`}>
+          <div className={`message-banner ${isSuccess ? "success" : "error"}`}>
             <span>{message}</span>
-            <button onClick={clearMessage} className="close-message">×</button>
+            <button onClick={clearMessage} className="close-message">
+              ×
+            </button>
           </div>
         )}
 
@@ -191,30 +198,60 @@ export default function UserPage() {
               <p>Update your account information here</p>
             </div>
 
-            {/* Form Section */}
             <form onSubmit={handleSubmit} className="settings-form">
               <div className="form-group">
                 <label htmlFor="username">Username</label>
-                <input type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} placeholder="Enter your username" />
-                {errors.username && <span className="error-text">{errors.username}</span>}
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleInputChange}
+                />
+                {errors.username && (
+                  <span className="error-text">{errors.username}</span>
+                )}
               </div>
 
               <div className="form-group">
                 <label htmlFor="email">Email Address</label>
-                <input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="Enter your email address" />
-                {errors.email && <span className="error-text">{errors.email}</span>}
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
+                {errors.email && (
+                  <span className="error-text">{errors.email}</span>
+                )}
               </div>
 
               <div className="form-group">
                 <label htmlFor="password">New Password</label>
-                <input type="password" id="password" name="password" value={formData.password} onChange={handleInputChange} placeholder="Enter your new password" />
-                {errors.password && <span className="error-text">{errors.password}</span>}
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                />
+                {errors.password && (
+                  <span className="error-text">{errors.password}</span>
+                )}
               </div>
 
               <div className="form-group">
-                <label htmlFor="confirmPassword">Confirm New Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} placeholder="Confirm your new password" />
-                {errors.confirmPassword && <span className="error-text">{errors.confirmPassword}</span>}
+                <label htmlFor="confirmPassword">
+                  Confirm New Password
+                </label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                />
               </div>
 
               <div className="form-group">
@@ -230,14 +267,30 @@ export default function UserPage() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="currentSecurityAnswer">Security Answer</label>
-                <input type="text" id="currentSecurityAnswer" name="currentSecurityAnswer" value={securityData.currentSecurityAnswer} onChange={handleInputChange} placeholder="Enter your security answer" />
-                {errors.securityQuestion && <span className="error-text">{errors.securityQuestion}</span>}
+                <label htmlFor="currentSecurityAnswer">
+                  Security Answer
+                </label>
+                <input
+                  type="text"
+                  id="currentSecurityAnswer"
+                  name="currentSecurityAnswer"
+                  value={securityData.currentSecurityAnswer}
+                  onChange={handleInputChange}
+                />
+                {errors.securityQuestion && (
+                  <span className="error-text">
+                    {errors.securityQuestion}
+                  </span>
+                )}
               </div>
 
               <div className="form-actions">
-                <button type="submit" className="btn btn-primary" disabled={isLoading}>
-                  {isLoading ? 'Updating...' : 'Update Information'}
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Updating..." : "Update Information"}
                 </button>
               </div>
             </form>

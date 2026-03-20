@@ -10,6 +10,9 @@ import adoptionRoutes from "./routes/adoptionRoutes.js";
 import careCampaignRoutes from "./routes/careCampaignRoutes.js";
 import adminCampaignRoutes from "./routes/adminCampaignRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import organizationRoutes from "./routes/organizationRoutes.js";
+
+
 
 dotenv.config();
 connectDB();
@@ -35,6 +38,7 @@ app.use("/api/animals", animalRoutes);
 app.use("/api/adoptions", adoptionRoutes);
 app.use("/api", careCampaignRoutes);
 app.use("/api", adminCampaignRoutes);
+app.use("/api/organizations", organizationRoutes);
 
 /* ===============================
    SERVER

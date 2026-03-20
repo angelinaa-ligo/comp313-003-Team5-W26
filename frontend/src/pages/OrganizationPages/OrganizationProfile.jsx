@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import OrgNavBar from "../../components/OrgNavBar";
 import "../../styles/organizationProfile.css";
 
@@ -8,92 +8,101 @@ export default function OrganizationProfile() {
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
-  // Sample Form Data
+  // Form data
   const [formData, setFormData] = useState({
-    name: "Really Cool Org",
-    email: "sick@businessName.org",
-    address: "1500 ATK Main Deck Street, Extra Deck",
-    phone: "(416) 180-5212"
+    name: "",
+    email: "",
+    address: "",
+    phone: ""
   });
 
-  const [securityData, setSecurityData] = useState({
-    currentSecurityAnswer: "",
-    userAnswerPreviousSecurity: "exampleAnswer",
-  })
+  const [securityAnswer, setSecurityAnswer] = useState("");
 
   // Validating form information
   const validateFormInfo = () => {
     const newErrors = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = "Organization name is required";
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email";
-    }
-
-    if (!formData.address.trim()) {
-      newErrors.address = "Address is required";
-    }
-
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required";
-    }
-
-    if (!securityData.currentSecurityAnswer.trim()) {
-      newErrors.securityQuestion = "You need to answer your security question to update your organization information";
-    } else if (securityData.currentSecurityAnswer.toLowerCase() !== securityData.userAnswerPreviousSecurity.toLowerCase()) {
-      newErrors.securityQuestion = "Your security answer does not match";
-    }
+    if (!formData.name.trim()) newErrors.name = "Organization name is required";
+    if (!formData.email.trim()) newErrors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Please enter a valid email";
+    if (!formData.address.trim()) newErrors.address = "Address is required";
+    if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
+    if (!securityAnswer.trim()) newErrors.securityAnswer = "You need to answer your security question to update your organization information";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // TODO: Backend Update Org information
+  // Fetch profile on load
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch("http://localhost:5000/api/organizations/profile", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Failed to load profile");
 
-    if (!validateFormInfo()) {
-      return;
+        setFormData({
+          name: data.name || "",
+          email: data.email || "",
+          address: data.address || "",
+          phone: data.phone || ""
+        });
+      } catch (err) {
+        setIsSuccess(false);
+        setMessage(err.message);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  // Submit update
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateFormInfo()) return;
+
+    setIsLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("http://localhost:5000/api/organizations/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ ...formData, securityAnswer })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Update failed");
+
+      setIsSuccess(true);
+      setMessage(data.message || "Organization information updated successfully!");
+      setSecurityAnswer(""); // Limpa a resposta de segurança após sucesso
+    } catch (err) {
+      setIsSuccess(false);
+      setMessage(err.message);
+    } finally {
+      setIsLoading(false);
     }
-    
-    // Success message
-    setIsSuccess(true);
-    setMessage("Organization information updated successfully!");
-    setErrors({});
   };
 
   // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'currentSecurityAnswer') {
-      setSecurityData(prev => ({
-        ...prev,
-        currentSecurityAnswer: value
-      }));
+
+    if (name === "currentSecurityAnswer") {
+      setSecurityAnswer(value);
     } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
-      }));
+      setFormData(prev => ({ ...prev, [name]: value }));
     }
-    
-    // Clear erros when typing
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ""
-      }));
-    }
+
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: "" }));
   };
 
-  const clearMessage = () => {
-    setMessage("");
-  };
+  const clearMessage = () => setMessage("");
 
   return (
     <>
@@ -149,20 +158,13 @@ export default function OrganizationProfile() {
 
                 <div className="form-group">
                   <label htmlFor="securityQuestion">Security Question</label>
-                  <input
-                    type="text"
-                    id="securityQuestion"
-                    name="securityQuestion"
-                    value="What is your organization's founding year?"
-                    readOnly
-                    className="security-question-display"
-                  />
+                  <input type="text" id="securityQuestion" name="securityQuestion" value="What is the name of your pet?" readOnly className="security-question-display" />
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="currentSecurityAnswer">Security Answer</label>
-                  <input type="text" id="currentSecurityAnswer" name="currentSecurityAnswer" value={securityData.currentSecurityAnswer} onChange={handleInputChange} placeholder="Enter your security answer" />
-                  {errors.securityQuestion && <span className="error-text">{errors.securityQuestion}</span>}
+                  <input type="text" id="currentSecurityAnswer" name="currentSecurityAnswer" value={securityAnswer} onChange={handleInputChange} placeholder="Enter your security answer" />
+                  {errors.securityAnswer && <span className="error-text">{errors.securityAnswer}</span>}
                 </div>
 
                 <div className="form-actions">
