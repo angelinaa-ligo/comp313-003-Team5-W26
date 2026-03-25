@@ -1,59 +1,79 @@
-/* Wrapper */
-.user-page-wrapper {
-  font-family: Arial, sans-serif;
-  background-color: #f5f6fa;
+/* ========================================= */
+/* WRAPPER (IGUAL PROFILE / SETTINGS) */
+/* ========================================= */
+
+.user-page {
   min-height: 100vh;
-  min-width: 900px;
+  margin-top: 32px;
+  padding-top: 10px;
+  min-width: 1080px;
+  transition: all 0.3s ease;
+  border-radius: 10px;
 }
 
-/* Navbar */
-.navbar {
-  margin-bottom: 20px;
+/* LIGHT */
+.user-page.light {
+  background-color: #f8fafc;
+  color: #1e293b;
 }
 
-/* Content */
-.user-page-content {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
+/* DARK */
+.user-page.dark {
+  background-color: #0f172a;
+  color: #f1f5f9;
 }
 
-/* Header */
+/* ========================================= */
+/* CONTAINER CENTRAL */
+/* ========================================= */
+
+.user-container {
+  padding: 30px;
+  width: 800px;
+  margin: auto;
+  background: transparent;
+}
+
+/* ========================================= */
+/* HEADER */
+/* ========================================= */
+
 .user-page-header h1 {
   margin-bottom: 5px;
-  color: #3f3f3f;
 }
 
 .user-page-header p {
-  color: #666;
   margin-bottom: 20px;
+  opacity: 0.7;
 }
 
-/* Card */
+/* ========================================= */
+/* CARD (FORM) */
+/* ========================================= */
+
+.user-page.light .settings {
+  background: #ffffff;
+  color: #1e293b;
+}
+
+.user-page.dark .settings {
+  background: #1e293b;
+  color: #f1f5f9;
+}
+
 .settings {
-  background: #fff;
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease;
   text-align: left;
-  margin: 0 auto;
   max-width: 500px;
+  margin: auto;
 }
 
-.header h3 {
-  margin-bottom: 5px;
-  color: #3f3f3f;
-}
+/* ========================================= */
+/* FORM */
+/* ========================================= */
 
-.header p {
-  font-size: 14px;
-  color: #777;
-  margin-bottom: 15px;
-}
-
-/* Form */
 .settings-form {
   display: flex;
   flex-direction: column;
@@ -69,59 +89,83 @@
   display: block;
 }
 
+/* ========================================= */
+/* INPUTS */
+/* ========================================= */
+
 .form-group input {
   width: 100%;
   padding: 8px;
-  border: 1px solid #ccc;
   border-radius: 4px;
 }
 
+/* LIGHT */
+.user-page.light input {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  color: #000;
+}
+
+/* DARK */
+.user-page.dark input {
+  background-color: #334155;
+  border: 1px solid #475569;
+  color: #fff;
+}
+
+/* SECURITY */
 .security-question-display {
   background-color: #eee;
 }
 
-/* Error text */
-.error-text {
-  color: red;
-  font-size: 12px;
+.user-page.dark .security-question-display {
+  background-color: #475569;
 }
 
-/* Button */
-.form-actions {
-  margin-top: 10px;
-}
+/* ========================================= */
+/* BUTTONS */
+/* ========================================= */
 
-.btn {
-  padding: 10px;
+.user-container button {
+  margin-top: 20px;
+  padding: 10px 15px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
-.btn-primary {
-  background-color: #007bff;
-  color: #fff;
+/* LIGHT */
+.user-page.light button {
+  background-color: #e2e8f0;
+  color: black;
 }
 
-.btn-primary:hover {
-  background-color: #0056b3;
+/* DARK */
+.user-page.dark button {
+  background-color: #334155;
+  color: white;
 }
 
-/* Message banner */
+/* ========================================= */
+/* MESSAGE */
+/* ========================================= */
+
 .message-banner {
   padding: 10px;
-  border-radius: 4px;
+  border-radius: 6px;
   margin-bottom: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+/* SUCCESS */
 .message-banner.success {
   background-color: #d4edda;
   color: #155724;
 }
 
+/* ERROR */
 .message-banner.error {
   background-color: #f8d7da;
   color: #721c24;
@@ -132,4 +176,28 @@
   border: none;
   font-size: 16px;
   cursor: pointer;
+}
+
+/* ========================================= */
+/* TEXT */
+/* ========================================= */
+
+.user-page.light h1,
+.user-page.light h3,
+.user-page.light p,
+.user-page.light label {
+  color: #1e293b;
+}
+
+.user-page.dark h1,
+.user-page.dark h3,
+.user-page.dark p,
+.user-page.dark label {
+  color: #f1f5f9;
+}
+
+/* ERROR TEXT */
+.error-text {
+  color: red;
+  font-size: 12px;
 }

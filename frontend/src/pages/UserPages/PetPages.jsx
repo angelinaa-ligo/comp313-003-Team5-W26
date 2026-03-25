@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar';
 import '../../styles/petPage.css';
-
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 export default function PetPages() {
   const navigate = useNavigate();
-
+  const { theme } = useContext(ThemeContext);
   const [pets, setPets] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -80,12 +81,11 @@ export default function PetPages() {
 };
 
   // this doesn't support media files yet so i simplified it for now and we can incorporate media in the later iteration probably
-  return (
-    <div className="pet-page-wrapper">
-      <div className='navbar'>
-        <NavBar />
-      </div>
+ return (
+  <div className={`pet-page ${theme}`}>
+    <NavBar />
 
+    <div className="pet-container">
       <div className="your-pets-section">
         <h2>Your Pets</h2>
 
@@ -96,7 +96,7 @@ export default function PetPages() {
           <p>No pets found. Add your first pet!</p>
         )}
 
-        <div className="pet-card-container">
+        <div className="pet-grid">
           {pets.map(pet => (
             <div key={pet._id} className="pet-card">
               <h3>{pet.name}</h3>
@@ -105,13 +105,15 @@ export default function PetPages() {
               <p><strong>Breed:</strong> {pet.breed || 'N/A'}</p>
               <p><strong>Age:</strong> {pet.age ?? 'N/A'}</p>
 
-              <button onClick={() => navigate(`/edit-pet/${pet._id}`)}>
-                Edit
-              </button>
+              <div className="pet-actions">
+                <button onClick={() => navigate(`/edit-pet/${pet._id}`)}>
+                  Edit
+                </button>
 
-              <button onClick={() => handleDelete(pet._id)}>
-                Delete
-              </button>
+                <button onClick={() => handleDelete(pet._id)}style={{ backgroundColor: "red", color: "white", marginLeft: "10px" }}>
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -124,5 +126,6 @@ export default function PetPages() {
         </button>
       </div>
     </div>
-  );
+  </div>
+);
 }

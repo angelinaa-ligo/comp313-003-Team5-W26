@@ -2,10 +2,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
 import "../../styles/userPage.css";
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 
 export default function UserPage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const { theme } = useContext(ThemeContext);
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
@@ -171,14 +174,15 @@ export default function UserPage() {
   // JSX (UNTOUCHED)
   // =========================
   return (
-    <div className="user-page-wrapper">
+    <div className={`user-page ${theme}`}>
+    
       <div className="navbar">
         <NavBar />
       </div>
 
-      <div className="user-page-content">
+      <div className="user-container">
         <div className="user-page-header">
-          <h1>User Settings</h1>
+          <h1>User Profile</h1>
           <p>Manage your account information and security settings</p>
         </div>
 

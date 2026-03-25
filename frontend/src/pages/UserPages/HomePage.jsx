@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar';
 //import HomePetCard from '../components/HomePetCard';  we can add this back in later
 import '../../styles/home.css';
-
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 
 export default function HomePage() {
     const navigate = useNavigate();
+    const { theme } = useContext(ThemeContext);
     const [isIndividual, setIsIndividual] = useState(false);
     const [isBusiness, setIsBusiness] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
@@ -62,43 +64,44 @@ export default function HomePage() {
     }, [navigate]);
 
     return (
-        <div className="home-page-wrapper">
-            <div className='navbar'>
-                <NavBar />
+  <div className={`page-container ${theme}`}>
+    <div className="navbar">
+      <NavBar />
+    </div>
+
+    <div className="dashboard-container">
+      <h1>
+        Welcome {isIndividual ? "Individual User" : isBusiness ? "Business User" : "Admin User"}!
+      </h1>
+
+      <div className="animal-form">
+        <h2>Your Pets</h2>
+
+        {loading && <p>Loading pets...</p>}
+
+        {error && <p className="error-message">{error}</p>}
+
+        {!loading && pets.length === 0 && (
+          <p>No pets found. Add your first pet!</p>
+        )}
+
+        <div className="pet-cards">
+          {!loading && pets.map((pet) => (
+            <div key={pet._id} className="pet-card">
+              <h3>{pet.name}</h3>
+              <p><strong>Species:</strong> {pet.species}</p>
+              <p><strong>Sex:</strong> {pet.sex}</p>
+              <p><strong>Breed:</strong> {pet.breed || "N/A"}</p>
+              <p><strong>Age:</strong> {pet.age ?? "N/A"}</p>
+
+              <button onClick={() => navigate(`/edit-pet/${pet._id}`)}>
+                Edit
+              </button>
             </div>
-
-            <div className='home-content'>
-                <div className="header">
-                    <h1>Welcome {isIndividual ? "Individual User" : isBusiness ? "Business User" : "Admin User"}!</h1>
-                </div>
-
-                <div className="wrapper-pet-cards">
-                    <h2>Your Pets</h2>
-                    <div className="pet-cards">
-                        {loading && <p>Loading pets...</p>}
-
-                        {error && <p className="error-message">{error}</p>}
-
-                        {!loading && pets.length === 0 && (
-                            <p>No pets found. Add your first pet!</p>
-                        )}
-
-                        {!loading && pets.map((pet) => (
-                            <div key={pet._id} className="pet-card">
-                                <h3>{pet.name}</h3>
-                                <p><strong>Species:</strong> {pet.species}</p>
-                                <p><strong>Sex:</strong> {pet.sex}</p>
-                                <p><strong>Breed:</strong> {pet.breed || "N/A"}</p>
-                                <p><strong>Age:</strong> {pet.age ?? "N/A"}</p>
-
-                                <button onClick={() => navigate(`/edit-pet/${pet._id}`)}>
-                                    Edit
-                                </button>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
+          ))}
         </div>
-    )
+      </div>
+    </div>
+  </div>
+);
 }

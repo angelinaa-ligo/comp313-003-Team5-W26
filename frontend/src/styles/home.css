@@ -1,16 +1,49 @@
+/* PET CARDS CONTAINER */
 .pet-cards {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    padding-bottom: 10px;
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 10px;
 }
 
-/* Optional: hide scrollbar (cleaner look) */
+/* SCROLLBAR */
 .pet-cards::-webkit-scrollbar {
-    height: 8px;
+  height: 8px;
 }
 
 .pet-cards::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 10px;
+  background-color: #94a3b8;
+  border-radius: 10px;
+}
+
+/* CARD BASE */
+.pet-card {
+  min-width: 250px;
+  padding: 1.2rem;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+/* LIGHT */
+.page-container.light .pet-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+}
+
+/* DARK */
+.page-container.dark .pet-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #f1f5f9;
+}
+
+/* HOVER */
+.pet-card:hover {
+  transform: translateY(-4px);
+}
+
+/* BUTTON (HERDA PADRÃO GLOBAL) */
+.pet-card button {
+  margin-top: 10px;
 }

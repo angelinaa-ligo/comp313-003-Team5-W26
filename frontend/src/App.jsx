@@ -26,6 +26,7 @@ import AdminDashboard from "./pages/AdminPages/AdminDashboard";
 import ManageAccounts from "./pages/AdminPages/ManageAccounts";
 import ModerateAdoptions from "./pages/AdminPages/ModerateAdoptions";
 import AdminCampaignPage from "./pages/AdminPages/AdminCampaignPage";
+import UserSettings from "./pages/UserPages/UserSettings";
 
 function App() {
    useEffect(() => {
@@ -174,7 +175,11 @@ function App() {
         <UserPage />
       </PrivateRoute>
     } />
-
+  <Route path="/user/settings" element={
+      <PrivateRoute>
+        <UserSettings />
+      </PrivateRoute>
+    } />
     <Route path="/create-pet" element={
       <PrivateRoute>
         <CreatePetForm />

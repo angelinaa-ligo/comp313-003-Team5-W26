@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import OrgNavBar from "../../components/OrgNavBar";
-
+import { ThemeContext } from "../../context/ThemeContext";
+import "../../styles/OrganizationDashboard.css";
 export default function OrganizationDashboard() {
   const [pets, setPets] = useState([]);
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     fetchPets();
@@ -18,21 +20,23 @@ export default function OrganizationDashboard() {
   };
 
   return (
-    <div>
+    <div className={`page-container ${theme}`}>
       <OrgNavBar />
 
       <div className="dashboard-container">
         <h1>Organization Dashboard</h1>
 
-        <h3>Your Pets</h3>
+        <div className="animal-form">
+          <h3>Your Pets</h3>
 
-        <div className="pet-cards">
-          {pets.map((pet) => (
-            <div key={pet._id} className="pet-card">
-              <h4>{pet.name}</h4>
-              <p>{pet.breed}</p>
-            </div>
-          ))}
+          <div className="pet-cards">
+            {pets.map((pet) => (
+              <div key={pet._id} className="pet-card">
+                <h4>{pet.name}</h4>
+                <p>{pet.breed}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

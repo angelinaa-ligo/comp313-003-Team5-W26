@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import NavBar from '../../components/NavBar';
 import '../../styles/petForm.css';
-
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 export default function CreatePetForm() {
     const navigate = useNavigate();
+    const { theme } = useContext(ThemeContext);
     const {petId} = useParams();
     const [formData, setFormData] = useState({
         name: '',
@@ -66,74 +68,113 @@ export default function CreatePetForm() {
     };
 
     return (
-        <div className="pet-page-wrapper">
-            <div className='navbar'>
-                <NavBar />
-            </div>
+  <div className={`pet-page-wrapper ${theme}`}>
+    <div className="navbar">
+      <NavBar />
+    </div>
 
-            <div className="edit-pet-form-container">
-                <h2>Create a New Pet</h2>
+    <div className="pet-form-container">
+      <h2>Create a New Pet</h2>
 
-                {error && (
-                    <div className="error-message">
-                        {error}
-                    </div>
-                )}
-
-                <form onSubmit={handleSubmit} className="edit-pet-form">
-                    <div className="form-group">
-                        <label htmlFor="name">Pet Name:</label>
-                        <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} required placeholder="Enter pet's name" />
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="species">Species:</label>
-                        <select id="species" name="species" value={formData.species} onChange={handleInputChange} required >
-                            <option value="">Select pet species</option>
-                            <option value="dog">Dog</option>
-                            <option value="cat">Cat</option>
-                            <option value="rabbit">Rabbit</option>
-                            <option value="bird">Bird</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="sex">Sex:</label>
-                        <select
-                            id="sex"
-                            name="sex"
-                            value={formData.sex}
-                            onChange={handleInputChange}
-                            required
-                        >
-                            <option value="">Select sex</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="unknown">Unknown</option>
-                        </select>
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="breed">Breed:</label>
-                        <input type="text" id="breed" name="breed" value={formData.breed} onChange={handleInputChange} placeholder="Enter breed (optional)" />
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="age">Age:</label>
-                        <input type="number" id="age" name="age" value={formData.age} onChange={handleInputChange} min="0" max="30" placeholder="Enter age in years" />
-                    </div>
-
-                    <div className="form-actions">
-                        <button type="button" onClick={handleCancel} className="cancel-btn">
-                            Cancel
-                        </button>
-                        <button type="submit" disabled={isSubmitting} className="submit-btn" >
-                            {isSubmitting ? 'Creating...' : 'Create Pet'}
-                        </button>
-                    </div>
-                </form>
-            </div>
+      {error && (
+        <div className="error-message">
+          {error}
         </div>
-    );
+      )}
+
+      <form onSubmit={handleSubmit} className="pet-form">
+        <div className="form-group">
+          <label htmlFor="name">Pet Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            required
+            placeholder="Enter pet's name"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="species">Species:</label>
+          <select
+            id="species"
+            name="species"
+            value={formData.species}
+            onChange={handleInputChange}
+            required
+          >
+            <option value="">Select pet species</option>
+            <option value="dog">Dog</option>
+            <option value="cat">Cat</option>
+            <option value="rabbit">Rabbit</option>
+            <option value="bird">Bird</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="sex">Sex:</label>
+          <select
+            id="sex"
+            name="sex"
+            value={formData.sex}
+            onChange={handleInputChange}
+            required
+          >
+            <option value="">Select sex</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="unknown">Unknown</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="breed">Breed:</label>
+          <input
+            type="text"
+            id="breed"
+            name="breed"
+            value={formData.breed}
+            onChange={handleInputChange}
+            placeholder="Enter breed (optional)"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="age">Age:</label>
+          <input
+            type="number"
+            id="age"
+            name="age"
+            value={formData.age}
+            onChange={handleInputChange}
+            min="0"
+            max="30"
+            placeholder="Enter age in years"
+          />
+        </div>
+
+        <div className="form-actions">
+          <button
+            type="button"
+            onClick={handleCancel}
+            className="cancel-btn"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="submit-btn"
+          >
+            {isSubmitting ? "Creating..." : "Create Pet"}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+);
 }

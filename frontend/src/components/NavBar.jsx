@@ -25,6 +25,7 @@ export default function UserNavBar() {
         <button onClick={() => navigate("/adoption")}>Adoption</button>
         <button onClick={() => navigate("/campaign")}>Campaigns</button>
         <button onClick={() => navigate("/user")}>Profile</button>
+        <button onClick={() => navigate("/user/settings")}>Settings</button>
 
         {/* LOGOUT */}
         <button className="logout-btn" onClick={handleLogout}>

@@ -1,0 +1,133 @@
+/* ========================================= */
+/* WRAPPER */
+/* ========================================= */
+
+.pet-page {
+  min-height: 100vh;
+  margin-top: 32px;
+  padding-top: 10px;
+  min-width: 1080px;
+  border-radius: 10px;
+}
+
+/* LIGHT */
+.pet-page.light {
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+/* DARK */
+.pet-page.dark {
+  background-color: #0f172a;
+  color: #f1f5f9;
+}
+
+/* ========================================= */
+/* CONTAINER */
+/* ========================================= */
+
+.pet-container {
+  width: 900px;
+  margin: auto;
+  padding: 30px;
+}
+
+/* ========================================= */
+/* GRID */
+/* ========================================= */
+
+.pet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* ========================================= */
+/* CARD */
+/* ========================================= */
+
+.pet-card {
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid;
+  transition: 0.3s;
+}
+
+/* LIGHT */
+.pet-page.light .pet-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+/* DARK */
+.pet-page.dark .pet-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+/* ========================================= */
+/* BUTTONS (SEM VAZAR PRA NAVBAR) */
+/* ========================================= */
+
+.pet-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.pet-actions button,
+.add-pet-section button {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+/* LIGHT */
+.pet-page.light .pet-actions button,
+.pet-page.light .add-pet-section button {
+  background-color: #e2e8f0;
+  color: black;
+}
+
+/* DARK */
+.pet-page.dark .pet-actions button,
+.pet-page.dark .add-pet-section button {
+  background-color: #334155;
+  color: white;
+}
+/* botão base */
+.pet-container button {
+  margin-top: 20px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* botão light (GLOBAL dentro da página) */
+.pet-page.light button {
+  background-color: #e2e8f0;
+  color: black;
+}
+
+/* botão dark */
+.pet-page.dark button {
+  background-color: #334155;
+  color: white;
+}
+/* ========================================= */
+/* ADD SECTION */
+/* ========================================= */
+
+.add-pet-section {
+  margin-top: 40px;
+}
+
+/* ========================================= */
+/* ERROR */
+/* ========================================= */
+
+.error-message {
+  color: red;
+}
