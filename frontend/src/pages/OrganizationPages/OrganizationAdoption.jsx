@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OrgNavBar from "../../components/OrgNavBar";
 import AnimalCard from "../../components/AnimalCard";
-import "../../styles/adoptionOrg.css";
-
+import "../../styles/OrganizationAdoption.css";
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 export default function OrganizationAdoption() {
   const navigate = useNavigate();
   const [animals, setAnimals] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { theme } = useContext(ThemeContext);
 
   const [filters, setFilters] = useState({
     status: "all",
@@ -92,7 +94,7 @@ useEffect(() => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="adoption-management-wrapper">
+    <div className={`adoption-page ${theme}`}>
       <OrgNavBar />
 
       {/* Dashboard */}

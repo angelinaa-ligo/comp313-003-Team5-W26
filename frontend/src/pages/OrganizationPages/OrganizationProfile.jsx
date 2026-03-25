@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import OrgNavBar from "../../components/OrgNavBar";
 import "../../styles/organizationProfile.css";
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 
 export default function OrganizationProfile() {
   const [isLoading, setIsLoading] = useState(false);
@@ -9,7 +11,7 @@ export default function OrganizationProfile() {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const [securityAnswer, setSecurityAnswer] = useState("");
-
+  const { theme } = useContext(ThemeContext);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -155,9 +157,10 @@ export default function OrganizationProfile() {
   const clearMessage = () => setMessage("");
 
   return (
-    <div className="user-page-wrapper">
+    <div className={`profile-page ${theme}`}>
       <div className="navbar">
         <OrgNavBar />
+        
       </div>
 
       <div className="user-page-content">

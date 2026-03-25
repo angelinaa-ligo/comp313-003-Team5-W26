@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OrgNavBar from "../../components/OrgNavBar";
 import "../../styles/animalForm.css";
-
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 export default function CreateAnimal() {
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -75,6 +77,7 @@ export default function CreateAnimal() {
 
   return (
     <>
+    <div className={`page-container ${theme}`}>
       <OrgNavBar />
 
       <div className="dashboard-container">
@@ -152,6 +155,7 @@ export default function CreateAnimal() {
 
         </form>
       </div>
+    </div>
     </>
   );
 }

@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import OrgNavBar from "../../components/OrgNavBar";
 import "../../styles/animalForm.css";
-
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 export default function EditAnimal() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -121,6 +123,7 @@ const speciesOptions = [
 
   return (
     <>
+    <div className={`page-container ${theme}`}>
       <OrgNavBar />
 
       <div className="dashboard-container">
@@ -193,6 +196,7 @@ const speciesOptions = [
           <button type="submit">Update Animal</button>
 
         </form>
+      </div>
       </div>
     </>
   );

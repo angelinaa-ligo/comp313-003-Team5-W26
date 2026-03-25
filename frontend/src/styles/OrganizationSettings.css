@@ -1,0 +1,58 @@
+/* Wrapper TOTAL */
+.settings-page {
+  min-height: 100vh;
+  margin-top: 32px;
+  padding-top: 10px;
+  min-width: 1080px;
+  transition: all 0.3s ease;
+  border-radius: 10px;
+}
+
+/* LIGHT MODE (só dessa página) */
+.settings-page.light {
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+/* DARK MODE */
+.settings-page.dark {
+  background-color: #0f172a;
+  color: #f1f5f9;
+}
+
+/* Container interno */
+.settings-container {
+  padding: 30px;
+  border-radius: 10px;
+  width: 800px;
+  
+  margin: auto;
+}
+
+.settings-container {
+  padding: 30px;
+  width: 800px;
+  margin: auto;
+  background: transparent; 
+}
+
+/* botão */
+.settings-container button {
+  margin-top: 20px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* botão light */
+.settings-page.light button {
+  background-color: #e2e8f0;
+  color: black;
+}
+
+/* botão dark */
+.settings-page.dark button {
+  background-color: #334155;
+  color: white;
+}

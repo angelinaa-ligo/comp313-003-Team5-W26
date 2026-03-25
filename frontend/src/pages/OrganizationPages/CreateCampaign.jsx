@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OrgNavBar from "../../components/OrgNavBar";
 import "../../styles/campaignForm.css";
-
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 export default function CreateCampaign() {
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -59,7 +61,7 @@ export default function CreateCampaign() {
   }
   
   return (
-    <div className="campaign-form-container">
+    <div className={`page-container ${theme}`}>
       <OrgNavBar />
 
       <div className="form-title">

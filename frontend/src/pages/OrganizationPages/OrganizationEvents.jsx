@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import OrgNavBar from "../../components/OrgNavBar";
 import CampaignCard from "../../components/CampaignCard"
 import "../../styles/organizationEvents.css";
-
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 export default function OrganizationEvents() {
   const navigate = useNavigate();
   const [campaigns, setCampaigns] = useState([]);
-
+const { theme } = useContext(ThemeContext);
   const activeCampaigns = campaigns.filter((c) => c.isActive === true);
   const inactiveCampaigns = campaigns.filter((c) => c.isActive === false);
 
@@ -88,9 +89,9 @@ export default function OrganizationEvents() {
 };
 
   return (
-    <div className="campaign-wrapper">
+   <div className={`events-page ${theme}`}>
       <OrgNavBar />
-
+      <div className="campaign-wrapper">
       <div className="campaign-stats">
         <h2>Care Campaign Dashboard</h2>
         <div className="stats-grid">
@@ -145,6 +146,7 @@ export default function OrganizationEvents() {
               )}
             </div>
           </div>
+        </div>
         </div>
       );
 }

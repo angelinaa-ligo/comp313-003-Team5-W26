@@ -1,1 +1,135 @@
-/* Campaign Form Styles */
+.page-container.light .form-title h1 {
+  color: #1e293b;
+}
+
+.page-container.dark .form-title h1 {
+  color: #f1f5f9;
+}
+
+.form-title {
+  text-align: center;
+  margin: 2rem 0;
+}.page-container.light .error-message {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.page-container.dark .error-message {
+  background: #7f1d1d;
+  color: #fecaca;
+}
+
+.error-message {
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 1rem auto;
+  max-width: 800px;
+}/* LIGHT */
+.page-container.light .campaign-form {
+  background: white;
+  border: 1px solid #e2e8f0;
+}
+
+/* DARK */
+.page-container.dark .campaign-form {
+  background: #1e293b;
+  border: 1px solid #334155;
+}
+
+.campaign-form {
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 16px;
+  display: grid;
+  gap: 1.5rem;
+  transition: all 0.3s ease;
+}.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}/* LIGHT */
+.page-container.light input,
+.page-container.light textarea {
+  background: #f8fafc;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
+}
+
+/* DARK */
+.page-container.dark input,
+.page-container.dark textarea {
+  background: #0f172a;
+  color: #f1f5f9;
+  border: 1px solid #334155;
+}
+
+input,
+textarea {
+  padding: 0.9rem;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* BOTÕES GLOBAIS */
+
+/* LIGHT */
+.page-container.light button {
+  background-color: #e2e8f0;
+  color: #1e293b;
+}
+
+/* DARK */
+.page-container.dark button {
+  background-color: #334155;
+  color: #f1f5f9;
+}
+/* BOTÕES GLOBAIS */
+
+/* LIGHT */
+.page-container.light button {
+  background-color: #e2e8f0;
+  color: #1e293b;
+}
+
+/* DARK */
+.page-container.dark button {
+  background-color: #334155;
+  color: #f1f5f9;
+}
+/* SUBMIT */
+.page-container.light .submit-btn {
+  background: #3b82f6;
+  color: white;
+}
+
+.page-container.dark .submit-btn {
+  background: #2563eb;
+  color: white;
+}
+
+.cancel-btn,
+.submit-btn {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover,
+.submit-btn:hover {
+  transform: translateY(-2px);
+}

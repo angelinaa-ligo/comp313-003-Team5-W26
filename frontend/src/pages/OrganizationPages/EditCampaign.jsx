@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import OrgNavBar from "../../components/OrgNavBar";
 import "../../styles/campaignForm.css";
-
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 export default function EditCampaign() {
   const navigate = useNavigate();
   const { id } = useParams();
+    const { theme } = useContext(ThemeContext);
   
   const [formData, setFormData] = useState({
     title: "",
@@ -92,7 +94,8 @@ export default function EditCampaign() {
   }
   
   return (
-    <div className="campaign-form-container">
+    <div className={`page-container ${theme}`}>
+    
       <OrgNavBar />
 
       <div className="form-title">

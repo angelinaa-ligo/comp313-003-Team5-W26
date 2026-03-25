@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OrgNavBar from "../../components/OrgNavBar";
 import "../../styles/organizationPets.css";
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 
 export default function OrganizationPets() {
   const navigate = useNavigate();
   const [animals, setAnimals] = useState([]);
+  const { theme } = useContext(ThemeContext);
+
 
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
@@ -71,22 +75,23 @@ export default function OrganizationPets() {
   }, []);
 
   return (
-    <>
+    
+    <div className={`pets-page ${theme}`}>
       <OrgNavBar />
 
-      <div className="dashboard-container">
+      <div className="pets-container">
         <h1>Organization Pets</h1>
 
         <button onClick={() => navigate("/organization/animals/create")}>
           Create Pet
         </button>
 
-        <div>
+        <div className="pets-grid">
           {animals.length === 0 ? (
             <p>No animals registered yet.</p>
           ) : (
             animals.map((animal) => (
-              <div key={animal._id} className="animal-card">
+              <div key={animal._id} className="pet-card">
                 <h3>{animal.name}</h3>
                 <p>Species: {animal.species}</p>
 
@@ -110,6 +115,7 @@ export default function OrganizationPets() {
           )}
         </div>
       </div>
-    </>
+    </div>
+    
   );
 }

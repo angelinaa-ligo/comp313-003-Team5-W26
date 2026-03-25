@@ -28,6 +28,10 @@ import ModerateAdoptions from "./pages/AdminPages/ModerateAdoptions";
 import AdminCampaignPage from "./pages/AdminPages/AdminCampaignPage";
 
 function App() {
+   useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") || "light";
+    document.body.className = savedTheme;
+  }, []);
   // simple router setup to manage navigation between pages
   // add more routes if you need to
   return (

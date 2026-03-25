@@ -1,43 +1,117 @@
-.dashboard-container {
-  padding: 30px;
-}
+/* ========================================= */
+/* WRAPPER (IGUAL SETTINGS) */
+/* ========================================= */
 
-/* LIST CONTAINER */
-.adoption-list {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* HEADER + ROW STYLE */
-.adoption-row {
-  display: grid;
-  grid-template-columns: 2fr 2fr 2fr 1fr 1fr 2fr;
-  align-items: center;
-
-  background: rgb(80, 78, 78);
-  padding: 15px 20px;
+.adoption-page {
+  min-height: 100vh;
+  margin-top: 32px;
+  padding-top: 10px;
+  transition: all 0.3s ease;
   border-radius: 10px;
-
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  font-size: 15px;
 }
 
-/* HEADER ROW */
-.adoption-header {
-  font-weight: bold;
-  background: #616162;
+/* LIGHT */
+.adoption-page.light {
+  background-color: #f8fafc;
+  color: #1e293b;
 }
-
-/* STATUS COLORS */
-.status {
-  padding: 5px 10px;
+.filter-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+.adoption-page .filter-controls input {
+  padding: 10px 15px;
   border-radius: 8px;
-  text-align: center;
-  font-weight: bold;
-  width: fit-content;
+  border: 1px solid #334155;
+  width: 250px;
 }
+/* DARK */
+.adoption-page.dark {
+  background-color: #0f172a;
+  color: #f1f5f9;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 20px;
+
+  max-width: 1000px;
+  margin: 0 auto; 
+}
+/* ========================================= */
+/* BOTÕES (GLOBAL IGUAL SETTINGS) */
+/* ========================================= */
+
+.adoption-container button {
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.adoption-page.light button {
+  background-color: #e2e8f0;
+  color: black;
+}
+
+.adoption-page.dark button {
+  background-color: #334155;
+  color: white;
+}
+
+/* ========================================= */
+/* CONTAINER */
+/* ========================================= */
+
+.adoption-stats,
+.filter-section,
+.adoption-sections {
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* ========================================= */
+/* CARDS */
+/* ========================================= */
+
+.adoption-card {
+  border-radius: 16px;
+  padding: 1rem;
+  border: 1px solid;
+  
+}
+
+/* LIGHT */
+.adoption-page.light .adoption-card {
+  background: white;
+  border-color: #e2e8f0;
+}
+
+/* DARK */
+.adoption-page.dark .adoption-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+/* TEXT */
+.adoption-page.light h2,
+.adoption-page.light h3,
+.adoption-page.light p {
+  color: #1e293b;
+}
+
+.adoption-page.dark h2,
+.adoption-page.dark h3,
+.adoption-page.dark p {
+  color: #f1f5f9;
+}
+
+/* ========================================= */
+/* STATUS (mantém cores boas) */
+/* ========================================= */
 
 .status.available {
   background: #d1fae5;
@@ -52,4 +126,46 @@
 .status.adopted {
   background: #fee2e2;
   color: #991b1b;
+}
+/* ========================================= */
+/* STATS CARDS (OS QUADRADOS DO TOPO) */
+/* ========================================= */
+
+.stat-card {
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+/* LIGHT */
+.adoption-page.light .stat-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+/* DARK */
+.adoption-page.dark .stat-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+
+.adoption-page.dark .stat-card h3,
+.adoption-page.dark .stat-card .stat-number {
+  color: #f1f5f9;
+}
+
+.adoption-page.light .stat-card h3,
+.adoption-page.light .stat-card .stat-number {
+  color: #1e293b;
+}.adoption-page.dark .animal-card {
+  background: #1e293b;
+  border-color: #334155;
+}.adoption-page.dark .animal-card-header {
+  background: #0f172a;
+  border-bottom: 1px solid #334155;
+}.adoption-page.dark .animal-card * {
+  color: #f1f5f9;
 }
