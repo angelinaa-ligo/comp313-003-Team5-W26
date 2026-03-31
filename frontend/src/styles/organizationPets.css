@@ -52,17 +52,132 @@
 /* ========================================= */
 
 .pets-container {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: auto;
-  padding: 30px;
+  padding: 2rem;
 }
 
 /* TITLE */
 .pets-container h1 {
   text-align: center;
-  margin-bottom: 2rem;
-  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 2.2rem;
   font-weight: 700;
+}
+
+/* ========================================= */
+/* TOP BAR */
+/* ========================================= */
+
+.pets-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.btn-create {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #3b82f6;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.btn-create:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.pets-total-count {
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+/* ========================================= */
+/* FILTER BAR */
+/* ========================================= */
+
+.pets-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  border: 1px solid;
+}
+
+.pets-page.light .pets-filter-bar {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+.pets-page.dark .pets-filter-bar {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.filter-input,
+.filter-select {
+  padding: 9px 14px;
+  border-radius: 8px;
+  border: 1px solid;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.pets-page.light .filter-input,
+.pets-page.light .filter-select {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #1e293b;
+}
+
+.pets-page.dark .filter-input,
+.pets-page.dark .filter-select {
+  background: #0f172a;
+  border-color: #475569;
+  color: #f1f5f9;
+}
+
+.filter-input {
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  border-color: #3b82f6;
+}
+
+.btn-clear-filters {
+  padding: 9px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-clear-filters:hover {
+  background: #dc2626;
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  opacity: 0.6;
+  padding: 2rem 0;
+  font-size: 1rem;
 }
 
 /* ========================================= */
@@ -82,9 +197,12 @@
 
 .pet-card {
   border-radius: 16px;
-  padding: 1.5rem;
+  padding: 1.25rem 1.5rem;
   border: 1px solid;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 /* LIGHT CARD */
@@ -105,19 +223,36 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* ========================================= */
-/* TEXTOS (🔥 GARANTE CONTRASTE) */
-/* ========================================= */
+/* Card header row */
+.pet-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
 
-.pet-card h3 {
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
+.pet-card-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
   font-weight: 700;
 }
 
-.pet-card p {
-  margin-bottom: 1.5rem;
-  opacity: 0.8;
+/* Card body */
+.pet-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.pet-card-body p {
+  font-size: 0.88rem;
+  margin: 0;
+  opacity: 0.85;
+}
+
+.pet-card-body .label {
+  font-weight: 600;
+  opacity: 1;
 }
 
 /* FORÇA TEXTO NO TEMA */
@@ -131,31 +266,64 @@
   color: #f1f5f9;
 }
 
+/* =========================================
+   STATUS BADGES
+   ========================================= */
+
+.status-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.badge-available    { background: #d1fae5; color: #065f46; }
+.badge-pending      { background: #fef3c7; color: #92400e; }
+.badge-adopted      { background: #ede9fe; color: #4c1d95; }
+.badge-not-adoption { background: #fee2e2; color: #991b1b; }
+
 /* ========================================= */
 /* BOTÕES DO CARD */
 /* ========================================= */
 
 .pet-actions {
   display: flex;
-  gap: 10px;
+  gap: 0.5rem;
+  margin-top: auto;
 }
 
-.pet-actions button {
-  padding: 8px 16px;
-  border-radius: 6px;
+.btn-edit,
+.btn-delete {
+  flex: 1;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 7px;
   font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
 }
 
-/* EDIT */
-.pet-actions button:first-child {
-  background-color: #3b82f6;
-  color: white;
+.btn-edit {
+  background: #3b82f6;
+  color: #fff;
 }
 
-/* DELETE */
-.delete-btn {
-  background-color: #dc2626;
-  color: white;
+.btn-edit:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.btn-delete {
+  background: #ef4444;
+  color: #fff;
+}
+
+.btn-delete:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
 }
 
 /* ========================================= */
