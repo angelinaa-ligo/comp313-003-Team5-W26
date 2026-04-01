@@ -52,38 +52,35 @@ const { theme } = useContext(ThemeContext);
     navigate('/organization/campaigns/create');
   }
 
- const handleDelete = async (campaign) => {
-  if (!window.confirm("Delete this campaign?")) return;
+
+
+const handleClose = async (campaign) => {
+  if (!window.confirm("Close this campaign? This cannot be undone."))
+    return;
 
   try {
     const token = localStorage.getItem("token");
 
-    if (!token) {
-      alert("Not authenticated");
-      return;
-    }
-
     const res = await fetch(
-      `http://localhost:5000/api/campaigns/${campaign._id}`,
+      `http://localhost:5000/api/campaigns/${campaign._id}/close`,
       {
-        method: "DELETE",
+        method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
 
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.message || "Failed to delete campaign");
-    }
+    if (!res.ok) throw new Error("Failed to close campaign");
 
-    // Remove from UI after successful delete
+    const updatedCampaign = await res.json();
+
     setCampaigns((prev) =>
-      prev.filter((c) => c._id !== campaign._id)
+      prev.map((c) =>
+        c._id === updatedCampaign._id ? updatedCampaign : c
+      )
     );
   } catch (error) {
-    console.error("Error deleting campaign:", error);
     alert(error.message);
   }
 };
@@ -123,7 +120,7 @@ const { theme } = useContext(ThemeContext);
             <div key={campaign._id} className="campaign-card">
               <CampaignCard campaign={{ ...campaign, organizationName: campaign.organization?.name || "Unknown" }}
               onEdit={handleEdit}
-              onDelete={handleDelete}
+              onClose={handleClose}
               />
             </div>
           ))
@@ -138,7 +135,8 @@ const { theme } = useContext(ThemeContext);
               {inactiveCampaigns.length > 0 ? (
                 inactiveCampaigns.map((campaign) => (
                   <div key={campaign._id} className="campaign-card">
-                    <CampaignCard campaign={campaign} onEdit={handleEdit} onDelete={handleDelete} />
+                    <CampaignCard campaign={{ ...campaign, organizationName: campaign.organization?.name || "Unknown" }}
+                     onEdit={handleEdit} onClose={handleClose} />
                   </div>
                 ))
               ) : (
