@@ -3,6 +3,7 @@ import Organization from "../models/Organization.js";
 import Pet from "../models/Pet.js";
 import Campaign from "../models/CareCampaign.js";
 import Admin from "../models/Admin.js"
+import Animal from "../models/Animal.js"
 
 // ===============================
 // USER & ORGANIZATION MANAGEMENT
@@ -219,6 +220,42 @@ export const hideListing = async (req, res) => {
   }
 };
 
+//admin analytics controller
+export const getAdminAnalytics = async (req, res) => {
+  try {
+    const totalUsers = await User.countDocuments();
+    const totalOrganizations = await Organization.countDocuments();
+    const totalAnimals = await Animal.countDocuments();
+    const pendingPets = await Pet.countDocuments({ status: "pending" });
+    const activePets = await Pet.countDocuments({ status: "active" });
+    const hiddenPets = await Pet.countDocuments({ status: "hidden" });
+    const activeCampaigns = await Campaign.countDocuments({ isActive: true });
+    const inactiveCampaigns = await Campaign.countDocuments({ isActive: false });
 
+    // Optional: users/pets by month for line chart
+    const usersByMonth = {
+      Jan: 5, Feb: 10, Mar: 7, Apr: 3, May: 8
+    };
+    const petsByMonth = {
+      Jan: 2, Feb: 6, Mar: 4, Apr: 3, May: 5
+    };
+
+    res.status(200).json({
+      totalUsers,
+      totalOrganizations,
+      totalAnimals,
+      pendingPets,
+      activePets,
+      hiddenPets,
+      activeCampaigns,
+      inactiveCampaigns,
+      usersByMonth,
+      petsByMonth
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to load analytics" });
+  }
+};
 
 
