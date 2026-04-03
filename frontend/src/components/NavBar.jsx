@@ -24,6 +24,7 @@ export default function UserNavBar() {
         <button onClick={() => navigate("/pets")}>Pets</button>
         <button onClick={() => navigate("/adoption")}>Adoption</button>
         <button onClick={() => navigate("/campaign")}>Campaigns</button>
+        <button onClick={() => navigate("/clinic")}>Clinics</button>
         <button onClick={() => navigate("/user")}>Profile</button>
         <button onClick={() => navigate("/user/settings")}>Settings</button>
 
