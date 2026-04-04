@@ -71,7 +71,7 @@ export default function HomePage() {
 
     <div className="dashboard-container">
       <h1>
-        Welcome {isIndividual ? "Individual User" : isBusiness ? "Business User" : "Admin User"}!
+        Welcome!
       </h1>
 
       <div className="animal-form">
