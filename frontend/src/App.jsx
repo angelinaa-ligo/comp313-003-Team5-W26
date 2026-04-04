@@ -27,6 +27,7 @@ import ManageAccounts from "./pages/AdminPages/ManageAccounts";
 import ModerateAdoptions from "./pages/AdminPages/ModerateAdoptions";
 import AdminCampaignPage from "./pages/AdminPages/AdminCampaignPage";
 import UserSettings from "./pages/UserPages/UserSettings";
+import AdminClinicLocations from "./pages/AdminPages/AdminClinicLocations";
 
 function App() {
    useEffect(() => {
@@ -154,6 +155,14 @@ function App() {
   element={
     <PrivateRoute role="admin">
       <AdminCampaignPage />
+    </PrivateRoute>
+  }
+/>
+<Route
+  path="/admin/clinic-locations"
+  element={
+    <PrivateRoute role="admin">
+      <AdminClinicLocations />
     </PrivateRoute>
   }
 />
