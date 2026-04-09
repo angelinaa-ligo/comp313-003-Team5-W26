@@ -24,6 +24,10 @@ export default function LoginForm() {
         }
 
     }    }, []);
+    const [mfaPending, setMfaPending] = useState(false);
+const [mfaCode, setMfaCode] = useState('');
+const [mfaEmailTarget, setMfaEmailTarget] = useState('');  // novo
+const [codeSent, setCodeSent] = useState(false); // novo
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showReset, setShowReset] = useState(false);
@@ -93,19 +97,25 @@ export default function LoginForm() {
                 return;
             }
 
-            localStorage.setItem('token', data.token);
-            localStorage.setItem("role", data.role);
-            localStorage.setItem('userInfo', JSON.stringify(data));
+           if (data.mfaRequired) {
+    
+    setMfaPending(true);
+    return;
+}
 
-            alert('Login successful!');
+localStorage.setItem('token', data.token);
+localStorage.setItem("role", data.role);
+localStorage.setItem('userInfo', JSON.stringify(data));
 
-            if (data.role === "admin") {
-                navigate("/admin/dashboard");
-            } else if (data.role === "organization") {
-                navigate("/organization/dashboard");
-            } else {
-                navigate("/home");
-            }
+alert('Login successful!');
+
+if (data.role === "admin") {
+    navigate("/admin/dashboard");
+} else if (data.role === "organization") {
+    navigate("/organization/dashboard");
+} else {
+    navigate("/home");
+}
 
         } catch (error) {
             console.error(error);
@@ -119,6 +129,100 @@ export default function LoginForm() {
 
  
 
+    try {
+        const response = await fetch('http://localhost:5000/api/users/verify-mfa', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, code: mfaCode }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.message);
+            return;
+        }
+
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('role', data.role);
+        localStorage.setItem('userInfo', JSON.stringify(data));
+
+        alert('Login successful!');
+        navigate('/admin/dashboard');
+
+    } catch (error) {
+        console.error(error);
+        alert('Server error');
+    }
+};
+const handleSendCode = async () => {
+    if (!mfaEmailTarget) return alert('Enter an email');
+
+    try {
+        const response = await fetch('http://localhost:5000/api/users/send-mfa', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, mfaEmail: mfaEmailTarget }),
+        });
+
+        const data = await response.json();
+        if (!response.ok) return alert(data.message);
+
+        setCodeSent(true);
+
+    } catch (error) {
+        console.error(error);
+        alert('Server error');
+    }
+};
+
+if (mfaPending) {
+    return (
+        <div>
+            <div className="login-header">
+                <h1>Two-Factor Authentication</h1>
+            </div>
+            <div className="login-form">
+
+                {!codeSent ? (
+                    <>
+                        <p>Where should we send the verification code?</p>
+                        <div className="form-group">
+                            <label>Email</label>
+                            <input
+                                type="email"
+                                value={mfaEmailTarget}
+                                onChange={(e) => setMfaEmailTarget(e.target.value)}
+                                placeholder="your@email.com"
+                            />
+                        </div>
+                        <button onClick={handleSendCode}>Send Code</button>
+                    </>
+                ) : (
+                    <>
+                        <p>Code sent to <strong>{mfaEmailTarget}</strong></p>
+                        <div className="form-group">
+                            <label>Verification Code</label>
+                            <input
+                                type="text"
+                                maxLength={6}
+                                value={mfaCode}
+                                onChange={(e) => setMfaCode(e.target.value.replace(/\D/g, ''))}
+                                placeholder="000000"
+                            />
+                        </div>
+                        <button onClick={handleMfaVerify}>Verify Code</button>
+                    </>
+                )}
+
+                <button onClick={() => { setMfaPending(false); setMfaCode(''); setCodeSent(false); setMfaEmailTarget(''); }}>
+                    ← Back
+                </button>
+
+            </div>
+        </div>
+    );
+}
     return (
         <div>
 
@@ -180,4 +284,3 @@ export default function LoginForm() {
 
         </div>
     );
-}
