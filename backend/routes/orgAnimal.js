@@ -6,6 +6,7 @@ import {
   updateAnimal,
   getAnimalById,
   deleteAnimal,
+  getAnimalDetails
 } from "../controllers/orgAnimalController.js";
 import { protectOrganization } from "../middleware/protectOrganization.js";
 
@@ -44,5 +45,7 @@ router.delete(
   protectOrganization,
   deleteAnimal
 );
+
+router.get("/:id/details", getAnimalDetails);
 
 export default router;

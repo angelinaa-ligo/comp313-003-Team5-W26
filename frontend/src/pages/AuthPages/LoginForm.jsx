@@ -117,9 +117,7 @@ export default function LoginForm() {
         navigate('/signup');
     };
 
-    const handleByPass = () => {
-        navigate('/home');
-    };
+ 
 
     return (
         <div>
@@ -177,7 +175,6 @@ export default function LoginForm() {
 
                 <button onClick={handleSignUp}>Sign Up Instead</button>
 
-                <button onClick={handleByPass}>Bypass Login</button>
 
             </div>
 

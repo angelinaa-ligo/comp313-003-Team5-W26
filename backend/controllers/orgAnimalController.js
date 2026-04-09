@@ -201,3 +201,24 @@ export const getAdoptionAnimals = async (req, res) => {
     });
   }
 };
+
+export const getAnimalDetails = async (req, res) => {
+  try {
+    const animal = await Animal.findById(req.params.id)
+      .populate("organization", "name address phone");
+
+    if (!animal) {
+      return res.status(404).json({
+        message: "Animal not found",
+      });
+    }
+
+    return res.status(200).json(animal);
+
+  } catch (error) {
+    return res.status(500).json({
+      message: "Error fetching animal details",
+      error: error.message,
+    });
+  }
+};
