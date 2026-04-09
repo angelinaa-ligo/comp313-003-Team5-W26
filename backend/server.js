@@ -1,5 +1,5 @@
+import 'dotenv/config';
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
 
@@ -11,11 +11,11 @@ import careCampaignRoutes from "./routes/careCampaignRoutes.js";
 import adminCampaignRoutes from "./routes/adminCampaignRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import organizationRoutes from "./routes/organizationRoutes.js";
-import clinicRoutes from "./routes/clinicRoutes.js";
+import clinicRoutes from "./routes/clinicRoutes.js"
 
 
 
-dotenv.config();
+
 connectDB();
 
 const app = express();
