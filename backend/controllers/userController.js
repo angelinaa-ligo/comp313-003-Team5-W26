@@ -124,8 +124,8 @@ export const loginUser = async (req, res) => {
     }
 
     if (account.role === 'admin') {
-      return res.json({ mfaRequired: true });
-    }
+    return res.json({ mfaRequired: true, email: account.email });
+}
 
     res.json({
       _id: account._id,
@@ -142,14 +142,14 @@ export const loginUser = async (req, res) => {
 };
 export const sendMfa = async (req, res) => {
     try {
-        const { email, mfaEmail } = req.body;
+        const { email } = req.body;
 
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         otpStore[email] = { code: otp, expiresAt: Date.now() + 10 * 60 * 1000 };
 
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
-            to: mfaEmail,
+            to: email,
             subject: 'Admin verification code',
             html: `<p>Your access code:</p><h2 style="letter-spacing:8px">${otp}</h2><p>Expires in 10 minutes.</p>`,
         });

@@ -5,33 +5,30 @@ import '../../styles/login.css';
 export default function LoginForm() {
     const navigate = useNavigate();
     useEffect(() => {
-
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
-
-    if (token) {
-
-        if (role === "admin") {
-            navigate("/admin/dashboard");
+        const token = localStorage.getItem("token");
+        const role = localStorage.getItem("role");
+        if (token) {
+            if (role === "admin") navigate("/admin/dashboard");
+            else if (role === "organization") navigate("/organization/dashboard");
+            else navigate("/home");
         }
+    }, []);
 
-        else if (role === "organization") {
-            navigate("/organization/dashboard");
-        }
-
-        else {
-            navigate("/home");
-        }
-
-    }    }, []);
     const [mfaPending, setMfaPending] = useState(false);
 const [mfaCode, setMfaCode] = useState('');
-const [mfaEmailTarget, setMfaEmailTarget] = useState('');  // novo
-const [codeSent, setCodeSent] = useState(false); // novo
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [showReset, setShowReset] = useState(false);
-    const [securityAnswer, setSecurityAnswer] = useState('');
+const [mfaEmailTarget, setMfaEmailTarget] = useState('');
+const [codeSent, setCodeSent] = useState(false);
+const [email, setEmail] = useState('');
+const [password, setPassword] = useState('');
+const [showReset, setShowReset] = useState(false);
+const [securityAnswer, setSecurityAnswer] = useState('');
+
+// useEffect do auto-send DEPOIS
+useEffect(() => {
+    if (mfaPending && mfaEmailTarget) {
+        handleSendCode();
+    }
+}, [mfaPending, mfaEmailTarget]);
 
     const handleResetPassword = async () => {
 
@@ -97,9 +94,9 @@ const [codeSent, setCodeSent] = useState(false); // novo
                 return;
             }
 
-           if (data.mfaRequired) {
-    
+          if (data.mfaRequired) {
     setMfaPending(true);
+    setMfaEmailTarget(data.email); // <- pegar o email da resposta
     return;
 }
 
@@ -130,35 +127,29 @@ if (data.role === "admin") {
     const handleByPass = () => {
         navigate('/home');
     };
-const handleMfaVerify = async () => {
-    if (!mfaCode || mfaCode.length !== 6) return alert('Enter the 6-digit code');
+ const handleMfaVerify = async () => {
+        if (!mfaCode || mfaCode.length !== 6) return alert('Enter the 6-digit code');
+        try {
+            const response = await fetch('http://localhost:5000/api/users/verify-mfa', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: mfaEmailTarget, code: mfaCode }),
+            });
+            const data = await response.json();
+            if (!response.ok) { alert(data.message); return; }
 
-    try {
-        const response = await fetch('http://localhost:5000/api/users/verify-mfa', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, code: mfaCode }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            alert(data.message);
-            return;
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('role', data.role);
+            localStorage.setItem('userInfo', JSON.stringify(data));
+            alert('Login successful!');
+            if (data.role === "admin") navigate("/admin/dashboard");
+            else if (data.role === "organization") navigate("/organization/dashboard");
+            else navigate("/home");
+        } catch (error) {
+            console.error(error);
+            alert('Server error');
         }
-
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('role', data.role);
-        localStorage.setItem('userInfo', JSON.stringify(data));
-
-        alert('Login successful!');
-        navigate('/admin/dashboard');
-
-    } catch (error) {
-        console.error(error);
-        alert('Server error');
-    }
-};
+    };
 const handleSendCode = async () => {
     if (!mfaEmailTarget) return alert('Enter an email');
 
@@ -166,7 +157,7 @@ const handleSendCode = async () => {
         const response = await fetch('http://localhost:5000/api/users/send-mfa', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, mfaEmail: mfaEmailTarget }),
+            body: JSON.stringify({ email: mfaEmailTarget }),
         });
 
         const data = await response.json();
@@ -190,17 +181,8 @@ if (mfaPending) {
 
                 {!codeSent ? (
                     <>
-                        <p>Where should we send the verification code?</p>
-                        <div className="form-group">
-                            <label>Email</label>
-                            <input
-                                type="email"
-                                value={mfaEmailTarget}
-                                onChange={(e) => setMfaEmailTarget(e.target.value)}
-                                placeholder="your@email.com"
-                            />
-                        </div>
-                        <button onClick={handleSendCode}>Send Code</button>
+                        <p>Sending code to <strong>{mfaEmailTarget}</strong>...</p>
+                        
                     </>
                 ) : (
                     <>

@@ -8,8 +8,11 @@ const createAdmin = async () => {
   const hashedPassword = await bcrypt.hash("Admin@123", 10);
 
   await Admin.create({
+    name: "Admin", 
     email: "adminpawtracker@gmail.com",
     password: hashedPassword,
+    securityAnswer: "blue",
+    securityQuestion: "What is your favorite color?"
   });
 
   console.log("Admin created");
