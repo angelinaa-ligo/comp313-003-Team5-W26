@@ -12,7 +12,7 @@ export const getOrganizationAnimals = async (req, res) => {
 
     const animals = await Animal.find({
       organization: orgId,
-      adoptionStatus: { $ne: "not_for_adoption" },
+      
     });
 
     const requests = await AdoptionRequest.find({

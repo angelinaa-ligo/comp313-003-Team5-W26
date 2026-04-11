@@ -124,9 +124,7 @@ if (data.role === "admin") {
         navigate('/signup');
     };
 
-    const handleByPass = () => {
-        navigate('/home');
-    };
+  
  const handleMfaVerify = async () => {
         if (!mfaCode || mfaCode.length !== 6) return alert('Enter the 6-digit code');
         try {
@@ -265,7 +263,6 @@ if (mfaPending) {
 
                 <button onClick={handleSignUp}>Sign Up Instead</button>
 
-                <button onClick={handleByPass}>Bypass Login</button>
 
             </div>
 
