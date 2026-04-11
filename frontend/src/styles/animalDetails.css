@@ -1,17 +1,43 @@
-/* Page background */
+/* ========================================= */
+/* WRAPPER */
+/* ========================================= */
+
 .details-page {
   min-height: 100vh;
-  background: #f6f7fb;
+  margin-top: 32px;
+  padding-top: 10px;
+  transition: all 0.3s ease;
+  border-radius: 16px;
 }
 
-/* Container */
+/* LIGHT */
+.details-page.light {
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+/* DARK */
+.details-page.dark {
+  background-color: #0f172a;
+  color: #f1f5f9;
+}
+
+/* ========================================= */
+/* CONTAINER */
+/* ========================================= */
+
 .details-container {
   max-width: 800px;
   margin: 30px auto;
   padding: 50px;
+  
 }
 
-/* Back button */
+
+/* ========================================= */
+/* BACK BUTTON */
+/* ========================================= */
+
 .back-btn {
   background: #4a6cf7;
   color: white;
@@ -27,21 +53,42 @@
   background: #3a57d6;
 }
 
-/* Card */
+/* ========================================= */
+/* CARD */
+/* ========================================= */
+
 .details-card {
-  background: white;
   padding: 25px;
   border-radius: 12px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  border: 1px solid;
+  transition: 0.3s;
 }
 
-/* Title */
+/* LIGHT */
+.details-page.light .details-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+/* DARK */
+.details-page.dark .details-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+/* ========================================= */
+/* TITLE */
+/* ========================================= */
+
 .animal-title {
   margin-bottom: 20px;
   font-size: 28px;
 }
 
-/* Info grid */
+/* ========================================= */
+/* INFO GRID */
+/* ========================================= */
+
 .info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -49,13 +96,35 @@
   margin-bottom: 20px;
 }
 
-/* Organization section */
+/* ========================================= */
+/* ORG SECTION */
+/* ========================================= */
+
 .org-section {
   margin-top: 20px;
   padding-top: 15px;
-  border-top: 1px solid #eee;
+  border-top: 1px solid;
 }
 
+/* LIGHT */
+.details-page.light .org-section {
+  border-color: #e2e8f0;
+}
+
+/* DARK */
+.details-page.dark .org-section {
+  border-color: #334155;
+}
+.details-page.light button {
+  background-color: #e2e8f0;
+  color: #1e293b;
+}
+
+/* DARK */
+.details-page.dark button {
+  background-color: #334155;
+  color: #f1f5f9;
+}
 .org-section h3 {
   margin-bottom: 10px;
 }
