@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import OrgNavBar from "../../components/OrgNavBar";
 import { ThemeContext } from "../../context/ThemeContext";
 import "../../styles/OrganizationDashboard.css";
+import AIInsightsPanel from "../../components/AIInsightsPanel";
 
 export default function OrganizationDashboard() {
   const navigate = useNavigate();
@@ -142,6 +143,9 @@ export default function OrganizationDashboard() {
             <div className="dash-stat-label">Total Campaigns</div>
           </div>
         </div>
+
+        {/* ── US-04: AI Insights Panel ── */}
+        <AIInsightsPanel role="organization" />
 
         {/* ── Updates Section (two columns) ── */}
         <div className="dashboard-updates-grid">

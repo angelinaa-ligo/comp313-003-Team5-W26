@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar';
 //import HomePetCard from '../components/HomePetCard';  we can add this back in later
 import '../../styles/home.css';
+import AIChatbot from '../../components/AIChatbot';
 import { useContext } from "react";
 import { ThemeContext } from "../../context/ThemeContext";
 
@@ -102,6 +103,9 @@ export default function HomePage() {
         </div>
       </div>
     </div>
-  </div>
+
+  {/* ── US-01: AI Pet Matching Chatbot ── */}
+  <AIChatbot />
+</div>
 );
 }

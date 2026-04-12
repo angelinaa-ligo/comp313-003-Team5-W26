@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import AdminCampaignCard from '../../components/AdminCampaignCard';
 import AdminNavBar from "../../components/AdminNavBar";
+import "../../styles/aiShared.css";
+
+const CAMPAIGN_TYPES = [
+  "Adoption Drive",
+  "Vaccination Clinic",
+  "Fundraiser",
+  "Foster Recruitment",
+  "General Awareness",
+];
 
 export default function AdminCampaignPage() {
     const [campaigns, setCampaigns] = useState([]);
@@ -8,6 +17,13 @@ export default function AdminCampaignPage() {
     const [form, setForm] = useState({ title: '', description: '', eventDate: '', location: '' });
     const [fieldErrors, setFieldErrors] = useState({});
     const [editingId, setEditingId] = useState(null);
+
+    // AI State
+    const [aiLoading, setAiLoading] = useState(false);
+    const [aiError, setAiError] = useState('');
+    const [selectedType, setSelectedType] = useState('');
+    const [showTypeSelector, setShowTypeSelector] = useState(false);
+    const [socialPost, setSocialPost] = useState('');
 
     const token = localStorage.getItem('token');
 
@@ -28,6 +44,53 @@ export default function AdminCampaignPage() {
         if (!form.eventDate) errors.eventDate = 'Event date is required';
         if (!form.location) errors.location = 'Location is required';
         return errors;
+    };
+
+    /* ── US-05: AI Campaign Content Generation (Admin) ── */
+    const canGenerate = form.eventDate && form.location;
+
+    const handleGenerateCampaign = async () => {
+      if (!selectedType) {
+        setShowTypeSelector(true);
+        return;
+      }
+
+      setAiLoading(true);
+      setAiError('');
+      setShowTypeSelector(false);
+
+      try {
+        const response = await fetch(
+          'http://localhost:5000/api/ai/generate-campaign',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              eventDate: form.eventDate,
+              location: form.location,
+              campaignType: selectedType,
+              isAdmin: true,
+            }),
+          }
+        );
+
+        if (!response.ok) throw new Error('Generation failed');
+
+        const data = await response.json();
+        setForm((prev) => ({
+          ...prev,
+          title: data.title || prev.title,
+          description: data.description || prev.description,
+        }));
+        setSocialPost(data.socialPost || '');
+      } catch {
+        setAiError('Campaign content generation failed. Please write content manually.');
+      } finally {
+        setAiLoading(false);
+      }
     };
 
     const handleSubmit = async () => {
@@ -52,6 +115,8 @@ export default function AdminCampaignPage() {
         if (res.ok) {
             setForm({ title: '', description: '', eventDate: '', location: '' });
             setEditingId(null);
+            setSocialPost('');
+            setSelectedType('');
             fetchCampaigns();
         } else {
             const data = await res.json();
@@ -67,6 +132,7 @@ export default function AdminCampaignPage() {
             eventDate: campaign.eventDate?.slice(0, 10),
             location: campaign.location
         });
+        setSocialPost('');
     };
 
    const handleDelete = async (campaign) => {
@@ -130,6 +196,64 @@ export default function AdminCampaignPage() {
         />
         {fieldErrors.location && <p className="field-error">{fieldErrors.location}</p>}
 
+        {/* ── AI Campaign Content Generation ── */}
+        <div style={{ marginTop: "12px", marginBottom: "12px" }}>
+          <div className="ai-section-label">✨ AI Content Assistant</div>
+
+          {showTypeSelector && (
+            <div className="campaign-type-selector">
+              {CAMPAIGN_TYPES.map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  className={`campaign-type-btn ${selectedType === type ? "active" : ""}`}
+                  onClick={() => setSelectedType(type)}
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
+          )}
+
+          <div className="ai-description-actions">
+            <button
+              type="button"
+              className="ai-generate-btn"
+              onClick={handleGenerateCampaign}
+              disabled={!canGenerate || aiLoading}
+            >
+              {aiLoading
+                ? "Generating..."
+                : showTypeSelector && selectedType
+                ? `✨ Generate ${selectedType} Content`
+                : "✨ Generate Campaign Content"}
+            </button>
+          </div>
+
+          {!canGenerate && (
+            <p style={{ fontSize: "0.8rem", color: "#888", marginTop: "6px" }}>
+              Fill in event date and location to enable AI generation.
+            </p>
+          )}
+
+          {aiLoading && (
+            <div className="ai-loading">
+              <div className="ai-spinner"></div>
+              AI is crafting your campaign content...
+            </div>
+          )}
+
+          {aiError && <div className="ai-error">{aiError}</div>}
+
+          {socialPost && (
+            <div className="social-post-preview">
+              <h4>📱 Suggested Social Media Post</h4>
+              <p>{socialPost}</p>
+              <div className="char-count">{socialPost.length}/280 characters</div>
+            </div>
+          )}
+        </div>
+
         <button onClick={handleSubmit}>
           {editingId ? "Update Campaign" : "Create Campaign"}
         </button>
@@ -139,6 +263,8 @@ export default function AdminCampaignPage() {
             onClick={() => {
               setEditingId(null);
               setForm({ title: "", description: "", eventDate: "", location: "" });
+              setSocialPost('');
+              setSelectedType('');
             }}
           >
             Cancel

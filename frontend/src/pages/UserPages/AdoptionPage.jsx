@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
 import AnimalAdoptionPreviewCard from "../../components/AnimalAdoptionPreviewCard";
 import "../../styles/AdoptionPage.css";
+import AIChatbot from "../../components/AIChatbot";
 import { useContext } from "react";
 import { ThemeContext } from "../../context/ThemeContext";
 export default function AdoptionPage() {
@@ -135,6 +136,9 @@ export default function AdoptionPage() {
         </div>
       </div>
     </div>
+
+    {/* ── US-01: AI Pet Matching Chatbot ── */}
+    <AIChatbot />
   </div>
 );
 }

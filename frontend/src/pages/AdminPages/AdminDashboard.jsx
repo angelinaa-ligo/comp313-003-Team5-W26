@@ -1,4 +1,5 @@
 import AdminNavBar from "../../components/AdminNavBar";
+import AIInsightsPanel from "../../components/AIInsightsPanel";
 import "../../styles/adminDashboard.css";
 
 export default function AdminDashboard() {
@@ -23,6 +24,9 @@ export default function AdminDashboard() {
           </div>
 
         </div>
+
+        {/* ── US-04: AI Insights Panel (Admin — aggregated) ── */}
+        <AIInsightsPanel role="admin" />
 
       </div>
     </>
