@@ -3,13 +3,20 @@ import { useNavigate } from "react-router-dom";
 import OrgNavBar from "../../components/OrgNavBar";
 import AnimalCard from "../../components/AnimalCard";
 import "../../styles/OrganizationAdoption.css";
+import "../../styles/aiShared.css";
 import { useContext } from "react";
 import { ThemeContext } from "../../context/ThemeContext";
+
 export default function OrganizationAdoption() {
   const navigate = useNavigate();
   const [animals, setAnimals] = useState([]);
   const [loading, setLoading] = useState(true);
   const { theme } = useContext(ThemeContext);
+
+  // US-03: AI Screening state
+  const [screeningData, setScreeningData] = useState({});
+  const [screeningLoading, setScreeningLoading] = useState({});
+  const [expandedScreening, setExpandedScreening] = useState({});
 
   const [filters, setFilters] = useState({
     status: "all",
@@ -42,6 +49,76 @@ useEffect(() => {
   fetchAnimals();
 }, []);
 
+  /* ---------- US-03: Fetch AI Screening ---------- */
+  const fetchScreening = async (requestId) => {
+    if (screeningData[requestId]) {
+      // Already fetched — just toggle expand
+      setExpandedScreening((prev) => ({
+        ...prev,
+        [requestId]: !prev[requestId],
+      }));
+      return;
+    }
+
+    setScreeningLoading((prev) => ({ ...prev, [requestId]: true }));
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `http://localhost:5000/api/ai/screen-adoption/${requestId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (!response.ok) throw new Error("Screening unavailable");
+
+      const data = await response.json();
+      setScreeningData((prev) => ({ ...prev, [requestId]: data }));
+      setExpandedScreening((prev) => ({ ...prev, [requestId]: true }));
+    } catch {
+      setScreeningData((prev) => ({
+        ...prev,
+        [requestId]: { error: true },
+      }));
+    } finally {
+      setScreeningLoading((prev) => ({ ...prev, [requestId]: false }));
+    }
+  };
+
+  const refreshScreening = async (requestId) => {
+    setScreeningData((prev) => {
+      const updated = { ...prev };
+      delete updated[requestId];
+      return updated;
+    });
+
+    setScreeningLoading((prev) => ({ ...prev, [requestId]: true }));
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `http://localhost:5000/api/ai/screen-adoption/${requestId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (!response.ok) throw new Error("Screening unavailable");
+
+      const data = await response.json();
+      setScreeningData((prev) => ({ ...prev, [requestId]: data }));
+      setExpandedScreening((prev) => ({ ...prev, [requestId]: true }));
+    } catch {
+      setScreeningData((prev) => ({
+        ...prev,
+        [requestId]: { error: true },
+      }));
+    } finally {
+      setScreeningLoading((prev) => ({ ...prev, [requestId]: false }));
+    }
+  };
+
   /* ---------- Filters ---------- */
   const filteredAnimals = animals.filter((animal) => {
     const matchesStatus =
@@ -72,24 +149,34 @@ useEffect(() => {
   };
 
   /* ---------- Actions ---------- */
-  const handleDecision = async (requestId, status) => {
-  try {
-    const token = localStorage.getItem("token");
+  const handleDecision = async (requestId, status, animalId) => {
+    // US-03: Confirmation for low-score approvals
+    if (status === "approved") {
+      const screening = screeningData[requestId];
+      if (screening && screening.level === "low") {
+        const confirmed = window.confirm(
+          "⚠️ The AI flagged this as Low compatibility. Are you sure you want to approve?"
+        );
+        if (!confirmed) return;
+      }
+    }
 
-    await fetch(`http://localhost:5000/api/adoptions/${requestId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ status }),
-    });
-    fetchAnimals();
+    try {
+      const token = localStorage.getItem("token");
 
-  } catch (error) {
-    console.error("Error updating adoption request:", error);
-  }
-};
+      await fetch(`http://localhost:5000/api/adoptions/${requestId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status }),
+      });
+      fetchAnimals();
+    } catch (error) {
+      console.error("Error updating adoption request:", error);
+    }
+  };
 
   if (loading) return <p>Loading...</p>;
 
@@ -174,35 +261,175 @@ useEffect(() => {
                   <div key={animal._id} className="adoption-card">
                     <AnimalCard animal={animal} />
 
+                    {/* US-03: AI Screening Badge for pending requests */}
                     {animal.adoptionStatus === "pending" &&
                       animal.adoptionRequestId && (
-                        <div className="actions">
-                          <button
-                            className="approve"
-                            onClick={() =>
-                              handleDecision(
-                                animal.adoptionRequestId,
-                                "approved",
-                                animal._id
-                              )
-                            }
+                        <>
+                          {/* AI Badge */}
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "8px",
+                              marginTop: "8px",
+                            }}
                           >
-                            Accept
-                          </button>
+                            {screeningData[animal.adoptionRequestId] &&
+                              !screeningData[animal.adoptionRequestId].error && (
+                                <span
+                                  className={`ai-badge ${screeningData[animal.adoptionRequestId].level}`}
+                                >
+                                  {screeningData[animal.adoptionRequestId]
+                                    .level === "high"
+                                    ? "🟢"
+                                    : screeningData[animal.adoptionRequestId]
+                                        .level === "medium"
+                                    ? "🟡"
+                                    : "🔴"}{" "}
+                                  AI:{" "}
+                                  {screeningData[animal.adoptionRequestId].level
+                                    .charAt(0)
+                                    .toUpperCase() +
+                                    screeningData[
+                                      animal.adoptionRequestId
+                                    ].level.slice(1)}
+                                </span>
+                              )}
 
-                          <button
-                            className="reject"
-                            onClick={() =>
-                              handleDecision(
-                                animal.adoptionRequestId,
-                                "rejected",
-                                animal._id
-                              )
-                            }
-                          >
-                            Reject
-                          </button>
-                        </div>
+                            <button
+                              className="ai-generate-btn"
+                              style={{
+                                padding: "4px 12px",
+                                fontSize: "0.75rem",
+                              }}
+                              onClick={() =>
+                                fetchScreening(animal.adoptionRequestId)
+                              }
+                              disabled={
+                                screeningLoading[animal.adoptionRequestId]
+                              }
+                            >
+                              {screeningLoading[animal.adoptionRequestId]
+                                ? "Analyzing..."
+                                : screeningData[animal.adoptionRequestId]
+                                ? "📋 Details"
+                                : "🧠 AI Screen"}
+                            </button>
+                          </div>
+
+                          {/* Expanded Screening Summary */}
+                          {expandedScreening[animal.adoptionRequestId] &&
+                            screeningData[animal.adoptionRequestId] &&
+                            !screeningData[animal.adoptionRequestId].error && (
+                              <div className="screening-summary">
+                                <div className="ai-section-label">
+                                  🧠 AI Screening Summary
+                                </div>
+
+                                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                  <strong>Score:</strong>
+                                  <span>
+                                    {screeningData[animal.adoptionRequestId].score}/100
+                                  </span>
+                                </div>
+
+                                <div className="score-bar">
+                                  <div
+                                    className={`score-fill ${screeningData[animal.adoptionRequestId].level}`}
+                                    style={{
+                                      width: `${screeningData[animal.adoptionRequestId].score}%`,
+                                    }}
+                                  />
+                                </div>
+
+                                <ul className="rationale-list">
+                                  {screeningData[
+                                    animal.adoptionRequestId
+                                  ].rationale?.map((r, i) => (
+                                    <li key={i}>{r}</li>
+                                  ))}
+                                </ul>
+
+                                <span
+                                  className={`recommendation ${
+                                    screeningData[animal.adoptionRequestId]
+                                      .recommendation === "Approve"
+                                      ? "approve"
+                                      : screeningData[animal.adoptionRequestId]
+                                          .recommendation === "Review Further"
+                                      ? "review"
+                                      : "decline"
+                                  }`}
+                                >
+                                  Recommendation:{" "}
+                                  {
+                                    screeningData[animal.adoptionRequestId]
+                                      .recommendation
+                                  }
+                                </span>
+
+                                <div style={{ marginTop: "8px" }}>
+                                  <button
+                                    className="ai-generate-btn"
+                                    style={{
+                                      padding: "4px 12px",
+                                      fontSize: "0.72rem",
+                                      background:
+                                        "linear-gradient(135deg, #4CAF50, #2E7D32)",
+                                    }}
+                                    onClick={() =>
+                                      refreshScreening(
+                                        animal.adoptionRequestId
+                                      )
+                                    }
+                                    disabled={
+                                      screeningLoading[
+                                        animal.adoptionRequestId
+                                      ]
+                                    }
+                                  >
+                                    🔄 Re-analyze
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+
+                          {/* Error state */}
+                          {screeningData[animal.adoptionRequestId]?.error && (
+                            <div className="ai-error" style={{ marginTop: "8px" }}>
+                              AI screening is currently unavailable.
+                            </div>
+                          )}
+
+                          {/* Actions */}
+                          <div className="actions">
+                            <button
+                              className="approve"
+                              onClick={() =>
+                                handleDecision(
+                                  animal.adoptionRequestId,
+                                  "approved",
+                                  animal._id
+                                )
+                              }
+                            >
+                              Accept
+                            </button>
+
+                            <button
+                              className="reject"
+                              onClick={() =>
+                                handleDecision(
+                                  animal.adoptionRequestId,
+                                  "rejected",
+                                  animal._id
+                                )
+                              }
+                            >
+                              Reject
+                            </button>
+                          </div>
+                        </>
                       )}
 
                     {animal.adopterName && (

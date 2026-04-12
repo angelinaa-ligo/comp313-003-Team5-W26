@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdminNavBar from "../../components/AdminNavBar";
+import AIInsightsPanel from "../../components/AIInsightsPanel";
 import "../../styles/adminDashboard.css";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
@@ -95,6 +96,9 @@ export default function AdminDashboard() {
             <p>{analytics.inactiveCampaigns}</p>
           </div>
         </div>
+
+        {/* ── US-04: AI Insights Panel (Admin — aggregated) ── */}
+        <AIInsightsPanel role="admin" />
 
         {/* Line Chart: Users & Pets over time */}
         {/* Line Chart */}

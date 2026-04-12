@@ -39,6 +39,15 @@ const animalSchema = new mongoose.Schema(
       default: null
     },
 
+    description: {
+      type: String,
+      default: ""
+    },
+    aiGenerated: {
+      type: Boolean,
+      default: false
+    },
+
     organization: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Organization",

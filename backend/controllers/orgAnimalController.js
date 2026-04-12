@@ -81,7 +81,7 @@ export const createAnimal = async (req, res) => {
   try {
     const orgId = req.organization._id;
 
-    const { name, species, breed, sex, age, adoptionStatus } = req.body;
+    const { name, species, breed, sex, age, adoptionStatus, description, aiGenerated } = req.body;
 
     if (!name || !species || !sex) {
       return res.status(400).json({
@@ -96,6 +96,8 @@ export const createAnimal = async (req, res) => {
       sex,
       age,
       adoptionStatus,
+      description,
+      aiGenerated,
       organization: orgId,
     });
 
@@ -164,6 +166,8 @@ export const updateAnimal = async (req, res) => {
       "sex",
       "age",
       "adoptionStatus",
+      "description",
+      "aiGenerated",
     ];
 
     allowedFields.forEach((field) => {
