@@ -41,6 +41,7 @@ router.put("/adoptions/:id/approve", protect, isAdmin, adminController.approveLi
 // Hide adoption listing
 router.put("/adoptions/:id/hide", protect, isAdmin, adminController.hideListing);
 
-
+//admin analytics 
+router.get("/analytics", protect, isAdmin, adminController.getAdminAnalytics);
 
 export default router;

@@ -6,6 +6,7 @@ import {
   getPublicCampaigns,
   updateCampaign,
   deleteCampaign,
+  closeCampaign,
 } from "../controllers/careCampaignController.js";
 import { protectOrganization } from "../middleware/protectOrganization.js";
 
@@ -19,6 +20,7 @@ router.get("/campaigns/organization", protectOrganization, getOrganizationCampai
 router.put("/campaigns/:id", protectOrganization, updateCampaign);
 router.delete("/campaigns/:id", protectOrganization, deleteCampaign);
 router.get("/campaigns/:id", protectOrganization, getCampaignById);
+router.patch("/campaigns/:id/close", protectOrganization, closeCampaign);
 
 
 export default router;

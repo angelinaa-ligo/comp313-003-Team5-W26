@@ -1,5 +1,5 @@
+import 'dotenv/config';
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
 
@@ -12,10 +12,11 @@ import adminCampaignRoutes from "./routes/adminCampaignRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import organizationRoutes from "./routes/organizationRoutes.js";
 import aiRoutes from "./routes/aiRoutes.js";
+import clinicRoutes from "./routes/clinicRoutes.js"
 
 
 
-dotenv.config();
+
 connectDB();
 
 const app = express();
@@ -37,6 +38,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/pets", petRoutes);
 app.use("/api/animals", animalRoutes);
 app.use("/api/adoptions", adoptionRoutes);
+app.use("/api/organizations", organizationRoutes);
+app.use("/api/clinics", clinicRoutes);
 app.use("/api", careCampaignRoutes);
 app.use("/api", adminCampaignRoutes);
 app.use("/api/organizations", organizationRoutes);

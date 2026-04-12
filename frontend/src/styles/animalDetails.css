@@ -1,0 +1,130 @@
+/* ========================================= */
+/* WRAPPER */
+/* ========================================= */
+
+.details-page {
+  min-height: 100vh;
+  margin-top: 32px;
+  padding-top: 10px;
+  transition: all 0.3s ease;
+  border-radius: 16px;
+}
+
+/* LIGHT */
+.details-page.light {
+  background-color: #f8fafc;
+  color: #1e293b;
+}
+
+/* DARK */
+.details-page.dark {
+  background-color: #0f172a;
+  color: #f1f5f9;
+}
+
+/* ========================================= */
+/* CONTAINER */
+/* ========================================= */
+
+.details-container {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 50px;
+  
+}
+
+
+/* ========================================= */
+/* BACK BUTTON */
+/* ========================================= */
+
+.back-btn {
+  background: #4a6cf7;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #3a57d6;
+}
+
+/* ========================================= */
+/* CARD */
+/* ========================================= */
+
+.details-card {
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid;
+  transition: 0.3s;
+}
+
+/* LIGHT */
+.details-page.light .details-card {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+/* DARK */
+.details-page.dark .details-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+/* ========================================= */
+/* TITLE */
+/* ========================================= */
+
+.animal-title {
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+/* ========================================= */
+/* INFO GRID */
+/* ========================================= */
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* ========================================= */
+/* ORG SECTION */
+/* ========================================= */
+
+.org-section {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid;
+}
+
+/* LIGHT */
+.details-page.light .org-section {
+  border-color: #e2e8f0;
+}
+
+/* DARK */
+.details-page.dark .org-section {
+  border-color: #334155;
+}
+.details-page.light button {
+  background-color: #e2e8f0;
+  color: #1e293b;
+}
+
+/* DARK */
+.details-page.dark button {
+  background-color: #334155;
+  color: #f1f5f9;
+}
+.org-section h3 {
+  margin-bottom: 10px;
+}

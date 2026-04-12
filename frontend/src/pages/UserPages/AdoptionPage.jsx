@@ -100,7 +100,7 @@ export default function AdoptionPage() {
 
                   <button
                     className="btn-details"
-                    onClick={() => navigate(`/pets/${animal._id}`)}
+                    onClick={() => navigate(`/animals/${animal._id}`)}
                   >
                     View Details
                   </button>

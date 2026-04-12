@@ -28,13 +28,24 @@ export default function AdminCampaignCard({ campaign, onEdit, onDelete }) {
                     <p><strong>Location:</strong> {campaign.location}</p>
                 </div>
                 <div className="campaign-actions">
-                    <button type="button" className="campaign-action edit" onClick={() => onEdit && onEdit(campaign)}>
-                        Edit
-                    </button>
-                    <button type="button" className="campaign-action delete" onClick={() => onDelete && onDelete(campaign)}>
-                        Delete
-                    </button>
-                </div>
+        {/* EDIT ONLY IF ACTIVE */}
+        {campaign.isActive && (
+          <button
+            className="campaign-action edit"
+            onClick={() => onEdit(campaign)}
+          >
+            Edit
+          </button>
+        )}
+
+        {/* DELETE ALWAYS AVAILABLE FOR ADMIN */}
+        <button
+          className="campaign-action delete"
+          onClick={() => onDelete(campaign)}
+        >
+          Delete
+        </button>
+      </div>
             </div>
         </article>
     )

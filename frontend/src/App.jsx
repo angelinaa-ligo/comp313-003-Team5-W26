@@ -27,6 +27,8 @@ import ManageAccounts from "./pages/AdminPages/ManageAccounts";
 import ModerateAdoptions from "./pages/AdminPages/ModerateAdoptions";
 import AdminCampaignPage from "./pages/AdminPages/AdminCampaignPage";
 import UserSettings from "./pages/UserPages/UserSettings";
+import AdminClinicLocations from "./pages/AdminPages/AdminClinicLocations";
+import AnimalDetailsPage from './pages/UserPages/AnimalDetailsPage';
 
 function App() {
    useEffect(() => {
@@ -44,6 +46,7 @@ function App() {
     {/* Públicas */}
     <Route path="/login" element={<LoginForm />} />
     <Route path="/signup" element={<SignUpForm />} />
+    <Route path="/animals/:id" element={<AnimalDetailsPage />} />
 
     {/* Privadas */}
     <Route path="/home" element={
@@ -154,6 +157,14 @@ function App() {
   element={
     <PrivateRoute role="admin">
       <AdminCampaignPage />
+    </PrivateRoute>
+  }
+/>
+<Route
+  path="/admin/clinic-locations"
+  element={
+    <PrivateRoute role="admin">
+      <AdminClinicLocations />
     </PrivateRoute>
   }
 />

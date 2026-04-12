@@ -2,7 +2,16 @@ import User from "../models/User.js";
 import Organization from "../models/Organization.js";
 import Admin from "../models/Admin.js";
 import jwt from "jsonwebtoken";
+import nodemailer from 'nodemailer';
 
+const otpStore = {};
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 const generateToken = (id, role) => {
   return jwt.sign({ id, role }, process.env.JWT_SECRET, {
     expiresIn: "30d",
@@ -114,6 +123,10 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
+    if (account.role === 'admin') {
+    return res.json({ mfaRequired: true, email: account.email });
+}
+
     res.json({
       _id: account._id,
       name: account.name,
@@ -127,7 +140,57 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+export const sendMfa = async (req, res) => {
+    try {
+        const { email } = req.body;
 
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        otpStore[email] = { code: otp, expiresAt: Date.now() + 10 * 60 * 1000 };
+
+        await transporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Admin verification code',
+            html: `<p>Your access code:</p><h2 style="letter-spacing:8px">${otp}</h2><p>Expires in 10 minutes.</p>`,
+        });
+
+        res.json({ message: 'Code sent' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+export const verifyMfa = async (req, res) => {
+  try {
+    const { email, code } = req.body;
+    const stored = otpStore[email];
+
+    if (!stored)
+      return res.status(401).json({ message: 'No pending code for this email' });
+    if (Date.now() > stored.expiresAt) {
+      delete otpStore[email];
+      return res.status(401).json({ message: 'Code expired, please login again' });
+    }
+    if (stored.code !== code)
+      return res.status(401).json({ message: 'Incorrect code' });
+
+    delete otpStore[email];
+
+    const account = await Admin.findOne({ email });
+    res.json({
+      _id: account._id,
+      name: account.name,
+      email: account.email,
+      role: account.role,
+      token: generateToken(account._id, account.role),
+    });
+
+  } catch (error) {
+    console.error('VERIFY MFA ERROR:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
 /* =========================
    FORGOT PASSWORD
 ========================= */
