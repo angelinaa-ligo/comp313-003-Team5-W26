@@ -2,6 +2,7 @@ import { generateContent, generateJSON } from "../config/aiService.js";
 import Animal from "../models/Animal.js";
 import AdoptionRequest from "../models/AdoptionRequest.js";
 import CareCampaign from "../models/CareCampaign.js";
+import { mockPets } from "../data/mockPets.js"; 
 
 /* ═══════════════════════════════════════════════════════
    US-02 — Generate Animal Profile Description
@@ -262,9 +263,7 @@ export const matchPets = async (req, res) => {
     } = preferences;
 
     // Get all available animals
-    const availableAnimals = await Animal.find({
-      adoptionStatus: "available",
-    }).populate("organization", "name");
+    const availableAnimals = mockPets;
 
     if (availableAnimals.length === 0) {
       return res.json({
