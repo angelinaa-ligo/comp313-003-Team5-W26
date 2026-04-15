@@ -2,21 +2,19 @@ import User from "../models/User.js";
 import Organization from "../models/Organization.js";
 import Admin from "../models/Admin.js";
 import jwt from "jsonwebtoken";
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 const otpStore = {};
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 const generateToken = (id, role) => {
   return jwt.sign({ id, role }, process.env.JWT_SECRET, {
     expiresIn: "30d",
   });
 };
+
+
+
 
 /* =========================
    REGISTER
@@ -143,28 +141,36 @@ export const loginUser = async (req, res) => {
 export const sendMfa = async (req, res) => {
     try {
         const { email } = req.body;
+        console.log('[MFA] sendMfa called with email:', email);
 
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         otpStore[email] = { code: otp, expiresAt: Date.now() + 10 * 60 * 1000 };
+        console.log('[MFA] OTP generated and stored for:', email);
 
-        await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+        await resend.emails.send({
+            from: 'onboarding@resend.dev',
             to: email,
             subject: 'Admin verification code',
             html: `<p>Your access code:</p><h2 style="letter-spacing:8px">${otp}</h2><p>Expires in 10 minutes.</p>`,
         });
 
+        console.log('[MFA] Email sent successfully to:', email);
         res.json({ message: 'Code sent' });
 
     } catch (error) {
-        console.error(error);
+        console.error('[MFA] sendMfa ERROR:', error.message);
         res.status(500).json({ message: error.message });
     }
 };
+
 export const verifyMfa = async (req, res) => {
   try {
     const { email, code } = req.body;
+    console.log('[MFA] verifyMfa called - email:', email, 'code:', code);
+    console.log('[MFA] otpStore current state:', otpStore);
+
     const stored = otpStore[email];
+    console.log('[MFA] stored entry:', stored);
 
     if (!stored)
       return res.status(401).json({ message: 'No pending code for this email' });
@@ -178,6 +184,8 @@ export const verifyMfa = async (req, res) => {
     delete otpStore[email];
 
     const account = await Admin.findOne({ email });
+    console.log('[MFA] Admin found:', !!account);
+
     res.json({
       _id: account._id,
       name: account.name,
@@ -187,7 +195,7 @@ export const verifyMfa = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('VERIFY MFA ERROR:', error);
+    console.error('[MFA] verifyMfa ERROR:', error.message);
     res.status(500).json({ message: error.message });
   }
 };
