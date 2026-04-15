@@ -8,6 +8,7 @@ export default function EditPetForm() {
     const navigate = useNavigate();
     const { petId } = useParams();
     const { theme } = useContext(ThemeContext);
+    const apiUrl = import.meta.env.VITE_BE_URL;
     
     const [formData, setFormData] = useState({
         name: '',
@@ -31,7 +32,7 @@ export default function EditPetForm() {
                     return;
                 }
 
-                const response = await fetch(`http://localhost:5000/api/pets/${petId}`, {
+                const response = await fetch(`${apiUrl}/api/pets/${petId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -75,7 +76,7 @@ export default function EditPetForm() {
         setError('');
 
         try {
-            const response = await fetch(`http://localhost:5000/api/pets/${petId}`, {
+            const response = await fetch(`${apiUrl}/api/pets/${petId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
 import AdminNavBar from "../../components/AdminNavBar";
-import "../../styles/ManageAccounts.css";
+import "../../styles/manageAccounts.css";
 
 export default function ManageAccounts() {
   const [editingRole, setEditingRole] = useState(null);
   const [search, setSearch] = useState("");
   const [accounts, setAccounts] = useState([]);
+  const apiUrl = import.meta.env.VITE_BE_URL;
 
   const token = localStorage.getItem("token");
 
   // LOAD USERS
   useEffect(() => {
 
-    fetch("http://localhost:5000/api/admin/users", {
+    fetch(`${apiUrl}/api/admin/users`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -38,7 +39,7 @@ const handleApproveOrganization = async (id) => {
 
   try {
 
-    const res = await fetch(`http://localhost:5000/api/admin/users/${id}/approve-organization`, {
+    const res = await fetch(`${apiUrl}/api/admin/users/${id}/approve-organization`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`
@@ -66,7 +67,7 @@ const handleApproveOrganization = async (id) => {
   const handleDeactivate = async (id) => {
     try {
       if (!window.confirm("Are you sure you want to delete this account?")) return;
-      await fetch(`http://localhost:5000/api/admin/users/${id}/deactivate`, {
+      await fetch(`${apiUrl}/api/admin/users/${id}/deactivate`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`
@@ -87,7 +88,7 @@ const handleApproveOrganization = async (id) => {
 const handleReactivate = async (id) => {
   try {
 
-    await fetch(`http://localhost:5000/api/admin/users/${id}/reactivate`, {
+    await fetch(`${apiUrl}/api/admin/users/${id}/reactivate`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`
@@ -105,7 +106,7 @@ const handleReactivate = async (id) => {
   const handleDelete = async (id) => {
     try {
       if (!window.confirm("Are you sure you want to delete this account?")) return;
-      const res = await fetch(`http://localhost:5000/api/admin/users/${id}`, {
+      const res = await fetch(`${apiUrl}/api/admin/users/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`
@@ -139,9 +140,9 @@ const handleReactivate = async (id) => {
     let endpoint = "";
 
     if (newRole === "admin") {
-      endpoint = `http://localhost:5000/api/admin/users/${id}/promote`;
+      endpoint = `${apiUrl}/api/admin/users/${id}/promote`;
     } else if (newRole === "user") {
-      endpoint = `http://localhost:5000/api/admin/users/${id}/demote`;
+      endpoint = `${apiUrl}/api/admin/users/${id}/demote`;
     }
 
     const res = await fetch(endpoint, {

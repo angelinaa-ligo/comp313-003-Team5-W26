@@ -8,6 +8,7 @@ export default function OrganizationPets() {
   const navigate = useNavigate();
   const [animals, setAnimals] = useState([]);
   const { theme } = useContext(ThemeContext);
+  const apiUrl = import.meta.env.VITE_BE_URL;
 
   // ── Filter state ──────────────────────────────────────────
   const [filters, setFilters] = useState({
@@ -47,7 +48,7 @@ export default function OrganizationPets() {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(
-          "http://localhost:5000/api/animals/organization",
+          `${apiUrl}/api/animals/organization`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -71,7 +72,7 @@ export default function OrganizationPets() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:5000/api/animals/${id}`,
+        `${apiUrl}/api/animals/${id}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },

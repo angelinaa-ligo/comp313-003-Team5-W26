@@ -8,6 +8,7 @@ export default function HealthClinicsPage() {
 
   const [location, setLocation] = useState("");
   const [clinics, setClinics] = useState([]);
+  const apiUrl = import.meta.env.VITE_BE_URL;
   const [selectedMapQuery, setSelectedMapQuery] = useState(
     "veterinary clinic near Toronto"
   );
@@ -22,8 +23,8 @@ export default function HealthClinicsPage() {
       setError("");
 
       const url = searchValue
-        ? `http://localhost:5000/api/clinics?search=${encodeURIComponent(searchValue)}`
-        : "http://localhost:5000/api/clinics";
+        ? `${apiUrl}/api/clinics?search=${encodeURIComponent(searchValue)}`
+        : `${apiUrl}/api/clinics`;
 
       const response = await fetch(url);
       const data = await response.json();

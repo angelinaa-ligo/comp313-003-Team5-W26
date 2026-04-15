@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/CampaignCard.css';
+import '../styles/campaignCard.css';
 
 export default function AdminCampaignCard({ campaign, onEdit, onDelete }) {
     const getActiveText = (isActive) => {

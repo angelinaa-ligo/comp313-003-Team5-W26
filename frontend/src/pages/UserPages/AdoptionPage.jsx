@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../components/NavBar";
 import AnimalAdoptionPreviewCard from "../../components/AnimalAdoptionPreviewCard";
-import "../../styles/AdoptionPage.css";
+import "../../styles/adoptionPage.css";
 import AIChatbot from "../../components/AIChatbot";
 import { useContext } from "react";
 import { ThemeContext } from "../../context/ThemeContext";
 export default function AdoptionPage() {
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_BE_URL;
   const [animals, setAnimals] = useState([]);
   const { theme } = useContext(ThemeContext);
   const [loading, setLoading] = useState(true);
@@ -16,7 +17,7 @@ export default function AdoptionPage() {
     const fetchAnimals = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/animals/adoption"
+          `${apiUrl}/api/animals/adoption`
         );
 
         const data = await response.json();
@@ -48,7 +49,7 @@ export default function AdoptionPage() {
     try {
       const token = localStorage.getItem("token");
 
-      await fetch("http://localhost:5000/api/adoptions", {
+      await fetch(`${apiUrl}/api/adoptions`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

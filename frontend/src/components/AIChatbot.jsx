@@ -130,7 +130,7 @@ export default function AIChatbot() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/ai/match", {
+      const response = await fetch("https://pawtrackerserverkevin.onrender.com/api/ai/match", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

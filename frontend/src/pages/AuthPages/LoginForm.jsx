@@ -22,6 +22,7 @@ const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 const [showReset, setShowReset] = useState(false);
 const [securityAnswer, setSecurityAnswer] = useState('');
+const apiUrl = import.meta.env.VITE_BE_URL;
 
 // useEffect do auto-send DEPOIS
 useEffect(() => {
@@ -38,7 +39,7 @@ useEffect(() => {
         try {
 
             const response = await fetch(
-                "http://localhost:5000/api/users/forgot-password",
+                `${apiUrl}/api/users/forgot-password`,
                 {
                     method: "POST",
                     headers: {
@@ -74,7 +75,7 @@ useEffect(() => {
 
         try {
             const response = await fetch(
-                'http://localhost:5000/api/users/login',
+                `${apiUrl}/api/users/login`,
                 {
                     method: 'POST',
                     headers: {
@@ -128,7 +129,7 @@ if (data.role === "admin") {
  const handleMfaVerify = async () => {
         if (!mfaCode || mfaCode.length !== 6) return alert('Enter the 6-digit code');
         try {
-            const response = await fetch('http://localhost:5000/api/users/verify-mfa', {
+            const response = await fetch(`${apiUrl}/api/users/verify-mfa`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: mfaEmailTarget, code: mfaCode }),
@@ -152,7 +153,7 @@ const handleSendCode = async () => {
     if (!mfaEmailTarget) return alert('Enter an email');
 
     try {
-        const response = await fetch('http://localhost:5000/api/users/send-mfa', {
+        const response = await fetch(`${apiUrl}/api/users/send-mfa`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: mfaEmailTarget }),

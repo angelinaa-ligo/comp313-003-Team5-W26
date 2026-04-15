@@ -4,6 +4,7 @@ import '../../styles/signup.css';
 
 export default function SignUpForm() {
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_BE_URL;
 
   const [accountType, setAccountType] = useState("user");
   const [username, setUsername] = useState('');
@@ -19,6 +20,7 @@ export default function SignUpForm() {
   const [postalCode, setPostalCode] = useState('');
   const [country, setCountry] = useState('Canada');
   const [phone, setPhone] = useState('');
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +39,7 @@ export default function SignUpForm() {
 
     try {
       const response = await fetch(
-        'http://localhost:5000/api/users/register',
+        `${apiUrl}/api/users/register`,
         {
           method: 'POST',
           headers: {

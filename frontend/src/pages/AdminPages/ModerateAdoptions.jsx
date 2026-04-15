@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import AdminNavBar from "../../components/AdminNavBar";
-import "../../styles/ModerateAdoptions.css";
+import "../../styles/moderateAdoptions.css";
 
 export default function ModerateAdoptions() {
 
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const apiUrl = import.meta.env.VITE_BE_URL;
 
   useEffect(() => {
 
@@ -16,7 +17,7 @@ export default function ModerateAdoptions() {
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-          "http://localhost:5000/api/adoptions/admin/history",
+          `${apiUrl}/api/adoptions/admin/history`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

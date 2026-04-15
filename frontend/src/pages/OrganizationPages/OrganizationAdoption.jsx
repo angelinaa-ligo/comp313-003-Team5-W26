@@ -12,6 +12,7 @@ export default function OrganizationAdoption() {
   const [animals, setAnimals] = useState([]);
   const [loading, setLoading] = useState(true);
   const { theme } = useContext(ThemeContext);
+  const apiUrl = import.meta.env.VITE_BE_URL;
 
   // US-03: AI Screening state
   const [screeningData, setScreeningData] = useState({});
@@ -29,7 +30,7 @@ export default function OrganizationAdoption() {
     const token = localStorage.getItem("token");
 
     const response = await fetch(
-      "http://localhost:5000/api/animals/organization",
+      `${apiUrl}/api/animals/organization`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -65,7 +66,7 @@ useEffect(() => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:5000/api/ai/screen-adoption/${requestId}`,
+        `${apiUrl}/api/ai/screen-adoption/${requestId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -98,7 +99,7 @@ useEffect(() => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:5000/api/ai/screen-adoption/${requestId}`,
+        `${apiUrl}/api/ai/screen-adoption/${requestId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -164,7 +165,7 @@ useEffect(() => {
     try {
       const token = localStorage.getItem("token");
 
-      await fetch(`http://localhost:5000/api/adoptions/${requestId}`, {
+      await fetch(`${apiUrl}/api/adoptions/${requestId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

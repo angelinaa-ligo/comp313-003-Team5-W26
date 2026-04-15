@@ -10,6 +10,7 @@ export default function PetPages() {
   const [pets, setPets] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
+  const apiUrl = import.meta.env.VITE_BE_URL;
 
   useEffect(() => {
     const fetchPets = async () => {
@@ -23,7 +24,7 @@ export default function PetPages() {
           return;
         }
 
-        const response = await fetch('http://localhost:5000/api/pets', {
+        const response = await fetch(`${apiUrl}/api/pets`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -60,7 +61,7 @@ export default function PetPages() {
     const token = localStorage.getItem('token');
 
     const response = await fetch(
-      `http://localhost:5000/api/pets/${petId}`,
+      `${apiUrl}/api/pets/${petId}`,
       {
         method: 'DELETE',
         headers: {

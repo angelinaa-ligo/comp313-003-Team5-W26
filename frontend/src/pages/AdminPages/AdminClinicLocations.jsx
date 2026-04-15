@@ -14,10 +14,11 @@ export default function AdminClinicLocations() {
     phone: "",
     isActive: true,
   });
+  const apiUrl = import.meta.env.VITE_BE_URL;
 
   const fetchClinics = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/clinics");
+      const response = await fetch(`${apiUrl}/api/clinics`);
       const data = await response.json();
 
       if (!response.ok) {
@@ -75,8 +76,8 @@ export default function AdminClinicLocations() {
       const token = localStorage.getItem("token");
 
       const url = editingId
-        ? `http://localhost:5000/api/clinics/${editingId}`
-        : "http://localhost:5000/api/clinics";
+  ? `${apiUrl}/api/clinics/${editingId}`
+  : `${apiUrl}/api/clinics`;
 
       const method = editingId ? "PUT" : "POST";
 

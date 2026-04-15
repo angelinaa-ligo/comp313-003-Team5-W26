@@ -16,7 +16,7 @@ export default function AIInsightsPanel({ role = "organization" }) {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:5000/api/ai/insights", {
+      const response = await fetch("https://pawtrackerserverkevin.onrender.com/api/ai/insights", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

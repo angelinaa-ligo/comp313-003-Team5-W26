@@ -8,6 +8,7 @@ export default function CreatePetForm() {
     const navigate = useNavigate();
     const { theme } = useContext(ThemeContext);
     const {petId} = useParams();
+    const apiUrl = import.meta.env.VITE_BE_URL;
     const [formData, setFormData] = useState({
         name: '',
         species: '',
@@ -40,7 +41,7 @@ export default function CreatePetForm() {
                 setIsSubmitting(false);
                 return;
             }
-            const response = await fetch('http://localhost:5000/api/pets', {
+            const response = await fetch(`${apiUrl}/api/pets`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

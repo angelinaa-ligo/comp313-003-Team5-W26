@@ -10,13 +10,14 @@ export default function AnimalDetailsPage() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
+  const apiUrl = import.meta.env.VITE_BE_URL;
 
   useEffect(() => {
     const fetchAnimal = async () => {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(
-          `http://localhost:5000/api/animals/${id}/details`,
+          `${apiUrl}/api/animals/${id}/details`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         const data = await response.json();

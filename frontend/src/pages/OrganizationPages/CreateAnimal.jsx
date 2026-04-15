@@ -8,6 +8,7 @@ import { ThemeContext } from "../../context/ThemeContext";
 
 export default function CreateAnimal() {
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_BE_URL;
   const { theme } = useContext(ThemeContext);
 
   const [formData, setFormData] = useState({
@@ -45,7 +46,7 @@ export default function CreateAnimal() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "http://localhost:5000/api/ai/generate-description",
+        `${apiUrl}/api/ai/generate-description`,
         {
           method: "POST",
           headers: {
@@ -79,7 +80,7 @@ export default function CreateAnimal() {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch("http://localhost:5000/api/animals", {
+      const response = await fetch(`${apiUrl}/api/animals`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

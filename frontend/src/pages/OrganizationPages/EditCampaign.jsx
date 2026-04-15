@@ -8,7 +8,8 @@ export default function EditCampaign() {
   const navigate = useNavigate();
   const { id } = useParams();
     const { theme } = useContext(ThemeContext);
-  
+    const apiUrl = import.meta.env.VITE_BE_URL;
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -25,7 +26,7 @@ export default function EditCampaign() {
     const fetchCampaign = async () => {
       try {
         const token = localStorage.getItem("token"); 
-        const res = await fetch(`http://localhost:5000/api/campaigns/${id}`, {
+        const res = await fetch(`${apiUrl}/api/campaigns/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -66,7 +67,7 @@ export default function EditCampaign() {
 
     try {
       const token = localStorage.getItem("token"); // or "orgToken"
-      const res = await fetch(`http://localhost:5000/api/campaigns/${id}`, {
+      const res = await fetch(`${apiUrl}/api/campaigns/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

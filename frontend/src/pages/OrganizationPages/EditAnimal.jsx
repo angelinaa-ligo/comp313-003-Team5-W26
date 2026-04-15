@@ -10,6 +10,7 @@ export default function EditAnimal() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
+  const apiUrl = import.meta.env.VITE_BE_URL;
 
   const [formData, setFormData] = useState({
     name: "",
@@ -38,7 +39,7 @@ export default function EditAnimal() {
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-          `http://localhost:5000/api/animals/${id}`,
+          `${apiUrl}/api/animals/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -90,7 +91,7 @@ export default function EditAnimal() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "http://localhost:5000/api/ai/generate-description",
+        `${apiUrl}/api/ai/generate-description`,
         {
           method: "POST",
           headers: {
@@ -126,7 +127,7 @@ export default function EditAnimal() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/animals/${id}`,
+        `${apiUrl}/api/animals/${id}`,
         {
           method: "PUT",
           headers: {

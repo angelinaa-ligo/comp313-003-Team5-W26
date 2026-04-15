@@ -11,6 +11,7 @@ export default function UserPage() {
   const { theme } = useContext(ThemeContext);
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
+  const apiUrl = import.meta.env.VITE_BE_URL;
   const [isSuccess, setIsSuccess] = useState(false);
 
   // =========================
@@ -67,7 +68,7 @@ export default function UserPage() {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:5000/api/users/profile", {
+        const res = await fetch(`${apiUrl}/api/users/profile`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -101,7 +102,7 @@ export default function UserPage() {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:5000/api/users/profile", {
+      const res = await fetch(`${apiUrl}/api/users/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

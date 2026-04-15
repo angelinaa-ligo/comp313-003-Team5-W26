@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { ThemeContext } from "../../context/ThemeContext";
 export default function OrganizationEvents() {
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_BE_URL;
   const [campaigns, setCampaigns] = useState([]);
 const { theme } = useContext(ThemeContext);
   const activeCampaigns = campaigns.filter((c) => c.isActive === true);
@@ -24,7 +25,7 @@ const { theme } = useContext(ThemeContext);
       const token = localStorage.getItem("token");
 
       const res = await fetch(
-        "http://localhost:5000/api/campaigns/organization",
+        `${apiUrl}/api/campaigns/organization`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -62,7 +63,7 @@ const handleClose = async (campaign) => {
     const token = localStorage.getItem("token");
 
     const res = await fetch(
-      `http://localhost:5000/api/campaigns/${campaign._id}/close`,
+      `${apiUrl}api/campaigns/${campaign._id}/close`,
       {
         method: "PATCH",
         headers: {

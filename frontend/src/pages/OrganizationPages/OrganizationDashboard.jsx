@@ -8,6 +8,7 @@ import AIInsightsPanel from "../../components/AIInsightsPanel";
 export default function OrganizationDashboard() {
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
+  const apiUrl = import.meta.env.VITE_BE_URL;
 
   const [animals, setAnimals] = useState([]);
   const [campaigns, setCampaigns] = useState([]);
@@ -20,13 +21,13 @@ export default function OrganizationDashboard() {
     const headers = { Authorization: `Bearer ${token}` };
 
     Promise.all([
-      fetch("http://localhost:5000/api/animals/organization", { headers }).then(
+      fetch(`${apiUrl}/api/animals/organization`, { headers }).then(
         (r) => r.json()
       ),
-      fetch("http://localhost:5000/api/campaigns/organization", {
+      fetch(`${apiUrl}/api/campaigns/organization`, {
         headers,
       }).then((r) => r.json()),
-      fetch("http://localhost:5000/api/adoptions/organization", {
+      fetch(`${apiUrl}/api/adoptions/organization`, {
         headers,
       }).then((r) => r.json()),
     ])

@@ -16,6 +16,7 @@ export default function HomePage() {
     const [pets, setPets] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const apiUrl = import.meta.env.VITE_BE_URL;
 
 
     useEffect(() => {
@@ -31,7 +32,7 @@ export default function HomePage() {
                     return;
                 }
 
-                const response = await fetch("http://localhost:5000/api/pets", {
+                const response = await fetch(`${apiUrl}/api/pets`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

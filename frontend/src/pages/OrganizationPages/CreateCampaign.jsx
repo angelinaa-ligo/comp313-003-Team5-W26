@@ -16,6 +16,7 @@ const CAMPAIGN_TYPES = [
 
 export default function CreateCampaign() {
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_BE_URL;
   const { theme } = useContext(ThemeContext);
   const [formData, setFormData] = useState({
     title: "",
@@ -58,7 +59,7 @@ export default function CreateCampaign() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "http://localhost:5000/api/ai/generate-campaign",
+        `${apiUrl}/api/ai/generate-campaign`,
         {
           method: "POST",
           headers: {
@@ -100,7 +101,7 @@ export default function CreateCampaign() {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch("http://localhost:5000/api/campaigns", {
+      const response = await fetch(`${apiUrl}/api/campaigns`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -8,11 +8,12 @@ export default function CampaignPage() {
     const [campaigns, setCampaigns] = useState([]);
     const { theme } = useContext(ThemeContext);
     const activeCampaigns = campaigns.filter((c) => c.isActive === true);
+    const apiUrl = import.meta.env.VITE_BE_URL;
 
     useEffect(() => {
         const fetchCampaigns = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/campaigns/public");
+                const res = await fetch(`${apiUrl}/api/campaigns/public`);
                 if (!res.ok) throw new Error("Failed to fetch campaigns");
                 const data = await res.json();
                 setCampaigns(data);

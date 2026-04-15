@@ -13,11 +13,12 @@ export default function AdminDashboard() {
   const [error, setError] = useState("");
 
   const token = localStorage.getItem("token");
+  const apiUrl = import.meta.env.VITE_BE_URL;
 
   // Fetch analytics from backend
   const fetchAnalytics = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/admin/analytics", {
+      const res = await fetch(`${apiUrl}/api/admin/analytics`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (!res.ok) throw new Error("Failed to fetch analytics");
@@ -31,7 +32,7 @@ export default function AdminDashboard() {
   // Fetch recent users
   const fetchRecentUsers = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/admin/users", {
+      const res = await fetch(`${apiUrl}/api/admin/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (!res.ok) throw new Error("Failed to fetch users");

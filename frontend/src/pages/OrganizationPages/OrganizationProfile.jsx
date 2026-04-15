@@ -9,6 +9,7 @@ export default function OrganizationProfile() {
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const apiUrl = import.meta.env.VITE_BE_URL;
 
   const [securityAnswer, setSecurityAnswer] = useState("");
   const { theme } = useContext(ThemeContext);
@@ -64,7 +65,7 @@ export default function OrganizationProfile() {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          "http://localhost:5000/api/organizations/profile",
+          `${apiUrl}/api/organizations/profile`,
           {
             headers: { Authorization: `Bearer ${token}` }
           }
@@ -102,7 +103,7 @@ export default function OrganizationProfile() {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        "http://localhost:5000/api/organizations/profile",
+        `${apiUrl}/api/organizations/profile`,
         {
           method: "PUT",
           headers: {
