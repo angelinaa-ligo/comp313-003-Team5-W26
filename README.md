@@ -5,6 +5,12 @@ PawTracker is a web-based platform designed to help pet owners and animal care o
 
 ---
 
+## App Cloud Deploy
+
+https://pawtrackerclient-v8vs.onrender.com
+
+- AI feature 98% working 
+
 ## 📁 Project Structure
 
 ```
@@ -35,7 +41,6 @@ node server.js
 
 The API will run on `http://localhost:5000`.
 
-Add pkpwuiwdujquepxy for EMAILPASS on .env
 --
 
 ### Frontend
@@ -114,10 +119,6 @@ Password: Admin@123
 - Check adoption actions
 - Manage and create care campaigns
 
----
-
-
----
 
 ## 🛠️ Tech Stack
 
