@@ -63,7 +63,7 @@ const handleClose = async (campaign) => {
     const token = localStorage.getItem("token");
 
     const res = await fetch(
-      `${apiUrl}api/campaigns/${campaign._id}/close`,
+      `${apiUrl}/api/campaigns/${campaign._id}/close`,
       {
         method: "PATCH",
         headers: {
