@@ -1,3 +1,22 @@
+/**
+ * Organization Campaign Controller
+ * --------------------------------
+ * This file handles CareCampaign operations performed by
+ * organizations and public users.
+ *
+ * Responsibilities:
+ * - Allow organizations to create, update, close, and delete their own campaigns
+ * - Enforce ownership and role-based access control for campaign management
+ * - Expose public endpoints for users to view active campaigns
+ * - Retrieve campaign details by ID
+ *
+ * Business Rules:
+ * - Campaigns created here are owned by an organization
+ * - Only the owning organization can modify or delete a campaign
+ * - Closed (inactive) campaigns cannot be edited
+ * - Only active campaigns are visible to public users
+ */
+
 import CareCampaign from "../models/CareCampaign.js";
 
 // ORG → create event

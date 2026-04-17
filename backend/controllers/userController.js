@@ -1,3 +1,25 @@
+/**
+ * Authentication & Account Controller
+ * -----------------------------------
+ * This file handles authentication, authorization, and account
+ * management for Users, Organizations, and Admins.
+ *
+ * Responsibilities:
+ * - Register users and organizations
+ * - Authenticate accounts and issue JWT tokens
+ * - Enforce role-based login rules (user, organization, admin)
+ * - Handle admin multi-factor authentication (MFA via email OTP)
+ * - Support password recovery and reset flows
+ * - Allow authenticated users and organizations to update profiles
+ *
+ * Security Rules:
+ * - JWT tokens are issued with role-based claims
+ * - Organizations must be approved before login
+ * - Deactivated accounts are blocked from access
+ * - Admin login requires MFA verification
+ * - Sensitive actions require security question validation
+ */
+
 import User from "../models/User.js";
 import Organization from "../models/Organization.js";
 import Admin from "../models/Admin.js";
@@ -12,8 +34,6 @@ const generateToken = (id, role) => {
     expiresIn: "30d",
   });
 };
-
-
 
 
 /* =========================

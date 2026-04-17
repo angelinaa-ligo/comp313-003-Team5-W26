@@ -1,3 +1,19 @@
+/**
+ * Clinic Controller
+ * -----------------
+ * This file manages CRUD operations and search functionality
+ * for Clinic resources.
+ *
+ * Responsibilities:
+ * - Retrieve active clinics with optional search filtering
+ *   (by name, city, address, or postal code)
+ * - Create new clinic records
+ * - Update existing clinic information
+ *
+ * Notes:
+ * - Only active clinics are returned in public listings
+ * - Search is case-insensitive and supports partial matches
+ */
 import Clinic from "../models/Clinic.js";
 
 // GET clinics with optional search

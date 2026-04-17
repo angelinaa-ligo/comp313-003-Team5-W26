@@ -1,3 +1,21 @@
+/**
+ * CareCampaign Admin Controller
+ * --------------------------------
+ * This file contains all ADMIN-specific CRUD operations
+ * for CareCampaign resources.
+ *
+ * Responsibilities:
+ * - Create campaigns as an admin user
+ * - Retrieve all campaigns or a single campaign by ID
+ * - Update campaign details
+ * - Delete campaigns
+ *
+ * Notes:
+ * - Campaigns created/updated here are always marked as created by an admin
+ * - Admin campaigns are not associated with any organization
+ * - Uses Mongoose for MongoDB interactions and ObjectId validation
+ */
+
 import CareCampaign from "../models/CareCampaign.js";
 import mongoose from "mongoose";
 

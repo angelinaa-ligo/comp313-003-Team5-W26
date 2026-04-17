@@ -1,3 +1,20 @@
+/**
+ * Organization Profile Controller
+ * -------------------------------
+ * This file handles profile retrieval and profile updates
+ * for authenticated organizations.
+ *
+ * Responsibilities:
+ * - Return the logged-in organization’s profile information
+ * - Allow organizations to update their own profile details
+ * - Enforce access control so only authenticated organizations can update data
+ *
+ * Business Rules:
+ * - A valid organization session is required for all operations
+ * - Profile updates require verification via security answer
+ * - Only selected profile fields are allowed to be updated
+ */
+
 import Organization from "../models/Organization.js";
 
 export const getOrganizationProfile = async (req, res) => {

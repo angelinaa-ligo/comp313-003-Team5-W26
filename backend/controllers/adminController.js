@@ -1,3 +1,21 @@
+/**
+ * Admin Controller
+ * ----------------
+ * This file contains all ADMIN-level management and moderation logic.
+ *
+ * Responsibilities:
+ * - Manage user, admin, and organization accounts
+ *   (view, promote/demote roles, activate/deactivate, approve, delete)
+ * - Moderate adoption listings (approve, hide pending pets)
+ * - Provide admin analytics and system statistics
+ *
+ * Notes:
+ * - Admin role changes move accounts between User and Admin collections
+ * - Account status is used to control activation/deactivation
+ * - Adoption listings are moderated via status updates
+ * - Analytics aggregate data across multiple collections
+ */
+
 import User from "../models/User.js";
 import Organization from "../models/Organization.js";
 import Pet from "../models/Pet.js";
@@ -5,9 +23,6 @@ import Campaign from "../models/CareCampaign.js";
 import Admin from "../models/Admin.js"
 import Animal from "../models/Animal.js"
 
-// ===============================
-// USER & ORGANIZATION MANAGEMENT
-// ===============================
 
 // Get all accounts (users + organizations)
 export const getAllAccounts = async (req, res) => {

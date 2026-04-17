@@ -1,3 +1,22 @@
+/**
+ * Animal Controller
+ * -----------------
+ * This file manages animal records and adoption-related views
+ * for organizations and public users.
+ *
+ * Responsibilities:
+ * - Allow organizations to create, view, update, and delete their own animals
+ * - Enforce ownership checks so organizations can only manage their own animals
+ * - Enrich organization animal listings with pending adoption request details
+ * - Expose public endpoints to list animals available for adoption
+ * - Provide detailed animal information with organization contact details
+ *
+ * Business Rules:
+ * - Only the owning organization can modify or delete an animal
+ * - Adoption request data is merged into animal listings for organizations
+ * - Public users can only view animals that are eligible for adoption
+ */
+
 import Animal from "../models/Animal.js";
 import AdoptionRequest from "../models/AdoptionRequest.js";
 

@@ -1,3 +1,19 @@
+/**
+ * User Pet Controller
+ * -------------------
+ * This file manages personal pet records for authenticated users.
+ *
+ * Responsibilities:
+ * - Allow users to create pets they own
+ * - Retrieve all pets belonging to the logged-in user
+ * - View, update, and delete individual pets
+ *
+ * Business Rules:
+ * - Users can only access and modify their own pets
+ * - Ownership is enforced on all read and write operations
+ * - Only selected pet fields are allowed to be updated
+ */
+
 import Pet from '../models/Pet.js';
 
 // creating a pet

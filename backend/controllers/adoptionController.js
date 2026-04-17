@@ -1,9 +1,26 @@
+
+/**
+ * Adoption Request Controller
+ * ---------------------------
+ * This file manages the full adoption request lifecycle
+ * across users, organizations, and admins.
+ *
+ * Responsibilities:
+ * - Allow users to submit adoption requests for available animals
+ * - Prevent duplicate adoption requests for the same animal/user
+ * - Allow organizations to view and process adoption requests
+ * - Approve or reject adoption requests and update animal status accordingly
+ * - Provide admins with adoption request history (approved/rejected)
+ *
+ * Business Rules:
+ * - An animal can only have one active pending adoption request
+ * - Approving a request marks the animal as adopted and rejects all others
+ * - Rejecting a request returns the animal to available status
+ */
 import AdoptionRequest from "../models/AdoptionRequest.js";
 import Animal from "../models/Animal.js";
 
-/**
- * USER → create adoption request
- */
+
 export const createAdoptionRequest = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -54,9 +71,7 @@ export const getAdminAdoptionHistory = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-/**
- * ORGANIZATION → get requests
- */
+
 export const getOrganizationRequests = async (req, res) => {
   try {
     const orgId = req.organization._id;
@@ -73,9 +88,7 @@ export const getOrganizationRequests = async (req, res) => {
   }
 };
 
-/**
- * ORGANIZATION → accept / reject
- */
+
 export const updateAdoptionRequestStatus = async (req, res) => {
   const { status } = req.body;
   const requestId = req.params.id;
